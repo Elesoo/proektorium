@@ -1,0 +1,32 @@
+#userClass {
+}
+
+#userClass > div {
+	margin: 10px;
+	padding: 3px;
+	background-color: white;
+	display: inline-block;
+
+
+}
+
+.userCard {
+	margin: 10px;
+	background-color: white;
+	border-radius: 40px;
+}
+
+.userCard > div {
+	margin: 10px;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.rUserCard {
+}
+
+.rUserCard >p:nth-of-type(2) {
+	font-size: 16pt;
+	font-weight: bold;
+}

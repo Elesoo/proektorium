@@ -1,0 +1,76 @@
+main > div > p {
+	/*margin-left: 5%;*/
+	font-size: 14pt;
+}
+
+#rightbar {
+	float: right;
+	margin-top: 20px;
+	margin-right: 5%;
+	margin-left: 5px;
+}
+
+main > div > p:first-of-type {
+margin-top: 20px;
+font-size: 35pt;
+
+}
+
+.project-blocks {
+	margin-left: 5%;
+}
+
+#rightbar > p {
+	font-size: 17pt;
+}
+
+#rightbar > div {
+	border-radius: 10px;
+	background: white;
+	padding: 10px;
+}
+
+#client {
+	text-align: center;
+}
+
+#contact p:first-child {
+	font-size: 15pt;
+	font-weight: bold;
+}
+
+
+.teammates {
+	display: inline-block;
+	text-align: center;
+	margin: 10px;
+
+	border-radius: 10px;
+	background: white;
+	padding: 10px;
+
+	width: 230px;
+}
+
+.teammates > img {
+	border-radius: 10px;
+}
+
+.files {
+	display: inline-block;
+	text-align: center;
+	margin: 10px;
+
+	border-radius: 10px;
+	background: white;
+	padding: 10px;
+
+	width: 300px;
+	height: 300px;
+}
+
+.files > p:first-of-type {
+	font-size: 24pt;
+}
+
+

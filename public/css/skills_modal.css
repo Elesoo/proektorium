@@ -1,0 +1,35 @@
+.skills-modalsection {
+	border-radius: 10px;
+	border-style: solid;
+	border-color: #535353;
+	border-width: 1px;
+	padding: 10px;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+.skills-modalsection li::before {
+	content: "- ";
+}
+
+.allSkills {
+	max-height: 15vh;
+	overflow: auto;
+}
+
+.skills-type-title {
+	font-weight: bold;
+}
+
+.skills-modalsection li:hover {
+	border-bottom: 1px solid grey;
+}
+
+.modifySkillBtn {
+	float: right;
+	display: none;
+}
+
+.skills-modalsection li:hover > .modifySkillBtn {
+	display: block !important;
+}

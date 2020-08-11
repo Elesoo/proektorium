@@ -1,0 +1,26 @@
+
+.userCard {
+	margin: 10px;
+	background-color: white;
+	border-radius: 40px;
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+	padding: 20px;
+	width: 370px;
+
+}
+
+.userCard > p:first-of-type {
+	font-size: 20pt;
+	font-weight: 500;
+}
+
+.userCard > .btn, textarea {
+	width: 90%;
+	margin-bottom: 1rem;
+}
+
+.questionForm {
+	display: none;
+}

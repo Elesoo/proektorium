@@ -1,0 +1,108 @@
+#specification {
+	background-color: white;
+    border-radius: 10px;
+    overflow: auto;
+    padding: 10px;
+}
+
+.projTypeSelects  > * {
+display: inline-block;
+width: 20%;
+margin-left: 20px;
+margin-right: 20px;
+background: none;
+}
+
+.projInfo > div > *:not(label) {
+border: none;
+border-bottom: 0.5px solid #837E7E;
+vertical-align: top;
+margin-bottom: 10px;
+display: inline-block;
+}
+
+
+.projInfo > div > textarea {
+width: 400px;
+}
+
+#editor {
+	width: 50%;
+	float: right;
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 20px;
+	padding: 8px;
+}
+
+
+.skills_selector > p {
+	margin-top: 20px;
+	height: 40px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.role {
+	margin: 10px;
+	margin-top: 40px;
+	border-radius: 10px;
+	border-style: solid;
+	border-color: #535353;
+	border-width: 1px;
+	padding-bottom: 30px;
+}
+
+@media(max-width: 450px) {
+	#editor {
+		float: none;
+		margin-left: 0;
+		width: 100%;
+	}
+
+	.flex__mobile {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		justify-content: center;
+		-ms-align-items: center;
+		align-items: center;
+	}
+
+	.inq_form td {
+		width: 100% !important;
+	}
+
+	.size {
+		width: 100px !important;
+	}
+}
+
+#editor > * {
+	margin: 8px;
+	font-size: 12pt;
+	/*display: block;*/
+	/*width: calc(100% - 16px);*/
+}
+
+.crd-buttons-single > .btn { /*Crude fix without changind claim_card html*/
+	margin-left: 0 !important; 
+}
+
+.skillsInput {
+	width: 100%;
+}
+
+/*.tab-pane input {
+width: 100%;
+}*/
+
+
+/*phone media*/

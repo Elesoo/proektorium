@@ -1,0 +1,139 @@
+main > div {
+	vertical-align: top;
+}
+
+main > div:nth-of-type(2) {
+	overflow: auto;
+}
+
+.profile-card > * {
+	display: block;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+#leftbar {
+	width: 300px;
+	float: left;
+    margin-right: 20px;
+    position: relative;
+}
+
+#leftbar > p:first-of-type {
+	font-size: 2vh;
+}
+
+#leftbar ul {
+	padding-left: 20px;
+}
+
+.experience-count {
+	float: right;
+	margin-right: 15px;
+	color: #63c9a4;
+}
+
+.profile {
+	overflow: auto;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.profile input, .profile select, .profile option, .profile textarea {
+	display: block;
+	margin: auto;
+	margin-top: 1vh;
+	width: 100%;
+	text-align: left;
+	font-size: 16px;
+}
+
+
+.profile img,  .profile button {
+	display: block;
+	margin: auto;
+	margin-bottom: 1vh;
+	margin-top: 1vh;
+}
+
+#rightbar > .section {
+	width: unset !important;
+}
+
+
+.readonlyinputs {
+	border-width: 0 0 1px;
+	background-color: white;
+	border-color: black;
+	color: black;
+
+}
+
+.row {
+	margin-right: 0 !important; /*Bootstrap param override*/
+}
+
+#savebutton {
+	margin-top: 1.5vh;
+	margin-right: 15px;
+}
+
+
+.project-card > textarea {
+	margin-bottom: 1rem;
+	width: 100%;
+}
+
+.statusicons-card img {
+	display: inline-block;
+	margin: 11px;
+}
+
+
+
+
+@media all and (max-device-width: 1260px) {
+	#leftbar > .crd {
+		margin-right: 0;
+	}
+	#leftbar {
+		width: 100%;
+	}
+
+	#rightbar {
+		width: 100%;
+	}
+}
+
+
+.claim-card > div:first-of-type {
+	background-color:#e0dcdc;
+	margin-left: -10px;
+	margin-right: -10px;
+	margin-bottom: 20px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding: 10px;
+}
+
+.claim-card > div:first-of-type  > p {
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 0;
+}
+
+.img_profile{
+	border-radius: 10px;
+}
+
+.btn-profile{
+  border: 1px solid #0C7CBB;
+  border-radius: 10px;
+  color: #0C7CBB;
+  min-height: 25px;
+  line-height: 15px;
+}

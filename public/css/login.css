@@ -1,0 +1,172 @@
+.acctype {
+	width: 250px;
+	height: 250px;
+	display: inline-block;
+	border-radius: 10px;
+	background-color: white;
+	margin: 10px;
+	padding: 10px;
+}
+
+.acctype > p {
+	text-align: center;
+}
+
+.enter{
+	font-size: 25px;
+	font-weight: bold;
+}
+
+
+
+.center {
+	padding: 50px;
+	box-sizing: border-box;
+	background-color: #fff;
+	border-radius: 10px;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+	justify-content: center;
+	-ms-align-items: center;
+	align-items: center;
+	height: auto;
+}
+
+.center__text{
+	font-size: 16px;
+	list-style-type: none;
+	color: #000;
+	cursor: pointer;
+}
+
+.center__text:before{
+	content: url('../img/reg.svg');
+	vertical-align: middle;
+	padding-right: 15px;
+}
+
+.center input{
+	text-align: center;
+	border: 1px solid #8E8E8E;
+	box-sizing: border-box;
+	border-radius: 10px;
+	width: 350px;
+	height: 50px;
+	margin-top: 15px;
+}
+
+.center input:focus, .center input:hover{
+	outline: none;
+	box-shadow: 0 0 0 1px #3465A4;
+}
+
+.center__btn{
+	border: none;
+	outline: none;
+	width: 100%;
+	min-height: 50px;
+	text-align: center;
+	font-size: 16px;
+	color: #fff;
+	background: #1B4F44;
+	border-radius: 10px;
+	margin-top: 15px;
+	padding: 5px 30px;
+}
+
+.edu__btn {
+	background: #1D3351 !important;
+}
+
+.center__btn:focus, .center__btn:hover {
+	outline: none;
+	box-shadow: 0 0 0 1px #73D216;
+}
+
+#acctypeslist {
+	width: 100vw;
+	height: 100vh;
+}
+
+#acctypeslist > div {
+	text-align: center;
+	margin: 0;
+	width: 90%;
+}
+
+#regform {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	justify-content: center;
+	-ms-align-items: center;
+	align-items: center;
+	width: 100%;
+	height: 98vh;
+}
+
+/*
+#regform > div > * {
+	margin: auto;
+	margin-bottom: 1vh;
+	width: 90%;
+	text-align: center;
+}*/
+
+@media (max-width: 450px) {
+	/*#regform > div {
+		width: 80%;
+	}
+	#regform > div > *{
+		font-size: 40pt;
+	}*/
+
+	.center{
+		padding: 20px;
+	}
+
+	.center__text{
+		font-size: 14px;
+	}
+	
+	.enter{
+		font-size: 20px;
+	}
+
+	.center input{
+		width: 300px;
+	}
+
+	.center__btn{
+		width: 200px;
+	}
+}
+
+
+@media(max-width: 320px) {
+	.enter{
+		font-size: 18px;
+	}
+
+	.center{
+		width: 90%;
+	}
+
+	.center input{
+		width: 270px;
+	}
+
+	.center__btn{
+		width: 170px;
+	}
+}

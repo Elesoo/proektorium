@@ -1,0 +1,25 @@
+
+#filter > * {
+  /*display: inline-block;*/
+  /*width: calc(12.5% - 14px);*/
+  /*margin-left: 10px;*/
+/*  margin-bottom: 10px;
+  width: 100%;
+  min-width: 100%;*/
+}
+
+#filter {
+/*  width: 100%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+*/}
+
+#description {
+width: 30%;
+min-width: 300px;
+text-align: center;
+margin: auto;
+padding: 10px;
+/*background-color: white;*/
+border-radius: 10px;
+}

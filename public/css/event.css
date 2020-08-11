@@ -1,0 +1,26 @@
+.partner {
+	font-weight: bold;
+font-size: 24px;
+color: gray;
+text-align: left;
+}
+
+.partner > img {
+	height: 20px;
+}
+
+.header_text {
+	position: absolute;
+	color: white;
+	text-align: center;
+	margin: auto;
+	top: calc(50% - 50px);
+	/*left: calc(50% - 250px);*/
+	left: 50%;
+	transform: translate(-50%);
+}
+
+.header_text > p:first-of-type {
+	font-size: 40px;
+	font-weight: bold;
+}

@@ -1,0 +1,17 @@
+#filter > * {
+  display: inline-block;
+  width: calc(20% - 14px);
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+#filter {
+  width: 98%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+}
+
+.chosen-choices, input {
+  border: solid 2px grey !important;
+  border-radius: 10px;
+}
