@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="/css/login.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block sidebar_menu %}
+    
+{% endblock %}
+
+{% block header_buttons %}
+    
+{% endblock %}
+
+{% block main %}
+<form method="post">
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+
+    <div id="regform">
+        <div class="center">
+            <p class="enter">Войдите в Личный кабинет</p>
+            <a href="/registration" class="center__text">Ещё не зарегистрированы?</a>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+            <input required type="email"  name="_username" class="stud_reg employee_reg expert_reg" placeholder="E-mail">
+            <input required type="password"  name="_password" class="org_reg" placeholder="Пароль">
+            <button type="submit" class="center__btn edu__btn">Войти через Мой ДГТУ</button>
+            <button type="submit" class="center__btn">Войти</button>
+        </div>
+    </div> 
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+</form>
+{% endblock %}

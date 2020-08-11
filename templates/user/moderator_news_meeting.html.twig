@@ -1,0 +1,535 @@
+{% block includes %}
+    <link rel="stylesheet" type="text/css" href="/css/account_moder.css">
+        <script src="/js/cropper.js"></script>
+<script src="/js/upload_avatars.js"></script>
+
+<link rel="stylesheet" href="/css/cropper.css">
+{% endblock %}
+{% block content %}
+<script type="text/javascript">
+function denyClaim(claimId)
+{
+	$.ajax({
+		url:"/user/moderator/eventClaim/"+claimId+"/denyClaim",
+		type:'GET',
+		success: function(data){
+			alert("Заявка успешна отклонена!");
+			window.location.href = "/user";
+		},
+		error: function(data){
+			alert("Ошибка при отказе заявки!")
+		}
+	});
+}
+
+function denyNewsClaim(claimId)
+{
+	$.ajax({
+		url:"/user/moderator/newsClaim/deny/"+claimId,
+		type:'GET',
+		success: function(data){
+			alert("Заявка успешна отклонена!");
+			window.location.href = "/user";
+		},
+		error: function(data){
+			alert("Ошибка при отказе заявки!")
+		}
+	});
+}
+</script>
+<style type="text/css">
+			/*modal*/
+
+		.modal-content{
+			border: none;	
+			width: 850px;
+			height: auto;
+			transform: translate(-50%);
+			left: 50%
+		}
+
+		@media(max-width: 1100px) {
+			.modal-content{
+				width: 600px;
+			}
+
+		}
+
+		.modal-header{
+			background: #8E8E8E;
+		}
+
+		#zoom{
+			border: none;
+			background-color: transparent;
+			transform: translateX(0px);
+			transition: .4s;
+		}
+
+		.form_input{
+			border: none;
+			padding-left: 5px;
+			background-color: transparent;
+			border-radius: 5px;
+			display: none;
+			vertical-align: middle;
+			right: 0;
+			top: 35px;
+			position: absolute;
+			height: 50px;
+		}
+
+		.modal_header__title{
+			font-size: 18px;
+			font-weight: bold;
+			color: #fff;
+			text-align: center;
+			margin: 0 auto;
+			transform: translateX(40%);
+		}
+		
+		table{
+			margin: 0 auto;
+			border: none;
+		}
+
+		tbody > tr{
+			width: 100%;
+			border: none;
+		}
+
+		tr > td{
+			width: 20%;
+			border: none !important;
+		}
+
+		tr > td + td{
+			width: 80%;
+			border: none;
+		}
+		
+		td textarea{
+			/*margin-left: 20px;*/
+			width: 100%;
+			border: none;
+			outline: none;
+			padding: 10px 20px 0 20px;
+			border-bottom:  0.5px solid #837E7E;
+		}
+
+		textarea::placeholder{
+			width: 80%;
+		}
+
+		#file_doc{
+			display: none;
+		}
+
+		label img{
+			margin-left: 25px;
+		}
+
+		td:first-child{
+			text-align: center;
+			padding-left: 40px;
+			border: none;
+		}
+
+		.btn__send{
+			width: 50%;
+			height: 41px;
+			box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+			border-radius: 10px;
+			margin: 45px 25% 50px 25%;
+			background: #0C7CBB;
+			border: none;
+			color: #fff;
+			font-size: 18px;
+			line-height: 25px;
+			text-align: center;
+			font-weight: 600;
+		}
+
+		@media(max-width: 450px) {
+			.modal-content {
+				width: 100%;
+			}
+
+			table td:first-child {
+				padding: 0;
+			}
+
+			label img{
+				margin-left: 10px;
+			}
+		}
+
+		.img-container img {
+		  max-width: 100%;
+		}
+</style>
+
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+
+<!-- Modal reset Password -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="inputPassword5">Старый пароль*</label>
+		<input type="password" id="inputPasswordPast" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Новый пароль*</label>
+		<input type="password" id="inputPasswordNew" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Повторно новый пароль*</label>
+		<input type="password" id="inputPasswordNewRep" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">Сменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+	<p>ВАШ ЛИЧНЫЙ КАБИНЕТ</p>
+	<div id="leftbar">
+		<div class="crd profile-card">
+			{% if moderator.info.name == "" %}
+			<br>
+			{% else %}
+			<p>{{ moderator.info.name }}</p>
+			{% endif %}
+			<img class="img_profile" width=200 height=200 src="/user/getAvatar">
+			<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+				<button type="button" class="btn btn-profile" onclick="load_input.click()">Изменить фото</button>
+				<input id="load_input" class="sr-only" type="file" accept="image/*">
+				<button type="button" class="btn btn-profile" data-toggle="modal" data-target="#resetPassword">Изменить пароль</button>
+				<button type="button" class="btn btn-profile">Создать новость</button>
+			</div>
+		</div>
+	</div>
+	<div id="rightbar">
+		<div class="profile">
+
+			<ul class="nav nav-tabs" class="container mt-3">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#creds">Общая информация</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="creds" class="tab-pane fade in active show">
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">ФИО</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="name" value="{{ moderator.info.name }}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">Телефон</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="phone" value="{{ moderator.info.phone }}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">E-mail</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="email" value="{{ moderator.info.email }}">
+						</div>
+					</div>
+				</div>
+				<div style="width:100%; overflow: auto;"><button type="button" id="savebutton" class="btn btn-profile" onclick="changeFormState()">Сохранить</button></div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+
+		{% if data %}
+		<div class="container-fluid p-0">
+			<p style="font-weight: bold; text-align: left; font-size: 36px;">Входящие заявки</p>
+			<div class="row pr-0 mr-0">
+				{% for item in data %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+					<div class="crd project-card" style="margin: 0 !important;">
+						<div class="project-card-header increq-card-header">
+							<img src="/img/icon_event.svg" style="border-radius: unset;">
+							<p>
+								{{ item.info.title }}
+							</p>
+						</div>
+
+						<div class="row">
+							<span class="col-sm-6">Локация:</span>
+							<span class="col-sm-6">{{ item.info.place }}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-6">Дата проведения:</span>
+							<span class="col-sm-6">{{item.info.date}}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-6">Организатор:</span>
+							<span class="col-sm-6">{{ item.employee }}</span>
+						</div>
+						<div class="row" style="margin-bottom: 70px;">
+							<span class="col-sm-6">Краткое описание:</span>
+							<span class="col-sm-6">{{item.info.description}}</span>
+						</div>
+
+						<div style="text-align: right; padding-right: 20px; color: #0C7CBB; font-weight: bold; font-size: 13px; bottom: 60px;position: absolute;right: 10px;">
+							<a data-toggle="modal" data-target="#claimEvent{{item.id}}">Смотреть полную заявку >>></a>
+						</div>
+
+
+						<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+							<button onclick="denyClaim({{ item.id }});" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+							<button onclick="window.location.href='/user/moderator/eventClaim/{{item.id}}'" type="button" class="btn btn-success" style="background: #015C65; color: white;margin-left: 5px;">Редактировать</button>
+						</div>
+
+					</div>
+				</div>
+				<div id="claimEvent{{item.id}}" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header" style="background-color: #8E8E8E;">
+								<h5 class="modal-title">Заявка на создание мероприятия</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<table class="table">
+									<tbody id="tbody">
+										<tr>
+											<td>Название мероприятия ?*</td><td><textarea id="title">{{ item.info.title }}</textarea></td>
+										</tr>
+										<tr>
+											<td>Описание мероприятия?*</td><td><textarea id="description" rows="5" placeholder="Подробно опишите концепцию мероприятия">{{ item.info.description }}</textarea></td>
+										</tr>
+										<tr>
+											<td>Актуальность ?</td><td><textarea id="actuality" rows="5" placeholder="Обоснуйте  почему проведение мероприятия представляет в настоящий момент интерес для университета. Обоснуйте важность, значительность события в современных реалих.">{{ item.info.actuality }}</textarea></td>
+										</tr>
+										<tr>
+											<td>Дата проведения ?*</td><td><input id="date" type="date" name="" value="{{ item.info.date }}"></td>
+										</tr>
+										<tr>
+											<td>Целевая аудитория?*</td><td><textarea id="auditory" rows="5" placeholder="Набором каких компетенций должны обладать участники мероприятия, студенты каких направлений подготовки приглашаются на данное событие
+												Данная информация послужит фильтром при наборе участников.">{{ item.info.auditory }}</textarea></td>
+											</tr>
+											<tr>
+												<td>Программа меропритяия?</td><td><label onclick="window.location.href='/events/attachment/program/{{ item.attachments.program }}'" class="label_file" for="load_file"><img src="/img/pdf.png"><img src="/img/doc.png"><img src="/img/ppt.png"></label></td>
+											</tr>
+											<tr>
+												<td>Партнёры?</td><td><textarea id="partners">{{item.info.partners}}</textarea></td>
+											</tr>
+											<tr>
+												<td>Прогнозируемые результаты?*</td><td><textarea id="results"
+												rows="5" placeholder="Какой положительный эффект несёт ваше мероприятие?">{{ item.info.results }}</textarea></td>
+											</tr>
+											<tr>
+												<td>Место проведения?*</td><td><textarea id="place" rows="5" placeholder="адрес , корпус и номер аудиторий ( поиск по базе по ключевым словам)">{{ item.info.place }}</textarea></td>
+											</tr>
+											<tr>
+												<td>Ресурсы на реализацию проекта?*</td><td><textarea id="resources" rows="5" placeholder="Какими ресурсами вы располагаете для запуска мероприятия.">{{ item.info.resources }}</textarea></td>
+											</tr>
+											<tr>
+												<td>Изображение для шапки мероприятия<br>(2700 x 680)</td><td><a href="/events/attachment/headerImage/{{ item.attachments.headerImage}}">Прикрепленный файл</a></td>
+											</tr>
+											<tr>
+												<td>Фото для пресс-релиза:</td><td><a href="/events/attachment/photo/{{ item.attachments.photo}}">Прикрепленный файл</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div> 
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+				{% if data2 %}
+					<div class="row pr-0 mr-0">
+					{% for item in data2 %}
+					<div class="modal fade" id="news-claim{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<p class="modal_header__title">Заявка на запуск новости</p>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<img src="/img/close.png" alt="">
+									</button>
+								</div>
+								<div class="modal-body">
+									<table>
+										<tbody class="table_body">
+											<tr class="first_row">
+												<td>
+													Заголовок новости?*
+												</td>
+
+												<td>
+													<textarea name="" id="" cols="30" rows="2" placeholder="Кратко сформулируйте название, которое будет заголовком новости.">{{ item.fields['Заголовок новости?*'] }}</textarea>	
+												</td>
+											</tr>
+
+											<tr class="first_row">
+												<td>Дата события?*</td>
+												<td>
+													<textarea name="" id="" cols="30" rows="2">{{ item.fields['Дата события?*'] }}</textarea>	
+												</td>
+											</tr>
+
+											<tr class="first_row">
+												<td>Краткое описание?*</td>
+												<td>
+													<textarea name="" id="" cols="30" rows=5 placeholder='Напишите ключевую информацию о предстоящем событии, эти данные позволят привлечь внимание к основной части новости и дополнить идею заголовка. Краткое описание должно отвечать на вопросы: "Что? Где? Когда?". Не более трех предложений'>{{ item.fields['Краткое описание?*'] }}</textarea>	
+												</td>
+											</tr>
+
+											<tr class="first_row">
+												<td>Основной текст?*</td>
+												<td>
+													<textarea name="" id="" cols="30" rows="3" placeholder="Напишите все подробности предстоящего события. Информация должна содержать повестку мероприятия.">{{ item.fields['Основной текст?*'] }}</textarea>	
+												</td>
+											</tr>
+
+
+											<tr>
+												<td style="padding-top: 50px;">Вложение</td>
+												<td style="padding-top: 50px;{# border-bottom:  0.5px solid #837E7E; #}">
+													<!-- <label onclick="window.location.href='/news/attachment/ item.attachment '" for="file_doc">
+														<img src="/img/pdf.png" alt="">
+														<img src="/img/jpg 1.png" alt="">
+														<img src="/img/doc 1.png" alt="">
+														<img src="/img/ppt.png" alt="">
+													</label>
+													<input id="file_doc" type="file"> -->
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div id="car{{item.id}}" class="carousel slide mt-4" data-ride="carousel">
+									  <div class="carousel-inner">
+									    <div class="carousel-item active">
+									      <img src="/news/attachment/{{ item.attachment[0] }}" class="d-block w-100" alt="...">
+									    </div>
+									    {% if item.attachment|length > 1 %}
+									    {% set counter = 0 %}
+									    	{% for pic in item.attachment %}
+										    	{% if counter == 0 %}
+										    	{% else %}
+									    	    <div class="carousel-item">
+											      <img src="/news/attachment/{{ pic }}" class="d-block w-100" alt="...">
+											    </div>
+											    {% endif %}
+											 	{% set counter = counter + 1 %}
+									    	{% endfor %}
+									    {% endif %}
+									  </div>
+									  <a class="carousel-control-prev" href="#car{{item.id}}" role="button" data-slide="prev">
+									    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									    <span class="sr-only">Previous</span>
+									  </a>
+									  <a class="carousel-control-next" href="#car{{item.id}}" role="button" data-slide="next">
+									    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+									    <span class="sr-only">Next</span>
+									  </a>
+									</div>   
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+						<div class="crd project-card" style="margin: 0 !important;">
+							<div class="project-card-header increq-card-header">
+								<img src="/img/icon_news.svg" style="border-radius: unset;">
+								<p>
+									{{item.fields['Заголовок новости?*']}}
+								</p>
+							</div>
+
+							<div class="row">
+								<span class="col-sm-6">Дата события:</span>
+								<span class="col-sm-6">{{item.fields['Дата события?*']}}</span>
+							</div>
+							<div class="row">
+								<span class="col-sm-6">Отправитель:</span>
+								<span class="col-sm-6">{{item.empName}}</span>
+							</div>
+							<div class="row" style="margin-bottom: 70px;">
+								<span class="col-sm-6">Повестка:</span>
+								<span class="col-sm-6">{{item.fields['Краткое описание?*']}}</span>
+							</div>
+
+							<div style="text-align: right; padding-right: 20px; color: #0C7CBB; font-weight: bold; font-size: 13px; bottom: 55px;position: absolute;right: 10px;">
+								<a data-toggle="modal" data-target="#news-claim{{item.id}}">Смотреть полную заявку >>></a>
+							</div>
+
+
+							<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+								<button type="button" class="btn" style="background: #DFC7AF;" onclick="denyNewsClaim({{ item.id }});">Отклонить</button>
+								<button type="button" class="btn btn-success" style="background: #015C65; color: white;margin-left: 5px;" onclick="window.location.href='/news/editor/{{ item.id }}'">Редактировать</button>
+							</div>
+
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% endif %}
+			</div>
+
+		</div>
+
+	<!-- <div class="section proj-section">
+		<p>ВОПРОСЫ</p>
+		<div class="crd project-card">
+			<p>От Пупкина Василия Васильевича</p>
+
+			<p>Когда появятся новые проекты?</p>
+			<textarea placeholder="Ответ"></textarea>
+			<button type="button" onclick="window.location.href='project.html'" class="btn btn-primary">Ответить</button>
+		</div>
+	</div> -->
+</div>
+{% endblock %}

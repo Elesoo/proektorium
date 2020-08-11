@@ -1,0 +1,538 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/main.css" crossorigin="anonymous">
+<script  src="/js/caleandar.js"></script>
+<link rel="stylesheet" href="/css/theme1.css">
+<style>
+.modal-content{
+	border-radius: 15px;
+}
+
+.modal-title{
+	border-radius: 15px 15px 0 0;
+}
+
+.modal-title{
+	color: #fff;
+	margin: 0 auto;
+	transform: translateX(25%);
+	justify-content: center;
+}
+
+.table td{
+	border-color: #fff;
+}
+
+tbody > tr{
+	width: 100%;
+}
+
+tr > td {
+	text-align: center;
+	width: 50%;
+}
+
+td textarea {
+	width: 100%;
+}
+
+.label_file{
+	cursor: pointer;
+}
+
+#load_file{
+	display: none;
+}
+
+#load_img{
+	display: none;
+}
+
+.btn_load{
+	width: 30%;
+	margin: 0 35%;
+}
+
+.btn-vika{
+	background-color: #DFC7AF;
+	width: 30%;
+	margin: 0 35%;
+	font-family: "Open Sans", sans-serif;
+	font-size: 24px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+}
+
+@media (max-width: 1000px){
+  .btn-vika{
+    width: 70%;
+    margin: 0 15%;
+  }
+}
+
+.title{
+	font-family: "Open sans", sans-serif;
+	font-size: 36px;
+	font-weight: bold;
+}
+
+.row_gray{
+	background-color: #E3E6F2;
+}
+
+.btn-done{
+	width: 50%;
+	margin: 0 25%;
+}
+
+.container-fluid{
+	margin-top: 50px;
+}
+
+.calendar{
+	margin: 20px auto;
+}
+
+#cal{
+	width: 100%;
+}
+
+.cld-main {
+	width: 100%;
+	background-color: white;
+	border-radius: 10px 10px 0 0;
+	padding: 15px 0;
+}
+
+.cld-datetime {
+	border-bottom: .5px solid #8E8E8E;
+	width: 80%;
+	margin: 0 10% 15px 10%;
+	padding: 5px 0;
+	max-width: 100%;
+}
+
+.cld-day.today .cld-number {
+	width: auto;
+	height: auto;
+}
+
+.cal_event{
+	background-color: white;
+	border-radius: 0 0 10px 10px;
+	padding: 15px 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: flex-start;
+	border-top: 0.5px solid #8E8E8E;
+}
+
+.cal_event .event {
+	display: flex;
+	align-items: flex-start;
+}
+</style>
+  <!-- Reg well modal -->
+  <style>
+    .modal-content{
+      border-radius: 10px;
+    }
+    .reg_header{
+      background-color: #8E8E8E;
+      color: white;
+      border-radius: 10px 10px 0 0;
+      height: 65px;
+      display: flex;
+      align-items: center;
+    }
+
+    .reg_header p {
+      margin: 0; 
+    }
+
+    .reg_header img {
+      margin-left: 20px;
+      margin-right: 25px;
+    }
+
+    .reg_body{
+      padding: 23px 35px;
+      font-family: "Open Sans", sans-serif;
+      font-size: 12px;
+      text-align: justify;
+    }
+
+    .modal_link{
+      text-decoration: underline;
+    }
+
+    /*cards events*/
+
+    @media(max-width: 400px) {
+      .card__footer{
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+        -moz-flex-direction: column;
+        -ms-flex-direction: column;
+        -o-flex-direction: column;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .card__footer div{
+        margin: 0 !important;
+      }
+    }
+
+  </style>
+<script type="text/javascript">
+var listString = {};
+		function generateString() {
+			var fd = new FormData(); 
+			listString['title'] = $("#title").val();
+			listString['description_text'] = $("#description_text").val();
+			listString['actuality'] = $("#actuality").val();
+			listString['date'] = $("#date").val();
+			listString['auditory'] = $("#auditory").val();
+			listString['partners'] = $("#partners").val();
+			listString['results'] = $("#results").val();
+			listString['place'] = $("#place").val();
+			listString['resources'] = $("#resources").val();
+			for (var key in listString) {
+        if ((key != "actuality") || (key != "partners")){
+  				if (listString[key] == "")
+  				{
+  					alert("Заполните пустые поля!");
+  					return true;
+  				}
+        }
+			}
+			console.log($("#program")[0].files.length);
+			if ($("#program")[0].files.length > 0){
+				attachment = $("#program")[0].files[0];
+				fd.append('program', attachment, attachment.name);
+			}
+			else
+			{
+				alert("Вы не указали файл с программой мероприятия!");
+				return true;
+			}
+			if ($("#headerImage")[0].files.length > 0){
+				attachment = $("#headerImage")[0].files[0];
+				fd.append('headerImage', attachment, attachment.name);
+			}
+			else
+			{
+				alert("Вы не указали файл с шапкой для мероприятия!");
+				return true;
+			}
+			if ($("#photo")[0].files.length > 0){
+				attachment = $("#photo")[0].files[0];
+				fd.append('photo', attachment, attachment.name);
+			}
+			else
+			{
+				alert("Вы не указали файл с логотипом мероприятия!");
+				return true;
+			}
+			listString = JSON.stringify(listString);
+			fd.append('listString', listString);
+			$.ajax({
+				url: "/user/employee/newClaim",
+				method: "POST",
+				data: fd,
+				processData: false,
+				contentType: false,
+
+				success: function(data) {
+					alert("Заявка отправлена");
+					window.location.href = "/user";
+				},
+				error: function() {
+					alert("Ошибка");
+				}
+			});
+		}
+    function claimToEvent(eventid, studid)
+    {
+      $.ajax({
+        url: "/event/register/"+eventid+"/"+studid,
+        method: "GET",
+        success: function(data) {
+          if (data == "already")
+          {
+            alert("Вы уже зарегистрированы на мероприятии!");
+            window.location.href = "/events";
+          }
+          else
+          {
+            // alert("Вы зарегистрировались на мероприятие!");
+            $('#regsuc').modal('show')
+          }
+          
+        },
+        error: function() {
+          alert("Ошибка");
+        }
+      });
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div id="regsuc" class="modal fade modal-reg-well-event" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header reg_header">
+          <img src="/img/reg_well_white.png">
+          <p>Поздравляем, вы зарегистрированы на мероприятии  “Проекториум RSM 2020”</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body reg_body">
+          <p>Теперь вам необходимо присоединиться к одной из карточек проекта, выбрав подходящую для вас роль в команде. Для этого перейдите на страницу мероприятия в область «Проекты». В разделе «Команда» выберите роль, которая вам наиболее подходит. Как только вы увидите уведомление о присоединении к проектной команде, значит ваше участие одобрено организатором.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade modal-reg-401-platform" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header reg_header">
+          <img src="/img/reg.png">
+          <p>Вы не зарегистрированы на платформе!</p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body reg_body">
+          <p>Для того чтобы принять участие в мероприятии необходимо зарегистрироваться. После регистрации вернитесь в раздел «Календарь мероприятий» или на «Главную страницу» платформы, где будет опубликовано предстоящее мероприятие. Чтобы присоединиться, нажмите «принять участие».</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div>
+<div class="container-fluid calendar">
+      <div id="cal"></div>
+      {# <div class="cal_event">
+        <div class="event"><img src="/static/img/Star_cal_1.png">Проектная неделя</div>
+        <div class="event"><img src="/static/img/Star_cal_2.png">IT-FLOW</div>
+        <div class="event"><img src="/static/img/Star_cal_3.png">Проекториум RSM</div>#}
+      {# </div>  #}
+    </div>
+    {% if is_granted('ROLE_EMPLOYEE') %}
+    <button type="button" class="btn btn-vika" data-toggle="modal" data-target=".bd-example-modal-lg">Создать мероприятие</button>{% endif %}
+
+    <div class="container-fluid no-gutters">
+      <div class="container-fluid p-0">
+        <p style="font-weight: bold; text-align: left; font-size: 36px;">Предстоящие</p>
+        <div class="row pr-0 mr-0">
+          {% for item in events.future %}
+          <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+            <div class="crd project-card" style="margin: 0 !important;">
+                    <div style="background-image: url('/events/attachment/event/headerImage/{{item.attachments.headerImage}}'); background-size: cover; background-position: center;" class="project-card-header">
+                      <p></p>
+                      <p>{{ item.info.title }}</p>
+                    </div>
+
+              <p class="crd-caption-left"></p>
+              <p class="project-description">{{item.info.description[0:240] }}...</p>
+              <p class="graybox">Партнёры мероприятия:</p>
+              {# <ul class="project-card-theses">
+                <li>партнёр 1</li>
+                <li>партнёр 2</li>
+
+              </ul> #}
+              <p>{{ item.info.partners }}</p>
+              <p class="project-card-status" style="color: #0C7CBB; text-align: center;">Предстоящее мероприятие</p>
+              <div class="card__footer">
+                <div  style="display: inline-block; float: left; font-size: 13px; margin-left: 20px;">
+                  <p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+                  <p style="text-align: center;">{{item.info.date}}</p> 
+                </div>
+                
+                <div style="display: inline-block; float: right; font-size: 13px; margin-right: 20px;">
+                  <p style="color: gray; font-weight: bold; white-space: pre-wrap;  text-align: center;">Организатор:</p>
+                  <p style="text-align: center;"></p> 
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="crd-buttons crd-buttons-bottom crd-buttons card__btn">
+                <button onclick="window.location.href='/event/show/{{item.id}}'"  type="button" class="btn" style="background: #DFC7AF;">Подробнее</button>
+                {% if is_granted("ROLE_STUDENT") %}
+                <button onclick="claimToEvent({{item.id}}, {{user.id}});" type="button" class="btn btn-success" style="background: #015C65; color: white;white-space:nowrap;">Принять участие</button>
+                {% else %}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-reg-401-platform" style="white-space:nowrap;">Принять участие</button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+{% if events.active %}
+      <div class="container-fluid p-0">
+        <p style="font-weight: bold; text-align: left; font-size: 36px;">Активные</p>
+        <div class="row pr-0 mr-0">
+          {% for item in event.active %}
+          <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+            <div class="crd project-card" style="margin: 0 !important;">
+                    <div style="background-image: url('/events/attachment/event/headerImage/{{item.attachments.headerImage}}'); background-size: cover; background-position: center;" class="project-card-header">
+                      <p></p>
+                      <p>{{ item.info.title }}</p>
+                    </div>
+
+              <p class="crd-caption-left"></p>
+              <p class="project-description">{{item.info.description[0:240] }}...</p>
+              <p class="graybox">Партнёры мероприятия:</p>
+              {# <ul class="project-card-theses">
+                <li>партнёр 1</li>
+                <li>партнёр 2</li>
+
+              </ul> #}
+              <p>{{ item.info.partners }}</p>
+              <p class="project-card-status" style="color: #0C7CBB; text-align: center;">Активное мероприятие</p>
+              <div class="card__footer">
+                <div  style="display: inline-block; float: left; font-size: 13px; margin-left: 20px;">
+                  <p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+                  <p style="text-align: center;">{{item.info.date}}</p> 
+                </div>
+
+                <div style="display: inline-block; float: right; font-size: 13px; margin-right: 20px;">
+                  <p style="color: gray; font-weight: bold; white-space: pre-wrap;  text-align: center;">Организатор:</p>
+                  <p style="text-align: center;"></p> 
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+                <button onclick="window.location.href='/event/show/{{item.id}}'"  type="button" class="btn" style="background: #DFC7AF;">Подробнее</button>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if events.finish %}
+      <div class="container-fluid p-0">
+        <p style="font-weight: bold; text-align: left; font-size: 36px;">Завершённые</p>
+        <div class="row pr-0 mr-0">
+          {% for item in events.finish %}
+          <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+            <div class="crd project-card" style="margin: 0 !important;">
+                    <div style="background-image: url('/events/attachment/event/headerImage/{{item.attachments.headerImage}}'); background-size: cover; background-position: center;" class="project-card-header">
+                      <p></p>
+                      <p>{{ item.info.title }}</p>
+                    </div>
+
+              <p class="crd-caption-left"></p>
+              <p class="project-description">{{item.info.description[0:240] }}...</p>
+              <p class="graybox">Партнёры мероприятия:</p>
+              {# <ul class="project-card-theses">
+                <li>партнёр 1</li>
+                <li>партнёр 2</li>
+
+              </ul> #}
+              <p>{{ item.info.partners }}</p>
+              <p class="project-card-status" style="color: #0C7CBB; text-align: center;">Завершенное мероприятие</p>
+              <div class="card__footer">
+                <div  style="display: inline-block; float: left; font-size: 13px; margin-left: 20px;">
+                  <p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+                  <p style="text-align: center;">{{item.info.date}}</p> 
+                </div>
+
+                <div style="display: inline-block; float: right; font-size: 13px; margin-right: 20px;">
+                  <p style="color: gray; font-weight: bold; white-space: pre-wrap;  text-align: center;">Организатор:</p>
+                  <p style="text-align: center;"></p> 
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+                <button onclick="window.location.href='/event/show/{{item.id}}'"  type="button" class="btn" style="background: #DFC7AF;">Подробнее</button>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #8E8E8E;">
+            <h5 class="modal-title">Заявка на создание мероприятия</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table">
+              <tbody id="tbody">
+                <tr>
+                  <td>Название мероприятия ?*</td><td><textarea id="title"></textarea></td>
+                </tr>
+                <tr>
+                  <td>Описание мероприятия?*</td><td><textarea id="description_text" placeholder="Подробно опишите концепцию мероприятия"></textarea></td>
+                </tr>
+                <tr>
+                  <td>Актуальность ?</td><td><textarea id="actuality" rows="5" placeholder="Обоснуйте  почему проведение мероприятия представляет в настоящий момент интерес для университета. Обоснуйте важность, значительность события в современных реалих."></textarea></td>
+                </tr>
+                <tr>
+                  <td>Дата проведения ?*</td><td><input id="date" type="date" name=""></td>
+                </tr>
+                <tr>
+                  <td>Целевая аудитория?*</td><td><textarea id="auditory" rows="6" placeholder="Набором каких компетенций должны обладать участники мероприятия, студенты каких направлений подготовки приглашаются на данное событие. Данная информация послужит фильтром при наборе участников."></textarea></td>
+                </tr>
+                <tr>
+                  <td>Программа меропритяия?</td><td><label class="label_file" for="program"><img src="/img/pdf.png"><img src="/img/doc.png"><img src="/img/ppt.png"></label><input type="file" class="sr-only" name="" id="program"></td>
+                </tr>
+                <tr>
+                  <td>Партнёры?</td><td><textarea id="partners"></textarea></td>
+                </tr>
+                <tr>
+                  <td>Прогнозируемые результаты?*</td><td><textarea id="results" placeholder="Какой положительный эффект несёт ваше мероприятие?"></textarea></td>
+                </tr>
+                <tr>
+                  <td>Место проведения?*</td><td><textarea id="place" placeholder="адрес , корпус и номер аудиторий ( поиск по базе по ключевым словам)"></textarea></td>
+                </tr>
+                <tr>
+                  <td>Ресурсы на реализацию мероприятия?*</td><td><textarea id="resources" placeholder="Какими ресурсами вы располагаете для запуска мероприятия."></textarea></td>
+                </tr>
+                <tr>
+                	<td>Изображение для шапки мероприятия<br>(2700 x 680)</td><td><input type="file" name="header" id="headerImage"></td>
+                </tr>
+                <tr>
+                  <td>Фото для пресс-релиза:</td><td><input type="file" name="" id="photo"></td>
+                </tr>
+              </tbody>
+            </table>
+            <button onclick="generateString();" type="button" class="btn btn-success btn_load">Отправить заявку</button>
+          </div>
+        </div> 
+      </div>
+    </div>
+<script>
+var element = document.getElementById('cal');
+
+var events = [];
+
+var settings = [];
+
+caleandar(element ,events, settings);
+</script>
+	{% endblock %}

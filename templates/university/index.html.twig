@@ -1,0 +1,232 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+	<script src="/js/orgs.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/orgs.css" crossorigin="anonymous">
+	<!--  <script src="/js/chosen.jquery.min.js" crossorigin="anonymous"></script> -->
+	<!-- <link rel="stylesheet" href="/css/chosen.min.css" crossorigin="anonymous"> -->
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+
+	<!-- <link rel="stylesheet" href="/css/inquirer.css"> -->
+	<script src="/js/inquirer_departments.js"></script>
+
+	<style>
+		.table td{
+			border-color: #fff;
+		}
+
+		tbody > tr{
+			width: 100%;
+		}
+
+		tr > td {
+			text-align: center;
+			width: 30%;
+		}
+
+		tr > td + td{
+			text-align: center;
+			width: 70%;
+		}
+
+		@media (max-width: 400px) {
+			tr > td{
+				display: block;
+				width: 100%;
+			}
+
+			tr > td + td{
+				display: block;
+				width: 100%;
+			}
+		}
+
+		td > textarea {
+			width: 100%;
+			border: none;
+			border-bottom: 1px solid silver;
+		}
+
+		.label_file{
+			cursor: pointer;
+		}
+
+		#file_doc{
+			display: none;
+		}
+
+		#file_logo{
+			display: none;
+		}
+	</style>
+
+
+
+	<script src="/js/orgs.js" crossorigin="anonymous"></script>
+
+	<script src="/js/chosen.jquery.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/chosen.min.css" crossorigin="anonymous">
+
+	<script type="text/javascript">
+
+	function filterProjects() {
+		projtype=$("input[name='proj_type_filter']:checked").val();
+$(".project-card").hide();
+$("."+projtype).show();
+$(".proj-section").eq(0).find(".project-card").show();
+}
+
+		//$(document).ready(function() {$("input[name='proj_type_filter']").change(filterProjects);});
+
+
+		$(document).ready(function() {
+			chosenInit();
+		});
+
+
+		</script>
+	{% endblock %}
+
+	{% block content %}
+		<div class="modal fade" id="addInquirerModal" tabindex="-1" role="dialog" aria-labelledby="addInquirerModal" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Заявка на создание страницы подразделения</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" style="margin-bottom: 60px;">
+
+
+						<div class="inquirer_form">
+							<table class="table">
+								<tbody class="tbody">
+									<tr>
+										<td>Название?*</td>
+										<td> <textarea name="" id="" cols="30" rows="2"></textarea>	</td>
+									</tr>
+									<tr> 
+										<td>Краткое описание деятельности подразделения* </td>
+										<td> <textarea name="" id="" cols="30" rows="2"></textarea>	</td>
+									</tr>
+									<tr>
+										<td>Описание деятельности подразделения*</td>
+										<td><textarea name="" id="" cols="30" rows="5"></textarea></td>
+									</tr>
+									<tr>
+										<td>Расположение подразделения в университете*</td>
+										<td><textarea name="" id="" cols="30" rows="3"></textarea></td>
+									</tr>
+									<tr>
+										<td>Логотип*</td>
+										<td>
+											<label class="label_file" for="file_logo">
+												<img src="/img/jpg_1.png">
+												<img src="/img/jpg.png">
+											</label>
+											<input id="file_logo" type="file" name="file_logo">
+										</td>
+									</tr>
+									<tr>
+										<td>Изображение шапки*</td>
+										<td>
+											<label class="label_file" for="file_doc">
+												<img src="/img/pdf.png" alt="">
+												<img src="/img/doc 1.png" alt="">
+												<img src="/img/ppt.png" alt="">
+											</label>
+											<input id="file_doc" type="file" name="file_doc">
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>     
+					</div>
+					<div class="crd-buttons crd-buttons-bottom crd-buttons-single" style="bottom: 30px;">
+						<button style="background-color:  #0C7CBB; color: white" type="button" class="btn" onclick="generateString()">Отправить заявку</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div id="proj_header">
+		</div> -->
+
+		<div class="search_all">
+			{% if is_granted("ROLE_EMPLOYEE") %}
+			<button data-toggle="modal" data-target="#addInquirerModal" style="background-color: #C4C4C4; border: unset; margin-bottom: 10px;" type="button" class="btn btn-secondary">Создать страницу подразделения</button>{% endif %}
+			<div class="orgs_search">
+				<i class="fas fa-search"></i><input type="text" class="orgs__search_input">
+			</div>
+
+		</div>
+
+		<div class="section proj-section">
+			{% for item in deps %}
+			<div class="crd brand-project">
+				<img src="/department/logo/{{ item.info.attachment }}">
+				<p>{{item.info.title}}</p>
+				{# <ul>
+					<li>Уникальный коворкинг на базе ДГТУ</li>
+					<li>Просторное офисное пространство</li>
+					<li>Цеха для создания рабочего прототипа</li>
+				</ul> #}
+				<div>
+					<hr>
+					<div class="cardStat">
+						<p >Проекты набирающие команду</p>
+						<p>{{ item.steam }}</p> 
+					</div>
+
+					<div class="cardStat">
+						<p>Проекты в разработке</p>
+						<p>{{ item.inwrk }}</p> 
+					</div>
+
+					<div class="cardStat">
+						<p>Проектов завершено</p>
+						<p>{{ item.ended }}</p> 
+					</div>
+				</div>
+
+				<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+					<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/department/show/{{ item.id }}'" class="btn">Подробнее</button>
+				</div>
+			</div>
+			{% endfor %}
+			{# <div class="crd brand-project">
+				<img src="/img/logo_mediapark.png">
+				<p>МЕДИАПАРК</p>
+				<ul>
+					<li>Мультимедийный центр</li>
+					<li>Продюсерский центр</li>
+					<li>Пространство OPEN SPACE</li>
+				</ul>
+				<div>
+					<hr>
+					<div class="cardStat">
+						<p >Проекты набирающие команду</p>
+						<p>5</p> 
+					</div>
+
+					<div class="cardStat">
+						<p>Проекты в разработке</p>
+						<p>3</p> 
+					</div>
+
+					<div class="cardStat">
+						<p>Проектов завершено</p>
+						<p>10</p> 
+					</div>
+				</div>
+
+				<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+					<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Подробнее</button>
+				</div>
+			</div> #}
+		</div>
+	{% endblock %}

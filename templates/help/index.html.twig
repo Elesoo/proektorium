@@ -1,0 +1,477 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+<style>
+		body{
+			background-color: #E5E5E5;
+		}
+
+		.help__header_title{
+			font-weight: 600;
+			font-size: 36px;
+			line-height: 49px;
+			text-align: center;
+			margin-top: 140px;
+			margin-bottom: 30px;
+		}
+
+		.help__header{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			margin-top: 20px;
+		}
+
+		.help__header_input{
+			width: 1168px;
+			height: 69px;
+			margin: 0 auto;
+			border-radius: 10px 0 0 10px;
+			background-color: #fff;
+			border: 0.5px solid #C4C4C4;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+
+		.help__header_btn{
+			height: 69px;
+			border-right: 10px;
+			background-color: #fff;
+			border-radius: 0 10px 10px 0;
+			border: .5px solid #C4C4C4; 
+			outline: none;
+			font-weight: normal;
+			font-size: 18px;
+			line-height: 25px;
+			text-align: center;
+			color: #8E8E8E;
+			border-left: 0.5px solid #C4C4C4;
+			padding: 15px 25px 15px 25px;
+		}
+
+		/*help__quest*/
+		
+		.help__quest{
+			background-color: #fff;
+			margin: 20px auto;
+			border-radius: 10px;
+			padding-top: 45px;
+			padding-left: 35px;
+			padding-bottom: 70px;
+		}
+
+		.title{
+			font-weight: 600;
+			font-size: 24px;
+			line-height: 33px;
+			color: #1D1D1D;
+			margin-left: 75px;
+		}	
+
+		.title:before{
+			content: url('fire.png');
+			position: absolute;
+			left: 50px;
+			top: 50px;
+		}
+
+		
+
+		.hide{
+			position: absolute;
+			font-size: 18px;
+			color: #359ED8;
+			border: none;
+			background-color: transparent;
+			right: 40px;
+			bottom: 0;
+			cursor: pointer;
+		}
+
+		.quest{
+			border-bottom: .5px solid #AAAAAA;
+			margin-left: 80px; 
+		}
+
+		.quest_head{
+			cursor: pointer;
+			margin: 10px 0;
+		}
+
+		.quest_body{
+			position: relative;
+			height: 0;
+			visibility: hidden;
+			font-size: 18px;
+			color: 
+		}
+
+		.quest__text{
+			font-size: 18px;
+			font-weight: 300;
+			/*margin-left: 80px;*/
+		}
+
+		.active{
+			height: auto;
+			visibility: visible;
+		}
+
+
+		/*modal*/
+
+		.modal-header{
+			padding: 0;
+		}
+	
+		.header__tit{
+			width: 100%;
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			height: auto;
+			justify-content: flex-start;	
+			-ms-align-items: center;
+			align-items: center;
+		}
+
+		.sign{
+			font-weight: bold;
+			font-size: 56px;
+			color: #545353;
+			line-height: 56px;	 
+			margin-left: 30px;
+		}
+
+		.header__title{
+			font-weight: 600;
+			font-size: 15px;
+			line-height: 15px;
+			margin-left: 30px;
+			color: #FFFFFF;
+		}
+
+		.btn__close{
+			margin: 0 !important;
+			padding: 0;
+		}
+		
+		.body__text{
+			width: 90%;
+			margin: 25px auto;
+			font-size: 18px;
+			line-height: 24px;
+		}
+
+
+		/*contacts*/
+
+		.contacts{
+			border-radius: 10px;
+			background-color: #fff;
+			height: auto;
+			padding: 35px 0;
+			box-sizing: border-box;
+		}
+
+		.contacts p {
+			text-align: center;
+			font-weight: 300;
+			font-size: 24px;
+			line-height: 33px;
+		}
+
+		.contacts p:last-child{
+			margin-top: 20px;
+		}
+
+		.contact__text:before{
+			content: url('/img/phone.png');
+			position: absolute;
+			/*left: 420px;*/
+			margin-left: -60px;
+		}
+
+	
+		/*mobile*/
+		
+		@media(max-width: 450px) {
+			.help__header{
+				width: 100%;
+			}
+
+			.help__header_title{
+				margin-top: 0;
+				font-size: 25px;
+			}
+
+
+			.contacts p{
+				font-size: 18px;
+				margin-left: 20px;
+			}
+
+			.contact__text:before{
+				margin-left: -35px;
+			}
+
+			.help__header_input{
+				width: 100%;
+				margin: 0;
+				outline: none !important;
+			}
+
+			.help__header_input::placeholder{
+				font-size: 12px;
+			}
+
+			.help__header_btn{
+				padding: 5px;
+				font-size: 12px;
+				outline: none !important;	
+			}
+
+			.help__quest{
+				padding-left: 5px;
+			}
+			
+			.quest{
+				margin-left: 5px;
+			}
+
+			.title{
+				margin-left: 0;
+				white-space: nowrap;
+				text-align: center;
+				font-size: 18px;
+			}
+
+			.title:before{
+				content: '';
+			}
+
+			.quest__text{
+				margin-left: 0;
+				font-size: 16px;
+			}
+
+			.hide{
+				position: static;
+			}
+		}
+
+	</style>
+	<script type="text/javascript">
+		function sendQuestion()
+		{
+			question = $("#input").val();
+			$.ajax({
+			url:"/support/sendQuestion",
+			data: {'question': question},
+			type:'POST',
+			success: function(data){
+				$("#exampleModal").modal('show');
+			},
+			error: function(data){
+				alert("Ошибка при отправке вопроса");
+			}
+		});
+		}
+	</script>
+{% endblock %}
+
+{% block content %}
+<p class="help__header_title">Служба поддержки</p>
+<div class="container-fluid p-0">
+		<div class="container p-0">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="contacts">
+						<p class="contact__title">По всем интересующим вопросам</p>
+						<p class="contact__text">+7(999)695-41-84</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+    <div class="container-fluid p-0">
+		<div class="container p-0">
+			<div class="row">
+				<div class="col-md-12">
+					
+					<div class="help__header">
+						<input type="text" class="help__header_input" id="input" placeholder="ВВЕДИТЕ ВАШ ВОПРОС">
+						{% if is_granted("ROLE_USER") %}
+						<button class="help__header_btn" id="btn_search" onclick="sendQuestion()" disabled>Отправить</button>
+					{% else %}
+						<button class="help__header_btn" id="btn_search" data-toggle="modal" disabled data-target="#wrongAuth">Отправить</button>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid p-0">
+		<div class="container p-0">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="help__quest">
+						<div class="help__quest_title">
+							<p class="title">Популярные вопросы</p>
+						</div>
+						<div class="help__quest_cont">
+							<div class="quest">
+								<div class="quest_head">
+									<p class="quest__text">Почему я не могу подавать заявку на создание проекта?</p>
+								</div>
+								<div class="quest_body">
+									<p class="quest__text">
+										Только сотрудники, предприятия и отраслевые эксперты могут<br>
+										предлагать технические задания для разработки проекта.
+									</p>
+									<button class="hide">Скрыть>></button>
+								</div>
+							</div>
+							<!-- <div class="quest">
+								<div class="quest_head">
+									<p class="quest__text">Какой-то текст?</p>
+								</div>
+								<div class="quest_body">
+									<p class="quest__text">
+										Только сотрудники, предприятия и отраслевые эксперты могут<br>
+										предлагать технические задания для разработки проекта.
+									</p>
+									<button class="hide">Скрыть>></button>
+								</div>
+							</div>
+							<div class="quest">
+								<div class="quest_head">
+									<p class="quest__text">Ещё текст?</p>
+								</div>
+								<div class="quest_body">
+									<p class="quest__text">
+										Только сотрудники, предприятия и отраслевые эксперты могут<br>
+										предлагать технические задания для разработки проекта.
+									</p>
+									<button class="hide">Скрыть>></button>
+								</div>
+							</div>
+							<div class="quest">
+								<div class="quest_head">
+									<p class="quest__text">Тестовый тест?</p>
+								</div>
+								<div class="quest_body">
+									<p class="quest__text">
+										Только сотрудники, предприятия и отраслевые эксперты могут<br>
+										предлагать технические задания для разработки проекта.
+									</p>
+									<button class="hide">Скрыть>></button>
+								</div>
+							</div>
+							<div class="quest">
+								<div class="quest_head">
+									<p class="quest__text">Больше текста?</p>
+								</div>
+								<div class="quest_body">
+									<p class="quest__text">
+										Только сотрудники, предприятия и отраслевые эксперты могут<br>
+										предлагать технические задания для разработки проекта.
+									</p>
+									<button class="hide">Скрыть>></button>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header" style="background: #8E8E8E;">
+	      	<div class="header__tit">
+				<p class="sign">?</p>
+				<p class="header__title">Вопрос отправлен</p>
+	      	</div>
+		        <button type="button" class="close btn__close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p class="body__text">
+	        	Ответ на ваш вопрос придет вам на почту в ближайшее время.
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="modal fade" id="wrongAuth" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header" style="background: #8E8E8E;">
+	      	<div class="header__tit">
+				<p class="sign">?</p>
+				<p class="header__title">Вопрос не отправлен</p>
+	      	</div>
+		        <button type="button" class="close btn__close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p class="body__text">
+	        	Войдите в личный кабинет, чтобы отправить вопрос.
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script>
+		$(document).ready(function(){
+			$('.quest_head').on("click", function(){
+				$(this).css('color', '#0C7CBB')
+				$(this).parent().find('.quest_body').addClass("active");
+			});
+			$('.hide').click(function(){
+				$(this).parent().parent().find('.quest_head').removeAttr('style');
+				$(this).parent().removeClass("active");
+			});
+			// проверка на наличие вопроса
+			$("#input").on("keyup", function() {
+			    var value = $(this).val().toLowerCase();
+			    $(".quest").filter(function() {
+			     	$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+			    });
+			});	
+			
+		});
+
+		$('#input').on('keyup',function(){
+			if( this.value == '' || this.value == ' '){
+				$('.help__header_btn').attr('disabled', true);
+			} else {
+				$('.help__header_btn').removeAttr('disabled');
+
+			}
+		});
+	</script>
+{% endblock %}

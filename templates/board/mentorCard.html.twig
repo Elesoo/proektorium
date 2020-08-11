@@ -1,0 +1,701 @@
+{% block mentorCard %}
+
+<style type="text/css">
+/* Card Mentor*/
+
+.card_team_mentor{
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	box-sizing: border-box;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	text-align: center;
+	background-color: #fff;
+}
+
+.card_team_mentor .card_team_mentor_head{
+/*      display: flex;
+flex-direction: column;*/
+align-items: center;
+background-color: #8E8E8E;
+/*padding: 10px;*/
+border-radius: 10px 10px 0 0;
+}
+
+.card_team_mentor .card_team_mentor_img{
+	position: absolute;
+	top: 10px;
+	left: 25px;
+	width: 78px;
+	height: 78px;
+}
+
+.card_team_mentor_head .card_team_mentor_title{
+	margin: 0 0 0 100px;
+	height: 80px;
+	display: flex;
+	align-items: center;
+	font-family: "Open Sans", sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 18px;
+	color: #fff;
+}
+
+.card_team_mentor_head .card_team_mentor_name{
+	background-color: #1D3351;
+	height: 36px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+}
+
+.card_team_mentor .card_team_mentor_body {
+	display: flex;
+    height: calc(100% - 124px);
+    flex-direction: column;
+}
+
+.card_team_mentor_body .body_mentor_title {
+	font-family: "Open Sans", sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 15px;
+	color: #8E8E8E;
+	margin-top: 18px;
+}
+
+.list_mentor_compet .item_mentor_compet{
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+}
+
+.list_mentor_compet .item_grout{
+	color: #8E8E8E;
+}
+
+.item_mentor_compet td:first-child{
+	text-align: right;
+	vertical-align: top;
+}
+
+.item_mentor_compet td + td {
+	width: 50%;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+.item_mentor_compet td + td img {
+	margin-bottom: 10px;
+}
+
+.text_mentor_info{
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	color: #8E8E8E;
+	display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-end;
+	margin-top: 10px;
+	/*text-decoration: underline;*/
+}
+
+.text_mentor_info span{
+	margin-left: 20px;
+	text-decoration: none;
+}
+
+.btn-info {
+  background-color: #1B4F44;
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  border-radius: 10px;
+  margin: 10px auto 20px;
+  width: 175px;
+  text-align: center;
+}
+
+/*modal gray*/
+
+.modal-content{
+	border-color:  #8E8E8E;
+	border-radius: 10px;
+	width: 750px;
+	height: auto;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.modal-header{
+	background-color: #8E8E8E;
+}
+
+.header__text{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+	margin-left: 40px;
+}
+
+.header__text_name{
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 25px;
+	color: #fff;
+}
+
+
+.header__text_role{
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 25px;
+	color: #545353;
+}
+
+/*body*/
+
+.modal-body{
+	padding: 0;
+	margin-top: 25px;
+}
+
+.table{
+	width: 98%;
+	border: 0.5px solid #C4C4C4;
+	box-sizing: border-box;
+	border-radius: 5px;
+	margin: 5px 5px;
+	padding-bottom: 25px;
+}
+
+.body__title{
+	color: #8E8E8E;
+	font-weight: 600;
+	font-size: 14px;
+	text-align: center; 
+	margin-top: 5px;  
+}
+
+.body__maintext{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: center;
+	border: none !important;
+}
+
+.padnone{
+	padding-inline-start: 0;
+}
+
+.body__maintext_obj{
+	font-size: 12px;
+	line-height: 16px;
+	text-align: left;
+	white-space: nowrap;
+	list-style: none;
+	margin-top: 5px;
+	border: none !important;
+	font-weight: bold;
+	text-align: right;
+}
+
+.body__maintext_key{
+	text-align: left;
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 300;
+	/*white-space: nowrap;*/
+	list-style: none;
+	margin-left: 10px;
+	margin-top: 5px;
+	border: none !important;
+}   
+
+.mt{
+	margin-top: 145px;
+}
+
+.img{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: space-between;
+	-ms-align-items: center;
+	align-items: center;
+	border-bottom: 0.5px solid #C4C4C4;
+	margin-left: 10px;
+	width: 144px;
+	margin-top: 15px;
+}
+
+.img__text{
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 300; 
+}
+
+.comp{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.competentions{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+@media(max-width: 450px) {
+	.comp .competentions {
+		display: block;
+		width: 60%;
+		margin: 0 auto;
+	}
+}
+
+.body__list_item{
+	font-size: 12px;
+	line-height: 16px;
+	color: #1D3351;
+	list-style-type: none;
+	margin-top: 10px;
+	text-align: left;
+}
+
+.body__list_num{
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 16px;
+	color: #63C9A4;
+	list-style-type: none;
+	margin-top: 10px;
+}
+
+.mart{
+	margin-top: 30px;
+}
+
+.ta{
+	text-align: left;
+}
+
+.status__text{
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: -0.03em;
+	text-align: center;
+	margin-right: 15px;
+}
+
+
+.el{
+	width: 40px;
+	height: 40px;
+	background: #C4C4C4;
+	margin-left: 25px;
+}
+
+.comp__text{
+	font-weight: 300;
+	font-size: 12px;
+	line-height: 16px;
+	text-align: center;
+}
+
+.cont{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: space-around;
+	-ms-align-items: center;
+	align-items: center;
+}
+
+
+.sqr{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+}
+
+.sqr__role {
+	display: grid;
+	grid-template-rows: 1fr 35px 35px;
+	grid-template-columns: 1fr;
+}
+
+.sqr__role div {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+}
+
+.sqr__role_text {
+	margin: 0 10px 10px 0;
+	border: 1px solid #DFC7AF;
+	box-sizing: border-box;
+	border-radius: 3px;
+	/*max-width: 204px;*/
+	font-size: 12px;
+	padding: 5px;
+	white-space: nowrap;
+}
+
+/*table*/
+
+
+@media(max-width: 800px) {
+	.modal-content {
+		width: 700px;
+	}
+}
+
+@media(max-width: 450px) {
+	.modal-content {
+		width: 100%;
+	}
+
+	.comp {
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+	}
+}
+
+
+</style>
+
+<!-- <div id="mentorCard" class="col-md-4"> -->
+	<div class="card_team_mentor">
+		<img class="card_team_mentor_img" src="/img/per.png">
+		<div class="card_team_mentor_head">
+			{% if is_granted("ROLE_MODERATOR_PROJECTS") %}
+		    	<div class="btn_close_name"><img onclick="denyPersonFromMentorCurator({{project.id}}, 'curator', {{employee.id}});" src="/img/close.png"></div>
+		    {% endif %}
+			<p class="card_team_mentor_title">Наставник проекта</p>
+			<p id="fio_mentor" class="card_team_mentor_name">{{ student.personal_branch.surname }} {{ student.personal_branch.name }} {{ student.personal_branch.patr }}</p>
+		</div>
+		<div class="card_team_mentor_body">
+			<table>
+				<tbody class="list_mentor_compet">
+					<tr class="item_mentor_compet">
+						<td>Факультет:</td><td id="faculty_mentor">{{ student.education.faculty }}</td>
+					</tr>
+					<tr class="item_mentor_compet">
+						<td>Специальность:</td><td id="speciality_mentor">{{ student.education.speciality }}</td>
+					</tr>
+					<tr class="item_mentor_compet">
+						<td>Группа:</td><td id="group_mentor">{{ student.education.group }}</td>
+					</tr>
+                  <!-- <tr class="item_mentor_compet item_grout">
+                    <td>Компетенции:</td><td>Наличие:</td>
+                  </tr>
+                  <tr class="item_mentor_compet">
+                    <td>проектный менеджмент:</td><td>компетенция*<img src="/img/star.png"></td>
+                  </tr>
+                  <tr class="item_mentor_compet"> 
+                    <td>инженерный менеджмент:</td><td>компетенция<img src="/img/star.png"></td>
+                  </tr>
+                  <tr class="item_mentor_compet">
+                    <td>тьюторство:</td><td>компетенция*<img src="/img/star.png"></td>
+                </tr> -->
+            </tbody>
+        </table>
+        <div class="text_mentor_info">
+        	<p style="text-decoration underline;">Опыт разработки: <span id="counter_mentor">{{ student.projects.history|length }}</span></p>
+	        <button class="btn btn-info" data-toggle="modal" data-target="#mentorModal">Подробнее</button>
+        </div>
+    </div>
+</div>
+<!-- </div> -->
+
+<div class="modal fade" id="mentorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<img src="/img/foto.png" alt="" style="width: 78px;height: 78px;">
+				<div class="header__text">
+					<span class="header__text_name">{{ student.personal_branch.surname }} {{ student.personal_branch.name }} {{ student.personal_branch.patr }}</span>
+					<span class="headr__text_role">Студент</span>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<img src="/img/close.png" alt="" class="img-fluid">
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						{% if is_granted('ROLE_MODERATOR') %}
+						<div class="col-md table">
+							<p class="body__title">
+								Личные данные: 
+							</p>
+							<table class="body__maintext">
+								<tr class="padnone">
+									<td class="body__maintext_obj">Дата рождения:</td> 
+									<td class="body__maintext_key">{{ student.personal_branch.birth_date }}</td>
+								</tr>
+								<tr class="padnone">
+									<td class="body__maintext_obj">Фактическое место проживания:</td>
+									<td class="body__maintext_key">{{ student.personal_branch.actual_house }}</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-md table">
+							<p class="body__title">
+								Контактные данные: 
+							</p>
+							<table class="body__maintext">
+								<tr class="padnone">
+									<td class="body__maintext_obj">Телефон:</td> 
+									<td class="body__maintext_key">{{ student.contacts.phone }}</td>
+								</tr>
+								<tr>
+									<td class="body__maintext_obj">Почта:</td>
+									<td class="body__maintext_key">{{ student.contacts.email }}</td>
+								</tr>
+								<tr>
+									<td class="body__maintext_obj">ВК:</td>
+									<td class="body__maintext_key">{{ student.contacts.vk }}</td>
+								</tr>
+								<tr>
+									<td class="body__maintext_obj">Instagram:</td>
+									<td class="body__maintext_key">{{ student.contacts.instagram }}</td>
+								</tr>
+									<!-- <li class="body__maintext_obj">Pinterest:</li> -->
+									<!-- <li class="body__maintext_key">МКТ-32</li> -->
+							</table>
+						</div>
+						{% endif %}
+					</div>
+
+					<div class="row">
+						{% if is_granted('ROLE_MODERATOR') %}
+						<div class="col-md table">
+							<p class="body__title">
+								Образование: 
+							</p>
+							<table class="body__maintext">
+								<tr class="padnone">
+									<td class="body__maintext_obj">Учебное заведение:</td> 
+									<td class="body__maintext_key">{{ student.education.university }}</td>
+								</tr>
+								<tr>
+									<td class="body__maintext_obj">Факультет:</td>
+									<td class="body__maintext_key">{{ student.education.faculty }}</td>
+								</tr>	
+								<!-- <tr>
+									<td class="body__maintext_obj">Кафедра:</td>
+									<td class="body__maintext_key">{{ student.education.speciality }}</td>
+								</tr> -->
+								<tr>
+									<td class="body__maintext_obj">Специальность:</td>
+									<td class="body__maintext_key">{{ student.education.group }}</td>
+								</tr>
+								<tr>
+									<td class="body__maintext_obj">Группа:</td>
+									<td class="body__maintext_key">{{ student.education.group }}</td>
+								</tr>
+								<tr>
+									<!-- <td class="body__maintext_obj">Уровень образования:</td> -->
+								</tr>
+							</table>
+						</div>
+						{% endif %}
+					</div>
+
+					{% set base = skills['base'] %}
+					{% set tech = skills['tech'] %}
+					{% set profi = skills['profi'] %}
+
+					<div class="row">
+						<div class="col-md table">
+							<p class="body__title">Компетенции:</p>
+							<div class="comp row">
+								<div class="col-md-4 col-xs-12">
+									<div class="competentions">
+										<ul class="padnone">
+											<li class="body__list_item"><b>Базовые:</b></li>
+											{% for item in base %}
+											    <li class="body__list_item">{{item.name}}</li>
+											{% endfor %}
+										</ul>
+                <!-- <ul class="padnone mart">
+                  <li class="body__list_num">3</li>
+                  <li class="body__list_num">5</li>
+                  <li class="body__list_num">2</li>
+              </ul> -->
+          </div>
+      </div>
+      <div class="col-md-4 col-xs-12">
+      	<div class="competentions">
+      		<ul class="padnone">
+      			<li class="body__list_item"><b>Технические:</b></li>
+      			{% for item in tech %}
+      			    <li class="body__list_item">{{item.name}}</li>
+      			{% endfor %}
+      		</ul>
+                <!-- <ul class="padnone mart">
+                  <li class="body__list_num">3</li>
+                  <li class="body__list_num">5</li>
+                  <li class="body__list_num">2</li>
+              </ul> -->
+          </div>
+      </div>
+      <div class="col-md-4 col-xs-12">
+      	<div class="competentions">
+      		<ul class="padnone">
+      			<li class="body__list_item"><b>Надпрофессиональные:</b></li>
+      			{% for item in profi %}
+      			    <li class="body__list_item">{{item.name}}</li>
+      			{% endfor %}
+      		</ul>
+                <!-- <ul class="padnone mart">
+                  <li class="body__list_num">3</li>
+                  <li class="body__list_num">5</li>
+                  <li class="body__list_num">5</li>
+              </ul> -->
+          </div>
+      </div>
+  </div>
+</div>
+</div>
+
+<div class="row">
+	<div class="col-md table">
+		<p class="body__title">
+			Проектная активность: 
+		</p>
+		<div class="status">
+			<div class="sqr">
+			<p class="status__text">Статусы</p>
+				<div class="sqr__role">
+					<div>
+						<p class="sqr__role_text" style="margin-left: 10px;">Куратор</p>
+						<p class="sqr__role_text">Заказчик</p>
+						<p class="sqr__role_text">Спикер</p>
+					</div>
+					<div>
+						<p class="sqr__role_text">Эксперт-теоретик</p>
+						<p class="sqr__role_text">Эксперт-практик</p>
+					</div>
+					<p class="sqr__role_text">Администратор подразделения</p>
+				</div>
+			</div>
+		</div>
+		<div class="competentions">
+			<ul class="padnone">
+				<li class="body__list_item ta">Опыт разработки:</li> 
+				<li class="body__list_item ta">Опыт наставничества:</li>
+				<li class="body__list_item ta">Участие в мероприятиях:</li> {# Events counter from student not ready yet #}
+			</ul>
+              <ul class="padnone">
+                <li class="body__list_num">{{ student.projects.history|length }}</li>
+              <li class="body__list_num">{{ mentorProjects }}</li>
+              <li class="body__list_num">0</li>
+          </ul>
+      </div>
+  </div>
+  <div class="col-md table">
+  	<p class="body__title">
+  		Компетенции Куратора: 
+  	</p>
+  	<div class="competentions">
+  		<ul class="padnone">
+  			<li class="body__list_item">Проектный менеджмент:</li>
+  			<li class="body__list_item">Навыки лидерства:</li>
+  			<li class="body__list_item">Стратегическое мышление:</li>
+  			<li class="body__list_item">Навыки управления капиталом:</li>
+  			<!-- <li class="body__list_item">Навыки письма:</li> -->
+  			<li class="body__list_item">Инженерный менеджмент:</li>
+  			<!-- <li class="body__list_item">Тьюторство:</li> -->
+  		</ul>
+            <ul class="padnone">
+              <li class="body__list_num">0</li>
+              <li class="body__list_num">0</li>
+              <li class="body__list_num">0</li>
+              <li class="body__list_num">0</li>
+              <!-- <li class="body__list_num">0</li> -->
+              <li class="body__list_num">0</li>
+              <!-- <li class="body__list_num">0</li> -->
+          </ul>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

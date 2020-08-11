@@ -1,0 +1,630 @@
+{% block includes %}
+  <script src="/js/cropper.js"></script>
+<script src="/js/upload_avatars.js"></script>
+  <link rel="stylesheet" href="/css/cropper.css">
+
+  <style>
+    .img-container img {
+      max-width: 100%;
+    }
+    
+    .preloader {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1001;
+      background: url("/img/loading.gif") hsla(218, 4%, 39%, .5) no-repeat;
+      background-position: center center;
+    }
+  </style>
+
+  <script type="text/javascript">
+function getMyProject(projid, containerid)
+{
+  $.ajax({
+    url:"/user/client/projectCard/"+projid,
+    type:'POST',
+    success: function(data){
+      $('#containerProject'+containerid).html(data);
+    }
+  });
+}
+</script>
+
+<style type="text/css">
+  /*cards*/
+
+.employ__title {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 49px;
+  font-family: "Arial";
+  color: #1D1D1D;
+}
+
+.card {
+  border-radius: 10px;
+  /*width: 380px;*/
+  height: 100%;
+}
+
+.card-header {
+  background: #1D3351;
+  padding: 0;
+  border-radius: 10px 10px 0 0 !important; 
+}
+
+.card-body {
+  padding: 0;
+}
+
+.card__header_title {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+  color: #FFFFFF;
+  width: 267px;
+  margin: 14px auto;
+}
+
+.card__header_subtitle {
+  height: 36px;
+  background: rgba(23, 22, 22, 0.77);
+  width: inherit;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.card__subtitle {
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+  color: #FFFFFF;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+}
+
+.card-text {
+  font-size: 14px;
+  line-height: 19px;
+  text-align: justify;
+  padding: 10px;
+}
+
+.card__text {
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 16px;
+  color: #737373;
+  padding-left: 10px;
+}
+
+.card__body_descr {
+  font-size: 13px;
+  line-height: 18px;
+  text-align: center;
+  color: #0C7CBB;
+  border-top: 1px solid #E3E3E3;
+  border-bottom: 1px solid #E3E3E3;
+  padding: 5px;
+}
+
+.card__block {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: space-around;
+  -ms-align-items: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card__block_text {
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: center;
+  color: #7C7C7C;
+}
+
+.card__footer_btn {
+  width: 227px;
+  height: 33px;
+  background: #1B4F44;
+  font-size: 15px;
+  line-height: 20px;
+  color: #FFFFFF;
+  margin: 0 auto;
+  border: none;
+  border-radius: 10px;
+}
+
+.card__footer {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+.card__footer_more {
+  width: 50%;
+  height: 33px;
+  background: #DFC7AF;
+  font-size: 14px;
+  line-height: 19px;
+  color: #1D1D1D;
+  text-align: center;
+  margin-right: 10px;
+  border: none;
+  border-radius: 10px;
+}
+
+.card__footer_list {
+  width: 50%;
+  height: 33px;
+  background: #015C65;
+  font-size: 14px;
+  line-height: 19px;
+  color: #fff;
+  text-align: center;
+  border: none;
+  border-radius: 10px;  
+}
+
+.cards {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.cards .card {
+  margin: 0 25px 20px 0;
+  max-width: 50%;
+}
+
+.cards .card:first-child {
+  margin-left: 0;
+}
+
+@media(max-width: 1100px) {
+  .cards {
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    -o-flex-direction: column;
+    flex-direction: column;
+    margin: 0;
+    flex-wrap: nowrap;
+  }
+
+  .cards .card {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-bottom: 20px;
+  }
+}
+
+@media(max-width: 450px) {
+  .card__block {
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    -o-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .card__footer {
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    -o-flex-direction: column;
+    flex-direction: column;
+    -ms-align-items: center;
+    align-items: center;
+  }
+
+  .card__footer_more {
+    margin-right: 0;
+  }
+
+  .card__footer_list {
+    margin-top: 15px;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+<!-- Modal reset Password -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="inputPassword5">Старый пароль*</label>
+    <input type="password" id="inputPasswordPast" class="form-control" aria-describedby="passwordHelpBlock">
+    <small id="passwordHelpBlock" class="form-text text-muted">
+      Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+    </small>
+
+    <label for="inputPassword5">Новый пароль*</label>
+    <input type="password" id="inputPasswordNew" class="form-control" aria-describedby="passwordHelpBlock">
+    <small id="passwordHelpBlock" class="form-text text-muted">
+      Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+    </small>
+
+    <label for="inputPassword5">Повторно новый пароль*</label>
+    <input type="password" id="inputPasswordNewRep" class="form-control" aria-describedby="passwordHelpBlock">
+    <small id="passwordHelpBlock" class="form-text text-muted">
+      Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+    </small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">Сменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="preloader"></div>
+    <div class="section">
+      <p>ВАШ ЛИЧНЫЙ КАБИНЕТ</p>
+      <div id="leftbar">
+        <div class="crd profile-card">
+          <p>{% if client.shortname == "" %}
+            <br>
+          {% else %}
+            {{client.shortname}}
+          {% endif %}</p>
+          <img width=200 height=200 src="/user/getAvatar">
+          <div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+           <button type="button" class="btn btn-profile" onclick="load_input.click()">Изменить фото</button>
+           <input id="load_input" class="sr-only" type="file" accept="image/*">
+           <button type="button" class="btn btn-profile" data-toggle="modal" data-target="#resetPassword">Изменить пароль</button>
+         </div>
+       </div>
+       <!-- <div class="crd statusicons-card">
+        <p class="crd-caption crd-caption-left">Статусы</p>
+        <img width=64 height=64 src="img/logo.png">
+        <img width=64 height=64 src="img/logo.png">
+        <img width=64 height=64 src="img/logo.png">
+        <img width=64 height=64 src="img/logo.png">
+        <img width=64 height=64 src="img/logo.png">
+        <img width=64 height=64 src="img/logo.png">
+      </div> -->
+
+    </div>
+    <div id="rightbar">
+      <div class="profile">
+        <div class="container">
+          <div class="scroller scroller-left"><i class="fas fa-chevron-left"></i></div>
+          <div class="scroller scroller-right"><i class="fas fa-chevron-right"></i></div>
+          <div class="wrapper">
+            <ul class="nav nav-tabs list" class="container mt-3">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#creds">Общая информация</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#legal">Юридические данные</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#contact_person">Контактное лицо</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#contact">Контактные данные</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#materials">Образовательные материалы</a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+
+        <div class="tab-content">
+          <div id="creds" class="tab-pane fade in active show">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Полное название компании</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="fullname" value="{{client.fullname}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Краткое название компании</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="shortname" value="{{client.shortname}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Краткое описание</label>
+              <div class="col-sm-9">
+                <textarea class="forminput" id="description">{{client.description}}</textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Полное описание</label>
+              <div class="col-sm-9">
+                <textarea class="forminput" id="fulldescription">{{client.fulldescription}}</textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Отрасль</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="industry" value="{{client.industry}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Фактический адрес</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="physicalAddress" value="{{client.physicalAddress}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Юридический адрес</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="legalAddress" value="{{client.legalAddress}}">
+              </div>
+            </div>
+
+          </div>
+          <div id="legal" class="tab-pane fade">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">ФИО генерального директора</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="CEO" value="{{client.CEO}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">ОГРН</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="OGRN" value="{{client.OGRN}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">ИНН</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="INN" value="{{client.INN}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Дата регистрации</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="regDate" value="{{client.regDate}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">ОКПО</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="OKPO" value="{{client.OKPO}}">
+              </div>
+            </div>
+          </div>
+          <div id="contact_person" class="tab-pane fade">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">ФИО</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="cfullname" value="{{client.cfullname}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Должность</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="position" value="{{client.position}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Мобильный телефон</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="mobile" value="{{client.mobile}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Рабочий телефон</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="workphone" value="{{client.workphone}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">E-mail</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="cemail" value="{{client.cemail}}">
+              </div>
+            </div>
+
+          </div>
+
+          <div id="contact" class="tab-pane fade">
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Телефон</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="phone" value="{{client.phone}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">E-mail</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="email" value="{{client.email}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Факс</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="fax" value="{{client.fax}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Сайт</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="site" value="{{client.site}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Facebook</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="facebook" value="{{client.facebook}}">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-3 col-form-label">Instagram</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="instagram" value="{{client.instagram}}">
+              </div>
+            </div>
+
+          </div>
+
+          <div id="materials" class="tab-pane fade">
+
+            <textarea style="display: none;" class="forminput" id="materialsProgram">{{ client.materialsProgram }}</textarea>
+
+            <div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Тип программы</label>
+                <div class="col-sm-9">
+                  <select class="type_programm" onchange="updateProgramList()">
+                    <option>Лекция</option>
+                    <option>Треннинг</option>
+                    <option>Бизнес-игра</option>
+                    <option>Мастер-класс</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">ФИО(Спикера):</label>
+                <div class="col-sm-9">
+                  <input class="fio_spiker" oninput="updateProgramList()">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-3"></div>
+              <div class="col-sm-3">
+                <div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+                  <button type="button" id="addProgram" onclick="addProgram()" class="btn btn-profile">Добавить программу</button>
+                </div>
+              </div>
+              <div class="col-sm-3"></div>
+            </div>
+
+          </div>
+
+          <div style="width:100%; overflow: auto;"><button type="button" id="savebutton" class="btn btn-profile" onclick="changeFormState()">Сохранить</button></div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+{# <div class="section proj-section">
+  <p>Отправленные заявки</p>
+  {% if client.claims %}
+    {% for claim in client.claims %}
+
+    {% endfor %}
+  {% else %}
+    <p>Вы еще не отправляли заявок</p>
+  {% endif %} 
+</div> #}
+
+  {% if client.projects %}
+  <p class="employ__title">Мои проекты</p>
+  <div class="container-fluid p-0">
+    <div class="row pr-0 mr-0">
+      {# {% for item in employee.my_projects %}
+      <script type="text/javascript">
+      $('#containerProject{{ item.id }}').on('show', getMyProject({{ item }}, {{ item }} ));
+      </script>
+      <div id="containerProject{{item}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+        <div class="card-header" style="text-align: center;">
+
+          <img style="width: 30%; height: auto;" src="/img/loading.gif">
+
+        </div>
+      </div>
+      {% endfor %} #}
+      {% for item in client.projects %}
+      <script type="text/javascript">
+      $('#containerProject{{ item }}').on('show', getMyProject({{ item }}, {{ item }} ));
+      </script>
+      <div id="containerProject{{item}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+        <div class="card-header" style="text-align: center;">
+
+          <img style="width: 30%; height: auto;" src="/img/loading.gif">
+
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+{% endblock %}

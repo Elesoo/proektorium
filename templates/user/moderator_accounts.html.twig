@@ -1,0 +1,509 @@
+{% block includes %}
+    <link rel="stylesheet" type="text/css" href="/css/account_moder.css">
+    <script src="/js/cropper.js"></script>
+<script src="/js/upload_avatars.js"></script>
+
+<link rel="stylesheet" href="/css/cropper.css">
+{% endblock %}
+{% block content %}
+
+<style>
+	
+	.img-container img {
+  max-width: 100%;
+}
+</style>
+<script type="text/javascript">
+function denyClaim(claimId)
+{
+	$.ajax({
+			url: "/user/moderator/departments/"+claimId+"/denyClaim",
+			type:'POST',
+			success: function(data){
+				alert("Заявка успешно отклонена!")
+				window.location.href = "/user";
+			},
+			error: function(data){
+				alert("Ошибка при отклонении заявки!")
+			}
+		});
+}
+function allowClaim(claimId)
+{
+	$.ajax({
+			url: "/user/moderator/departments/"+claimId+"/allowClaim",
+			type:'POST',
+			success: function(data){
+				alert("Заявка успешно принята!")
+				window.location.href = "/user";
+			},
+			error: function(data){
+				alert("Ошибка при принятии заявки!")
+			}
+		});
+}
+function denyAccessClaim(claimId)
+{
+	$.ajax({
+			url: "/user/moderator/accessclaim/"+claimId+"/denyClaim",
+			type:'GET',
+			success: function(data){
+				alert("Заявка успешно отклонена!")
+				window.location.href = "/user";
+			},
+			error: function(data){
+				alert("Ошибка при отклонении заявки!")
+			}
+		});
+}
+function allowAccessClaim(claimId)
+{
+	$.ajax({
+			url: "/user/moderator/accessclaim/"+claimId+"/allowClaim",
+			type:'GET',
+			success: function(data){
+				alert("Заявка успешно принята!")
+				window.location.href = "/user";
+			},
+			error: function(data){
+				alert("Ошибка при принятии заявки!")
+			}
+		});
+}
+</script>
+
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+<!-- Modal reset Password -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="inputPassword5">Старый пароль*</label>
+		<input type="password" id="inputPasswordPast" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Новый пароль*</label>
+		<input type="password" id="inputPasswordNew" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Повторно новый пароль*</label>
+		<input type="password" id="inputPasswordNewRep" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">Сменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+	<p>ВАШ ЛИЧНЫЙ КАБИНЕТ</p>
+	<div id="leftbar">
+		<div class="crd profile-card">
+			<p>{{ moderator.info.name }}</p>
+			<img class="img_profile" width=200 height=200 src="/user/getAvatar">
+			<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+				<button type="button" class="btn btn-profile" onclick="load_input.click()">Изменить фото</button>
+				<input id="load_input" class="sr-only" type="file" accept="image/*">
+				<button type="button" class="btn btn-profile" data-toggle="modal" data-target="#resetPassword">Изменить пароль</button>
+			</div>
+		</div>
+
+	</div>
+	<div id="rightbar">
+		<div class="profile">
+
+			<ul class="nav nav-tabs" class="container mt-3">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#creds">Общая информация</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="creds" class="tab-pane fade in active show">
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">ФИО</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="name" value="{{ moderator.info.name }}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">Телефон</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="phone" value="{{ moderator.info.phone}}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">E-mail</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="email" value="{{ moderator.info.email}}">
+						</div>
+					</div>
+				</div>
+				<div style="width:100%; overflow: auto;"><button type="button" id="savebutton" class="btn btn-profile" onclick="changeFormState()">Сохранить</button></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="clearfix"></div>
+
+{% if data %}
+<div class="container-fluid p-0">
+	<p class="bg_title" style="text-align: left">Входящие Заявки</p>
+	<div class="row pr-0 mr-0">
+		<!-- <div class="slide-multi"> -->
+				{# <div>
+					<div class="card_team_enter">
+						<img class="card_team_enter_img" src="/img/per.png">
+						<div class="card_team_enter_head">
+							<p class="card_team_enter_title">Фамилия Имя Отчество</p>
+							<p class="card_team_enter_name">Заявка на получение статуса Эксперт-теоретик и Эксперт-практик</p>
+						</div>
+						<div class="card_team_enter_body">
+							<p class="body_enter_title"><a class="link_enter" href="#">Название проекта</a></p>
+							<table>
+								<tbody class="list_enter_compet">
+									<tr class="item_enter_compet">
+										<td>Подразделение:</td><td>МКМиМТ</td>
+									</tr>
+									<tr class="item_enter_compet"> 
+										<td>Должность:</td><td>Медипродюссирование</td>
+									</tr>
+									<tr class="item_enter_compet">
+										<td>Ученая степень:</td><td>МКТ-32</td>
+									</tr>
+									<tr class="item_enter_compet">
+										<td>Профессиональные интересы:</td><td>Нейросети<br>
+										Искуственный интеллект <br>
+										Робототехника</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="text_enter_info">
+								<p>Опыт кураторства: <span>6 проектов</span></p>
+							</div>
+							<div class="text_enter_info_more">
+								<span class="info_more">Дата подачи заявки:14.02.2019</span> <a href="#">Подробнее >></a>
+							</div>
+						</div>
+						<div class="button_enter">
+							<button class="btn btn-reject">Отклонить</button>
+							<button class="btn btn-yes">Подтвердить</button>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="card_team_enter">
+						<img class="card_team_enter_img" src="/static/img/per.png">
+						<div class="card_team_enter_head">
+							<p class="card_team_enter_title">Фамилия Имя Отчество</p>
+							<p class="card_team_enter_name">Заявка на получение статуса Эксперт-теоретик и Эксперт-практик</p>
+						</div>
+						<div class="card_team_enter_body">
+							<p class="body_enter_title"><a class="link_enter" href="#">Название проекта</a></p>
+							<table>
+								<tbody class="list_enter_compet">
+									<tr class="item_enter_compet">
+										<td>Подразделение:</td><td>МКМиМТ</td>
+									</tr>
+									<tr class="item_enter_compet"> 
+										<td>Должность:</td><td>Медипродюссирование</td>
+									</tr>
+									<tr class="item_enter_compet">
+										<td>Ученая степень:</td><td>МКТ-32</td>
+									</tr>
+									<tr class="item_enter_compet">
+										<td>Профессиональные интересы:</td><td>Нейросети<br>
+										Искуственный интеллект <br>
+										Робототехника <br>
+										Искуственный интеллект <br>
+										Робототехника</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="text_enter_info_more">
+								<span class="info_more">Дата подачи заявки:14.02.2019</span> <a href="#">Подробнее >></a>
+							</div>
+						</div>
+						<div class="button_enter">
+							<button class="btn btn-reject">Отклонить</button>
+							<button class="btn btn-yes">Подтвердить</button>
+						</div>
+					</div>
+				</div> #}
+				{% for item in data %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+					<div class="card_team_create">
+						<div class="card_team_create_head">
+							<img class="card_team_create_img" src="/img/create_page.png">
+							<p class="card_team_create_title">Заявка на создание страницы подразделеня {{item.info['Название?*']}}</p>
+						</div>
+						<div class="card_team_create_body">
+							<div class="text_full"><p style="text-align:center;">{{ item.info['Краткое описание деятельности подразделения*'] }}</p>
+							</div>
+							<table>
+								<tbody class="list_create_compet">
+									<tr class="item_create_compet"> 
+										<td>Расположение:</td><td>{{ item.info['Расположение подразделения в университете*']}}</td>
+									</tr>
+									<tr class="item_create_compet">
+										<td>Руководитель:</td><td>{{ item.info['Руководитель подразделения*']}}</td>
+									</tr>
+									<tr class="item_create_compet">
+										<td>Отправитель:</td><td><a href="#">{{ item.client_name}}</a></td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="text_create_info_more">
+								<span class="info_more">Дата подачи заявки: {{ item.info.date }}</span> <a data-toggle="modal" data-target="#claimModal{{item.id}}">Смотреть полную заявку >></a>
+							</div>
+						</div>
+						<div class="button_create">
+							<button onclick="denyClaim({{item.id}});" class="btn btn-reject">Отклонить</button>
+							<button onclick="allowClaim({{item.id}});"class="btn btn-yes">Подтвердить</button>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% for item in data2 %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+					<div class="card_team_create">
+						<div class="card_team_create_head">
+							<img class="card_team_create_img" src="/img/add_tz.png">
+							<p class="card_team_create_title">Заявка на доступ к Панели управления списками студентов</p>
+						</div>
+						<div class="card_team_create_body">
+							<table>
+								<tbody class="list_create_compet">
+									<tr class="item_create_compet"> 
+										<td>Отправитель:</td><td>{{ item['emp']['personal']['surname'] }} {{ item['emp']['personal']['name'] }}</td>
+									</tr>
+									<tr class="item_create_compet">
+										<td>Должность:</td><td>{{ item['emp']['activity']['position'] }}</td>
+									</tr>
+									<tr class="item_create_compet">
+										<td>Подразделение:</td><td>{{ item['emp']['activity']['structure'] }}</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="text_create_info_more">
+								<span class="info_more">Дата отправки: {{ item.date }}</span>
+							</div>
+						</div>
+						<div class="button_create">
+							<button class="btn btn-reject" onclick="denyAccessClaim({{ item.id }});">Отклонить</button>
+							<button class="btn btn-yes" onclick="allowAccessClaim({{ item.id }});">Подтвердить</button>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			<!-- </div>   -->
+		</div>
+	</div>
+	<div>
+		{% for item in data %}
+		    <div class="modal fade" id="claimModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="addInquirerModal" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLongTitle">Заявка на создание страницы подразделения</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body" style="margin-bottom: 60px;">
+
+
+								<table class="inquirer_form" style="margin: 0 auto;">
+									<tr>
+										<td>
+											Название?*
+										</td>
+										<td>
+											<textarea readonly>{{item.info["Название?*"]}}</textarea>
+										</td>
+									</tr>
+
+									<tr>
+										<td>
+											Руководитель подразделения*
+										</td>
+										<td>
+											<textarea readonly>{{ item.info['Руководитель подразделения*'] }}</textarea>
+										</td>
+									</tr>
+
+									<tr>
+										<td>
+											Краткое описание деятельности подразделения*
+										</td>
+										<td>
+											<textarea readonly>{{ item.info['Краткое описание деятельности подразделения*']}}</textarea>
+										</td>
+									</tr>
+
+
+									<tr>
+										<td>
+											Описание деятельности подразделения*
+										</td>
+										<td>
+											<textarea readonly>{{ item.info['Описание деятельности подразделения*'] }}</textarea>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											Расположение подразделения в университете*
+										</td>
+										<td>
+											<textarea readonly>{{ item.info['Расположение подразделения в университете*'] }}</textarea>
+										</td>
+									</tr>
+
+									<!-- <div>
+										<label class="col-inquirere-label">Логотип
+										</label>
+										<input type="file">
+									</div>
+									<div>
+										<label class="col-inquirere-label">Изображение шапки
+										</label>
+										<input type="file">
+									</div> -->
+								</table>     
+							</div>
+							<!-- <div class="crd-buttons crd-buttons-bottom crd-buttons-single" style="bottom: 30px;">
+								<button style="background-color:  #0C7CBB; color: white" type="button" class="btn" onclick="generateString()">Отправить заявку</button>
+							</div> -->
+						</div>
+					</div>
+				</div>
+
+		{% endfor %}
+	</div>
+
+	<style>
+		td textarea {
+			border: none;
+			border-bottom: 1px solid black;
+		}
+	</style>
+	{% endif %}
+
+	{# <div class="container-fluid bg_gray mt-5 mb-5 pt-5 pb-5">
+		<p class="bg_title">Отправленные заявки</p>
+		<div class="row">
+			<div class="table_scroll">
+				<table class="table_send">
+					<tbody class="tbody_send">
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+						<tr class="tr_send">
+							<td>1</td>
+							<td>Наделение статусом “Название”</td>
+							<td>Имя Фамилия Отчество</td>
+							<td>12.13.14, 15:00</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div> #}
+
+	{# <div class="container-fluid">
+		<p class="bg_title">ВОПРОСЫ:</p>
+		<div class="row">
+			<div class="card_question">
+				<div class="card_question_head">
+					<img src="./img/quest.png"><textarea rows="2">Текст вопроса</textarea>
+				</div>
+				<div class="card_question_body">
+					<textarea rows="3"></textarea>
+				</div>
+				<div class="card_question_footer">
+					<p class="card_q_text"><span>Отправитель:</span><span><a href="#">Имя Фамилия</a></span></p><button class="btn btn_upload">Ответить</button>
+				</div>
+			</div>
+		</div>
+	</div> #}
+	
+	<script>
+	// $('.slide-multi').slick({
+	// 	infinite: true,
+	// 	slidesToShow: 3,
+	// 	slidesToScroll: 1
+	// });
+	</script>
+	{% endblock %}

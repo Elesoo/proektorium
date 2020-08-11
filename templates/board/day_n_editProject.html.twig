@@ -1,0 +1,988 @@
+{% extends 'base.html.twig' %}
+{% block content %}
+
+<style>
+	
+	.head__iamge {
+		width: 100%;
+		border-radius: 20px;
+		border: none;
+	}
+
+
+	.project__dayn_body {
+		margin-top: 20px;
+		width: 100%;
+		background: #fff;
+		border-radius: 10px;
+		padding: 30px;
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+	}
+
+	.project__dayn_body p, ul, li {
+		margin-bottom: 0;
+		margin-left: 0;
+		padding: 0;
+	}
+
+	.project__body_title {
+		font-weight: bold;
+		font-size: 34px;
+		line-height: 46px;
+		color: #1D1D1D;
+	}
+
+	.project__dayn_box {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+		margin-bottom: 30px;
+	}
+
+	.dayn__text {
+		font-size: 18px;
+		line-height: 26px;
+	}
+
+	.first {
+		font-weight: bold;
+		color: #000;
+		margin-right: 200px;
+		margin-left: 80px;
+	}
+
+	.sec, .third {
+		font-weight: 600;
+		font-size: 18px;
+		line-height: 25px;
+		text-align: center;
+		color: #0C7CBB;
+		margin-right: 20px;
+	}
+
+	.dayn__item {
+		list-style-type: none;
+		font-size: 18px;
+		line-height: 29px;
+		color: #8E8E8E;
+		margin-bottom: 5px;
+	}
+
+	.dayn__item:first-child {
+		font-weight: bold;
+	}
+
+	.dayn__item:last-child {
+		margin-bottom: 25px;
+	}
+
+	.project__dayn_subtitle {
+		font-weight: bold;
+		font-size: 24px;
+		line-height: 35px;
+		color: #000;
+		margin-bottom: 15px !important;
+	}
+
+	.project__dayn_text {
+		font-size: 16px;
+		line-height: 24px;
+		color: #000;
+		margin-bottom: 25px !important;		
+	}
+
+	.project__file_title {
+		color: #8E8E8E;
+		font-weight: bold;
+		font-size: 18px;
+		line-height: 35px;
+		color: #8E8E8E;
+		margin-bottom: 15px !important;
+	}
+
+	.files__container {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+	}
+
+	.files__container a {
+		margin-left: 15px;
+	}
+
+	.redact__project_btn {
+		display: block;
+		width: 420px;
+		height: 41px;
+		border-radius: 10px;
+		margin: 70px auto;
+		font-weight: 600;
+		font-size: 18px;
+		line-height: 25px;
+		color: #1D3351;
+		text-align: center;
+		background-color: transparent;
+	}
+
+	/*modal*/
+
+	.modal__width {
+		width: 665px;
+		background: #FFFFFF;
+		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		border-radius: 10px;
+		border: none;
+	}
+	
+
+	.modal__header {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+		justify-content: space-between;
+		background: #8E8E8E;
+	}
+
+	.modal__header_text {
+		margin-left: 55px;
+	}
+
+	.modal__header_name {
+		font-weight: bold;
+		font-size: 18px;
+		line-height: 25px;
+		color: #fff;
+		margin-bottom: 8px;
+	}
+
+	.modal__header_status {
+		font-weight: 600;
+		font-size: 18px;
+		line-height: 25px;
+		color: #545353;
+	}
+
+	.modal__body_list {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		width: 100%;
+		padding-bottom: 5px;
+	}
+
+	.modal__body_item {
+		border: 0.5px solid #C4C4C4;
+		box-sizing: border-box;
+		border-radius: 5px;
+		padding: 10px;
+		width: 100%;
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+
+
+	.modal__body_item:first-child {
+		margin-right: 5px;
+	}	
+
+	.modal__body_title {
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 19px;
+		text-align: center;
+		color: #8E8E8E;
+	}
+
+	.modal-content table {
+		width: 100%;
+	}
+
+	.modal-content table tr {
+		width: 100%;
+		padding-bottom: 10px;
+	}
+
+
+	.modal-content table td:first-child {
+		font-size: 12px;
+		line-height: 16px;
+		text-align: right;
+		color: #000;
+		width: 50%;
+		vertical-align: top;
+	}
+
+	.modal-content table td + td {
+		font-weight: 300;
+		font-size: 12px;
+		line-height: 16px;
+		color: #000000;
+		width: 50%;
+		padding-left: 10px;
+		vertical-align: top;
+	}
+
+	.modal__item_text {
+		font-weight: 300;
+		font-size: 12px;
+		line-height: 16px;
+		color: #000;
+		margin-bottom: 0;
+		width: 100%;
+
+	}
+
+	.modal__item_docs {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+		margin-top: 15px;
+	}
+
+	.docs__subtitle {
+		font-size: 12px;
+		line-height: 16px;
+		color: #000;
+	}
+	
+	.modal__docs_items {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+		justify-content: space-around;
+		width: 100%;
+	}
+
+	.yaneznaukaknazvateto {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+	}
+
+	.docs__text {
+		font-weight: 300;
+		font-size: 12px;
+		line-height: 16px;
+		color: #000;
+		vertical-align: middle;
+	}
+
+	.yaneznaukaknazvateto img {
+		width: 17px;
+		height: 17px;
+		margin-left: 5px;
+		vertical-align: middle;
+		margin-bottom: 15px;
+	}
+
+	.modal__body_doc {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+		margin-left: 10px;
+	}
+
+	.help__docs {
+		-ms-align-items: stretch;
+		align-items: stretch;
+	}
+
+	/*media*/
+
+	@media(max-width: 500px) {
+		.project__dayn_body {
+			padding: 25px;
+		}
+
+		.modal__width {
+			width: 100%;
+		}
+
+		.modal__body_list {
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+			padding-bottom: 0;
+		}
+
+		.modal__body_item {
+			margin-bottom: 5px;
+		}
+
+		.project__dayn_box {
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+		}
+
+		.project__body_title {
+			text-align: center;
+		}
+
+		.project__dayn_body p {
+			margin: 10px auto;
+			text-align: center;
+		}
+
+		.modal__docs_items {
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+		}
+
+		.modal__item_docs {
+			-ms-align-items: stretch;
+			align-items: stretch;
+		}
+
+		.redact__project_btn {
+			width: 100%;
+		}
+	}
+
+</style>
+
+
+<div class="project__dayn">
+	<div class="project__dayn_head">
+		<img src="/img/proj_page.jpg" alt="" class="img-fluid head__iamge">
+	</div>
+	<div class="project__dayn_body">
+		<h3 class="project__body_title">{{ project.info['Название проекта?*'] }}</h3>
+		<div class="project__dayn_box">
+			<p class="dayn__text first">Количество зачетных единиц: 3</p>
+			<p class="dayn__text sec">Дни навигаций</p>
+			<p class="dayn__text third">{{ project.cluster }}</p>
+		</div>
+		<ul class="project__dayn_list">
+			<li class="dayn__item">Участие рекомендуется для следующих направлений подготовки:</li>
+			{% for p in project.info.directions %}
+				<li class="dayn__item">{{ p }}</li>
+			{% endfor %}
+		</ul>
+		<p class="project__dayn_subtitle">Проблематика:</p>
+		<textarea class="project__dayn_text">{{ project.info['Проблематика?*'] }}</textarea>
+		<p class="project__dayn_subtitle">Цель и задачи проекта:</p>
+		<textarea class="project__dayn_text">{{ project.info['Цель и задачи проекта?*'] }}</textarea>
+		<p class="project__dayn_subtitle">Подробное описание содержания проектной работы:</p>
+		<textarea class="project__dayn_text">{{ project.info['Подробное описание содержания проектной работы?*'] }}</textarea>
+		<p class="project__dayn_subtitle">Проектное задание:</p>
+		<textarea class="project__dayn_text">{{ project.info['Проектное задание ?*'] }}</textarea>
+		<p class="project__dayn_subtitle">Требования к студентам-участникам проекта</p>
+		<textarea class="project__dayn_text">{{ project.info['Требования к студентам, участникам проекта?'] }}</textarea>
+		<p class="project__dayn_subtitle">Продуктовый результат к 19.09.2020:</p>
+		<textarea class="project__dayn_text">{{ project.info['Продуктовый результат к 19.09.2020'] }}</textarea>
+		<p class="project__dayn_subtitle">Продуктовый результат к концу семестра:</p>
+		<textarea class="project__dayn_text">{{ project.info['Продуктовый результат к концу семестра'] }}</textarea>
+		<p class="project__dayn_subtitle">Сроки реализации проекта:</p>
+		<p class="project__dayn_text">Первая фаза: 14.09.2020 – 19.09.2020</p>
+		<p class="project__dayn_text">Вторая фаза:  21.09.2020 – 29.12.2020</p>
+		<p class="project__dayn_subtitle">Местоположение:</p>
+		<textarea class="project__dayn_text">{{ project.info['Местоположение'] }}</textarea>
+		<div class="project__dayn_files">
+			<p class="project__file_title">Заказчик: {{ project.owner.title }}</p>
+			{% if is_granted("ROLE_MODERATOR_PROJECTS") %}
+				<div class="files__container">
+					<p class="project__dayn_subtitle">Техническое задание:</p>
+					<a href="">
+						<img src="/img/toze.png" alt="">
+					</a>
+				</div>
+			{% endif %}
+		</div>
+		{# {% if is_granted("ROLE_MODERATOR_PROJECTS") %} #}
+			<button class="redact__project_btn">Сохранить изменения</button>
+		{# {% endif %} #}
+	</div>
+</div>
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Запустить модальное окно
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content modal__width">
+      <div class="modal-header modal__header">
+      	<img src="/img/per.png" alt="">
+		<div class="modal__header_text">
+			<h3 class="modal__header_name">Фамилия Имя Отчество</h3>
+			<h4 class="modal__header_status">Студент</h4>
+		</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal__body_list">
+        	<div class="modal__body_item">
+        		<h3 class="modal__body_title">Образование</h3>
+        		<table>
+        			<tbody>
+        				<tr>
+        					<td>Учебное заведение:</td>
+        					<td>Донской государственный технический университет</td>
+        				</tr>
+						<tr>
+        					<td>Факультет:</td>
+        					<td>Медипродюссирование</td>
+        				</tr>
+        				<tr>
+        					<td>Кафедра:</td>
+        					<td>МКТ-32</td>
+        				</tr>
+        				<tr>
+        					<td>Направление подготовки:</td>
+        					<td>Медипродюссирование</td>
+        				</tr>
+        				<tr>
+        					<td>Образовательная программа:</td>
+        					<td>Медипродюссирование</td>
+        				</tr>
+        				<tr>
+        					<td>Образовательная программа:</td>
+        					<td>Программирование</td>
+        				</tr>
+        				<tr>
+        					<td>Группа:</td>
+        					<td>МКТ-32</td>
+        				</tr>
+        			</tbody>
+        		</table>	
+        	</div>
+			<div class="modal__body_item">
+        		<h3 class="modal__body_title">Контактные данные</h3>
+        		<table>
+        			<tbody>
+        				<tr>
+        					<td>Телефон:</td>
+        					<td>89996998784</td>
+        				</tr>
+						<tr>
+        					<td>Почта:</td>
+        					<td>viki@mail.ru</td>
+        				</tr>
+        				<tr>
+        					<td>ВК:</td>
+        					<td>МКТ-32</td>
+        				</tr>
+        				<tr>
+        					<td>Instagram:</td>
+        					<td>viki@mail.ru</td>
+        				</tr>
+        			</tbody>
+        		</table>	
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
+  Запустить модальное окно
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    	<div class="modal-content modal__width">
+      		<div class="modal-header modal__header">
+      			<img src="/img/per.png" alt="">
+				<div class="modal__header_text">
+			<h3 class="modal__header_name">Фамилия Имя Отчество</h3>
+			<h4 class="modal__header_status">Студент</h4>
+				</div>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+		    <div class="modal-body">
+		    	<div class="modal__body_list">
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Личные данные</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Дата рождения:</td>
+		        					<td>16.12.1997</td>
+		        				</tr>
+								<tr>
+		        					<td>Фактическое место проживания:</td>
+		        					<td>г. Ростов-на-Дону, ул. Морская, 29</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Гражданство:</td>
+		        					<td>РФ</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Серия, номер паспорта:</td>
+		        					<td>5464645 4646</td>
+		        				</tr>
+		        				<tr>
+		        					<td>СНИЛС:</td>
+		        					<td>6564564 6544</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+					<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Контактные данные</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Телефон:</td>
+		        					<td>89996998784</td>
+		        				</tr>
+								<tr>
+		        					<td>Почта:</td>
+		        					<td>viki@mail.ru</td>
+		        				</tr>
+		        				<tr>
+		        					<td>ВК:</td>
+		        					<td>МКТ-32</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Instagram:</td>
+		        					<td>viki@mail.ru</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		    	</div>
+		    	<div class="modal__body_list">
+		        	<div class="modal__body_item mr-0">
+		        		<h3 class="modal__body_title">Образование</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Учебное заведение:</td>
+		        					<td>Донской государственный технический университет</td>
+		        				</tr>
+								<tr>
+		        					<td>Факультет:</td>
+		        					<td>Медипродюссирование</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Кафедра:</td>
+		        					<td>МКТ-32</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Направление подготовки:</td>
+		        					<td>Медипродюссирование</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Образовательная программа:</td>
+		        					<td>Медипродюссирование</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Образовательная программа:</td>
+		        					<td>Программирование</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Группа:</td>
+		        					<td>МКТ-32</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Номер зачетной книжки:</td>
+		        					<td>8989989898</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Уровень образования:</td>
+		        					<td>Среднее профессиональное</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Учебное заведение:</td>
+		        					<td>Техникум экономики и управления</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Специальность:</td>
+		        					<td>Товаровед</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		    	</div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3">
+  Запустить модальное окно
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    	<div class="modal-content modal__width">
+      		<div class="modal-header modal__header">
+      			<img src="/img/per.png" alt="">
+				<div class="modal__header_text">
+			<h3 class="modal__header_name">Фамилия Имя Отчество</h3>
+			<h4 class="modal__header_status">Студент</h4>
+				</div>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+		    <div class="modal-body">
+		    	<div class="modal__body_list">
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Личные данные</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Дата рождения:</td>
+		        					<td>16.12.1997</td>
+		        				</tr>
+								<tr>
+		        					<td>Фактическое место проживания:</td>
+		        					<td>г. Ростов-на-Дону, ул. Морская, 29</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Гражданство:</td>
+		        					<td>РФ</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Серия, номер паспорта:</td>
+		        					<td>5464645 4646</td>
+		        				</tr>
+		        				<tr>
+		        					<td>СНИЛС:</td>
+		        					<td>6564564 6544</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+					<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Контактные данные</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Телефон:</td>
+		        					<td>89996998784</td>
+		        				</tr>
+								<tr>
+		        					<td>Почта:</td>
+		        					<td>viki@mail.ru</td>
+		        				</tr>
+		        				<tr>
+		        					<td>ВК:</td>
+		        					<td>МКТ-32</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Instagram:</td>
+		        					<td>viki@mail.ru</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		    	</div>
+		    	<div class="modal__body_list">
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Образование</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Уровень образования:</td>
+		        					<td>Аспирантура</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Учебное заведение:</td>
+		        					<td>ДГТУ</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Специальность:</td>
+		        					<td>Маркетинг</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Ученая степень:</td>
+		        					<td>Доцент</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Карьера</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Структура:</td>
+		        					<td>Отдел связи с предприятиями</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Должность:</td>
+		        					<td>аналитик</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Преподаваемые дисциплины:</td>
+		        					<td >Дисципл 1</td>
+		        				</tr>
+		        				<tr>
+		        					<td></td>
+		        					<td >Дисципл 2</td>
+		        				</tr>
+		        				<tr>
+		        					<td></td>
+		        					<td >Дисципл 3</td>
+		        				</tr>
+		        				<tr>
+		        					<td></td>
+		        					<td >Дисципл 4</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		    	</div>
+		    	<div class="modal__body_list">
+		    		<div class="modal__body_item mr-0">
+		    			<h3 class="modal__body_title">Профессиональные интересы</h3>
+		    			<p class="modal__item_text">Название 1 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+		    			<p class="modal__item_text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+		    			<p class="modal__item_text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+		    			<p class="modal__item_text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+		    			<div class="modal__item_docs">
+		    				<p class="docs__subtitle">Сертификаты:</p>
+		    				<div class="modal__docs_items">
+		    					<div class="yaneznaukaknazvateto">
+		    						<p class="docs__text">Название 1</p>
+		    						<img src="/img/pdf.png" alt="">
+		    					</div>
+		    					<div class="yaneznaukaknazvateto">
+		    						<p class="docs__text">Название 1</p>
+		    						<img src="/img/pdf.png" alt="">
+		    					</div>
+		    					<div class="yaneznaukaknazvateto">
+		    						<p class="docs__text">Название 1</p>
+		    						<img src="/img/pdf.png" alt="">
+		    					</div>
+		    				</div>
+		    			</div>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal4">
+  Запустить модальное окно
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    	<div class="modal-content modal__width">
+      		<div class="modal-header modal__header">
+      			<img src="/img/per.png" alt="">
+				<div class="modal__header_text">
+			<h3 class="modal__header_name">Фамилия Имя Отчество</h3>
+			<h4 class="modal__header_status">Студент</h4>
+				</div>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+      		</div>
+		    <div class="modal-body">
+		    	<div class="modal__body_list">
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Личные данные</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Уровень образования:</td>
+		        					<td>Аспирантура</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Учебное заведение:</td>
+		        					<td>ДГТУ</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Специальность:</td>
+		        					<td>Маркетинг</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Ученая степень:</td>
+		        					<td>Доцент</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+					<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Контактные данные</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Телефон:</td>
+		        					<td>89996998784</td>
+		        				</tr>
+								<tr>
+		        					<td>Почта:</td>
+		        					<td>viki@mail.ru</td>
+		        				</tr>
+		        				<tr>
+		        					<td>ВК:</td>
+		        					<td>МКТ-32</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Instagram:</td>
+		        					<td>viki@mail.ru</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		    	</div>
+		    	<div class="modal__body_list">
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Профессиональные интересы</h3>
+		    			<p class="modal__item_text">Название 1 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+		    			<p class="modal__item_text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+		    			<div class="modal__item_docs help__docs">
+		    				<p class="docs__subtitle">Сертификаты:</p>
+		    				<div class="modal__body_doc">
+		    					<div class="yaneznaukaknazvateto">
+		    						<p class="docs__text">Название 1</p>
+		    						<img src="/img/pdf.png" alt="">
+		    					</div>
+		    					<div class="yaneznaukaknazvateto">
+		    						<p class="docs__text">Название 1</p>
+		    						<img src="/img/pdf.png" alt="">
+		    					</div>
+		    					<div class="yaneznaukaknazvateto">
+		    						<p class="docs__text">Название 1</p>
+		    						<img src="/img/pdf.png" alt="">
+		    					</div>
+		    				</div>
+		    			</div>
+		    		</div>			
+		        	<div class="modal__body_item">
+		        		<h3 class="modal__body_title">Карьера</h3>
+		        		<table>
+		        			<tbody>
+		        				<tr>
+		        					<td>Структура:</td>
+		        					<td>Отдел связи с предприятиями</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Должность:</td>
+		        					<td>аналитик</td>
+		        				</tr>
+		        				<tr>
+		        					<td>Преподаваемые дисциплины:</td>
+		        					<td >Дисципл 1</td>
+		        				</tr>
+		        				<tr>
+		        					<td></td>
+		        					<td >Дисципл 2</td>
+		        				</tr>
+		        				<tr>
+		        					<td></td>
+		        					<td >Дисципл 3</td>
+		        				</tr>
+		        				<tr>
+		        					<td></td>
+		        					<td >Дисципл 4</td>
+		        				</tr>
+		        			</tbody>
+		        		</table>	
+		        	</div>
+		    		
+		    	</div>
+		    </div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

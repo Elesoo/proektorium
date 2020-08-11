@@ -1,0 +1,283 @@
+{% extends 'base.html.twig' %}
+{% block includes %}
+	<link rel="stylesheet" href="/css/main.css" crossorigin="anonymous">
+
+	<script src="/js/filter.js" crossorigin="anonymous"></script>
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="/css/select2.css">
+	<script src="/js/select2.full.js"></script>
+	
+	<style>
+
+	.btn_close{
+		position: absolute;
+		top: 10px;
+		right: 20px;
+		cursor: pointer;
+		z-index: 100;
+	}
+
+	/**{
+		margin: 0;
+		padding: 0;
+	}*/
+	
+
+	.header-container{
+		background: url('/img/projhead.png') 100% 100% no-repeat;
+		-webkit-background-size: cover;
+		background-size: cover;
+		border-radius: 15px;
+		width: 100%;
+	}	
+
+	.nav__list{
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+		justify-content: space-around;
+		padding-top: 30px;
+		text-transform: uppercase;
+	}
+
+	.list__item{
+		list-style-type: none;
+		text-align: center;
+		width: 100%;
+	}
+
+	.list__link{
+		color: #fff;
+		font-size: 14px;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.list__link:hover{
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.list__link[href=""]:hover{
+		cursor: default;
+	}
+
+	/*header__cont*/
+
+
+	.header__cont{
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+		justify-content: center;
+		-ms-align-items: center;
+		align-items: center;
+		padding-top: 70px;
+	}
+
+	.header__title{
+		font-size: 36px;
+		color: #fff;
+		font-weight: bold;
+		line-height: 49px;
+		text-align: center;
+	}
+
+	.header__desc{
+		color: white;
+		width: 50%;
+		text-align: center;
+	}
+
+	.header__text{
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 22px;
+		color: #FFFFFF;
+		text-align: center;
+		margin-top: 10px;
+		margin-bottom: 72px;
+	}
+
+	.header__btn{
+		width: 253px;
+		height: 45px;
+		background: #DFC7AF;
+		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		border-radius: 8px;
+		border: none;
+		font-size: 15px;
+		line-height: 20px;
+		text-align: center;
+		color: #1D1D1D;
+	}
+	
+		/*mobile*/
+
+		@media(max-width: 769px) {
+			.nav__list{
+				display: -webkit-flex;
+				display: -moz-flex;
+				display: -ms-flex;
+				display: -o-flex;
+				display: flex;
+				-webkit-flex-direction: column;
+				-moz-flex-direction: column;
+				-ms-flex-direction: column;
+				-o-flex-direction: column;
+				flex-direction: column;
+				justify-content: center;
+				-ms-align-items: center;
+				align-items: center;
+				padding-left: 0;
+			}
+			
+			.list__item{
+				margin-top: 10px;
+			}
+
+			.list__link{
+				font-size: 12px;
+			}
+
+			.header__cont{
+				padding-top: 20px;
+			}
+
+			.header__desc{
+				width: 100%;
+			}
+		}
+
+		/*styles for project_container*/
+		
+		@media(max-width: 400px) {
+			.card__footer{
+				display: -webkit-flex;
+				display: -moz-flex;
+				display: -ms-flex;
+				display: -o-flex;
+				display: flex;
+				-webkit-flex-direction: column;
+				-moz-flex-direction: column;
+				-ms-flex-direction: column;
+				-o-flex-direction: column;
+				flex-direction: column;
+				justify-content: center;
+			}
+		}
+
+		.crd__text{
+
+		}
+
+	</style>
+{% endblock %}
+
+
+{% block content %}
+
+	<header>
+		<div class="header-container">
+			<nav>
+				<ul class="nav__list">
+					<li class="list__item">
+						<a href="" class="list__link">полное погружение в реальное производство</a>
+					</li>
+					<li class="list__item">
+						<!-- <a href="#" class="list__link">прием заявок до 1 апреля</a> -->
+					</li>
+					<li class="list__item">
+						<a href="" class="list__link"> 3 недели образовательного интенсива</a>
+					</li>
+				</ul>
+			</nav>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="header__cont">
+							<p class="header__title"> Проекториум RSM 2020</p>
+							<p class="header__desc">Поучаствуй в решении инженерных задач крупнейшего производителя сельхозтехники</p>
+							<button onclick="window.location.href='/event/show/3'" class="header__btn">Подробнее</button>
+							<p class="header__text">Прием заявок временно приостановлен</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+<br>
+	{% block main_board %}
+		{% include 'board/filter.html.twig'%}
+		{% if is_granted('ROLE_MODERATOR') %}
+			<div class="container-fluid p-0">
+				<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты, набирающие наставника</p>
+				<div class="row pr-0 mr-0">
+				{% if searchProjects %}
+					{% for project in searchProjects %}
+						{% include 'board/project_container.html.twig' with project %}
+					{% endfor %}
+				{% else %}
+					<p style="margin-left: 15px;">Сейчас таких проектов нет</p>
+				{% endif %}
+				</div>
+			</div>
+		{% endif %}
+
+		<div class="container-fluid p-0 section-newTeam">
+			<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты, набирающие команду</p>
+			<div class="row pr-0 mr-0">
+			{% if is_granted('ROLE_CLIENT') or is_granted('ROLE_EMPLOYEE') %}
+				{% include 'board/day_n_create_project.html.twig' %}
+				{% include 'board/add_btn.html.twig' with [projects, date] %}
+			{% endif %}
+			{% if dayn_projects %}
+				{% include 'board/dayn_project_container.html.twig' with dayn_projects%}
+			{% endif %}
+			{% if activeProjects %}
+				{% for project in activeProjects %}
+					{% include 'board/project_container.html.twig' with project %}
+				{% endfor %}
+			{% endif %}
+			</div>
+		</div>
+
+		{% if inProcess %}
+			<div class="container-fluid p-0 section-developing">
+				<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты в разработке</p>
+				<div class="row pr-0 mr-0">
+				{% for project in inProcess %}
+					{% include 'board/project_container.html.twig' with project %}
+				{% endfor %}
+				</div>
+			</div>
+		{% endif %}
+
+		{% if finished %}
+			<div class="container-fluid p-0 section-completed">
+				<p style="font-weight: bold; text-align: left; font-size: 36px;">Завершенные проекты</p>
+				<div class="row pr-0 mr-0">
+				<p style="margin-left: 15px;">Тут тоже будут проекты</p>
+				</div>
+			</div>
+		{% endif %}
+
+	{% endblock %}
+{% endblock %}

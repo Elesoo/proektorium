@@ -1,0 +1,187 @@
+{% block employeeCard %}
+<div class="modal-dialog" role="document">
+	<div id="employeeContent" class="modal-content">
+		<div class="modal-header">
+			<img src="/img/foto.png" alt="" class="img-fluid">
+			<div class="header__text">
+				<span class="header__text_name">{{employee.personal.surname}} {{ employee.personal.name }} {{ employee.personal.patr }}</span>
+				<span class="headr__text_role">Сотрудник</span>
+			</div>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+		</div>
+		<div class="modal-body">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md table">
+						<p class="body__title">
+							Личные данные: 
+						</p>
+						<div class="body__maintext">
+							<ul class="padnone">
+								<li class="body__maintext_obj">Дата рождения:</li> 
+								<li class="body__maintext_obj">Фактическое место проживания:</li>
+							</ul>
+							<ul class="padnone">
+								<li class="body__maintext_key">{{employee.personal.birth_date}}</li>
+								<li class="body__maintext_key">{{ employee.personal.actual_house}}</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-md table">
+						<p class="body__title">
+							Контактные данные: 
+						</p>
+						<div class="body__maintext">
+							<ul class="padnone">
+								<li class="body__maintext_obj">Телефон:</li> 
+								<li class="body__maintext_obj">Почта:</li>
+								<li class="body__maintext_obj">ВК:</li>
+								<li class="body__maintext_obj">Instagram:</li>
+								<li class="body__maintext_obj">Pinterest:</li>
+							</ul>
+							<ul class="padnone">
+								<li class="body__maintext_key">{{employee.contacts.phone}}</li>
+								<li class="body__maintext_key">{{employee.contacts.email}}</li>
+								<li class="body__maintext_key">{{employee.contacts.vk}}</li>
+								<li class="body__maintext_key">{{employee.contacts.instagram}}</li>
+								<li class="body__maintext_key">{{employee.contacts.pinterest}}</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md table">
+						<p class="body__title">
+							Образование: 
+						</p>
+						<div class="body__maintext">
+							<ul class="padnone">
+								<li class="body__maintext_obj">Уровень образования:</li> 
+								<li class="body__maintext_obj">Учебное заведение:</li>
+								<li class="body__maintext_obj">Специальность:</li>
+								<li class="body__maintext_obj">Ученая степень</li>
+							</ul>
+							<ul>
+								<li class="body__maintext_key">{{employee.education.edu_lvl}}</li>
+								<li class="body__maintext_key">{{employee.education.university}}</li>
+								<li class="body__maintext_key">{{employee.education.speciality}}</li>
+								<li class="body__maintext_key">{{employee.education.academic_degree}}</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-md table">
+						<p class="body__title">
+							Карьера: 
+						</p>
+						<div class="body__maintext">
+							<table style="border: none;">
+		    						<tbody class="list_add_compet">
+			    						<tr class="item_add_compet">
+			    							<td>Структура:</td>
+			    							<td>{{employee.activity.structure}}</td>
+			    						</tr>
+			    						<tr class="item_add_compet">
+			    							<td>Должность:</td>
+			    							<td>{{employee.activity.position}}</td>
+			    						</tr>
+		    						</tbody>
+		    					</table>
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="row">
+					<div class="col-md table">
+						<p class="body__title">Профессиональные интересы</p>
+						<div class="col-md-12">
+							<p class="comp__text">Название 1 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+							<p class="comp__text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+							<p class="comp__text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+							<p class="comp__text">Название 3 ваваолрлфыа фывроаорывпылыфпв роьпа вет вапивап вкпик пиыи ыкиыи ыкиыи кваиаыи</p>
+							<div class="comp">
+								<p class="body__maintext_obj mt-3">Сертификаты:</p>
+								<div class="col-md">
+									<div class="img">
+										<span class="img__text">Название 1</span>
+										<img src="images/pdf.png" alt="" class="img-fluid">
+									</div>
+								</div>
+								<div class="col-md">
+									<div class="img">
+										<span class="img__text">Название 1</span>
+										<img src="images/pdf.png" alt="" class="img-fluid">
+									</div>
+								</div>
+								<div class="col-md">
+									<div class="img">
+										<span class="img__text">Название 1</span>
+										<img src="images/pdf.png" alt="" class="img-fluid">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+				<div class="row">
+					<div class="col-md table">
+						<p class="body__title">
+							Проектная активность: 
+						</p>
+						<div class="status">
+							<p class="status__text">Статусы</p>
+							<div class="sqr">
+								{% if employee.statuses %}
+								{% for item in employee.statuses %}
+								    <div >{{item}}</div>
+								{% endfor %}
+								{% else %}
+								    <div >Нет статусов</div>
+								{% endif %}
+							</div>
+						</div>
+						<!-- <div class="competentions">
+							<ul class="padnone">
+								<li class="body__list_item ta">Опыт разработки:</li> 
+								<li class="body__list_item ta">Опыт наставничества:</li>
+								<li class="body__list_item ta">Участие в мероприятияз:</li>
+							</ul>
+    					<ul class="padnone">
+    						<li class="body__list_num">5</li>
+							<li class="body__list_num">6</li>
+							<li class="body__list_num">7</li>
+						</ul> -->
+					</div> 
+				</div>
+				{% if employee.isCurator %}
+				<div class="col-md table">
+					<p class="body__title">
+						Компетенции Куратора:
+					</p>
+					<div class="competentions">
+						<ul class="padnone">
+							<li class="body__list_item">Проектный менеджмент:</li>
+							<li class="body__list_item">Навыки лидерства:</li>
+							<li class="body__list_item">Стратегическое мышление:</li>
+							<li class="body__list_item">Навыки управления капиталом:</li>
+							<!-- <li class="body__list_item">Навыки письма:</li> -->
+							<li class="body__list_item">Инженерный менеджмент:</li>
+							<!-- <li class="body__list_item">Тьюторство:</li> -->
+						</ul>
+						<ul class="padnone">
+							<li class="body__list_num">0</li>
+							<li class="body__list_num">0</li>
+							<li class="body__list_num">0</li>
+							<li class="body__list_num">0</li>
+							<!-- <li class="body__list_num">0</li> -->
+							<li class="body__list_num">0</li>
+							<!-- <li class="body__list_num">0</li> -->
+						</ul>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+			{% endblock %}

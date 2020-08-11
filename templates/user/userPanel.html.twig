@@ -1,0 +1,1056 @@
+{% extends 'base.html.twig' %}
+{% block includes %}
+<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/userpanel.css" crossorigin="anonymous">
+<!-- <script src="/js/chosen.jquery.min.js" crossorigin="anonymous"></script> -->
+<!-- <link rel="stylesheet" href="/css/chosen.min.css" crossorigin="anonymous"> -->
+<link rel="stylesheet" type="text/css" href="/css/shapranov.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<style type="text/css">
+	.card_team_add{
+      width: 100%;
+      border-radius: 10px;
+      box-sizing: border-box;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      padding-bottom: 10px;
+    }
+
+    .card_team_add .card_team_add_head{
+      /*display: flex;*/
+      /*flex-direction: column;*/
+      align-items: center;
+      height: 103px;
+      background-color: #8E8E8E;
+      /*padding: 10px;*/
+      border-radius: 10px 10px 0 0;
+    }
+
+    .card_team_add .card_team_add_img{
+      position: absolute;
+      top: 10px;
+      left: 25px;
+      width: 78px;
+      height: 78px;
+    }
+
+    .card_team_add_head .card_team_add_title{
+      margin: 0 0 0 100px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .card_team_add_head .card_team_add_name{
+      background-color: #2C584F;
+      height: 36px;
+      font-family: "Open Sans", sans-serif;
+      font-size: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .card_team_add_body .body_add_title {
+      font-family: "Open Sans", sans-serif;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 15px;
+      color: #8E8E8E;
+      margin-top: 18px;
+    }
+
+    .list_add_compet .item_add_compet{
+      font-family: "Open Sans", sans-serif;
+      font-size: 12px;
+    }
+
+    .list_add_compet .item_add_compet > td {
+    	border: none;
+    }
+
+    .item_add_compet td:first-child{
+      text-align: right;
+    }
+
+    .item_add_compet td + td {
+      width: 60%;
+      padding-left: 10px;
+      text-align: left;
+    }
+
+    .item_add_compet td + td img {
+      margin-bottom: 10px;
+    }
+
+    .text_add_info{
+      font-family: "Open Sans", sans-serif;
+      font-size: 14px;
+      color: #8E8E8E;
+      margin-top: 10px;
+      text-decoration: underline;
+    }
+
+    .text_add_info span{
+      margin-left: 20px;
+      text-decoration: none;
+    }
+</style>
+<script type="text/javascript">
+
+function filterProjects() {
+	projtype=$("input[name='proj_type_filter']:checked").val();
+	$(".project-card").hide();
+	$("."+projtype).show();
+	$(".proj-section").eq(0).find(".project-card").show();
+}
+
+		//$(document).ready(function() {$("input[name='proj_type_filter']").change(filterProjects);});
+
+
+		$(document).ready(function() {
+			// chosenInit();
+		});
+		</script>
+		<script type="text/javascript">
+		function getProjectRoles()
+		{
+			$('#roles').html('<img style="width: 20%; margin: 0 40%;" src="/img/loading.gif">');
+			projectid = $("#project_id").find(":selected").val();
+			pos = projectid.indexOf('dayn');
+			if (pos != -1)
+			{
+				projectid = projectid.substring(projectid.indexOf("n")+1);
+				$.ajax({
+				url:"/project/dayn/roles/"+projectid,
+				type:'GET',
+				success: function(data){
+					$('#roles').html(data);
+					$('#project_id_h').attr('value', projectid);
+				}
+			});
+			}
+			else
+			{
+				$.ajax({
+				url:"/project/roles/"+projectid,
+				type:'GET',
+				success: function(data){
+					$('#roles').html(data);
+					$('#project_id_h').attr('value', $("#project_id").find(":selected").val());
+				}
+			});
+			}
+		}
+		function sendClaimForm(){
+			roleid = $("#role_id").val();
+			studid = $("#student_id").val();
+			projid = $("#project_id_h").val();
+			employeeid = $("#employee_id").val();
+			if (roleid != 'daynCurator')
+			{
+				$.ajax({
+				url:"/project/addClaim/"+projid,
+				type:'POST',
+				data : { 'roleid' : roleid, 'studid' : studid, 'employeeid': employeeid },
+				success: function(data){
+					if (data == "already") { alert("Вы уже отправили этому пользователю заявку на данную роль!"); }
+					if (data == "not allowed") { alert("Студента нельзя указать как куратора!"); }
+					if (data == "emp not allowed") { alert("Сотрудника нельзя указать как наставника!"); }
+					if (data == "") { alert("Приглашение отправлено пользователю!"); }
+					window.location.href = "/users/1";
+				},
+				error: function(data){
+					alert("Ошибка при отправке приглашения!")
+				}
+			});
+			}
+			else
+			{
+				$.ajax({
+				url:"/project/dayn/curatorClaim/"+projid,
+				type:'POST',
+				data : { 'roleid' : roleid, 'employeeid': employeeid },
+				success: function(data){
+					if (data == "already") { alert("Вы уже отправили этому пользователю заявку на данную роль!"); }
+					if (data == "") { alert("Приглашение отправлено пользователю!"); }
+					window.location.href = "/users/1";
+				},
+				error: function(data){
+					if (data.responseText == "noemp") { alert('Студентов нельзя приглашать на роль куратора!'); }
+					else { alert("Ошибка при отправке приглашения!"); }
+				}
+			});
+			}
+			
+		}
+		function getEmployeeFullInfo(employee)
+		{
+			$('#employeeContent').html('<img style="margin: 0 30%; width: 40%; height: auto;" src="/img/loading.gif">');
+			$.ajax({
+				url:"/user/moderator/employeeCard/"+employee,
+				type:'GET',
+				success: function(data){
+					$('#employeeCard').html(data);
+				},
+			});
+		}
+		</script>
+		<!-- styles -->
+		<style>
+
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		
+		.modal-content{
+			border-color:  #8E8E8E;
+			border-radius: 10px;
+			width: 750px;
+			height: auto;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		@media (max-width: 450px) {
+			.modal-content {
+				width: 100%;
+			}
+		}
+
+		.modal-header{
+			background-color: #8E8E8E;
+		}
+
+		.header__text{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+			margin-left: 40px;
+		}
+
+		.header__text_name{
+			font-weight: bold;
+			font-size: 18px;
+			line-height: 25px;
+			color: #fff;
+		}
+
+
+		.header__text_role{
+			font-weight: 600;
+			font-size: 18px;
+			line-height: 25px;
+			color: #545353;
+		}
+
+		/*body*/
+
+		.modal-body{
+			/*padding: 0;*/
+			margin-top: 25px;
+		}
+
+		.table{
+			width: 98%;
+			border: 0.5px solid #C4C4C4;
+			box-sizing: border-box;
+			border-radius: 5px;
+			margin: 5px 5px;
+			padding-bottom: 25px;
+		}
+		
+		.body__title{
+			color: #8E8E8E;
+			font-weight: 600;
+			font-size: 14px;
+			text-align: center;	
+			margin-top: 5px;	
+		}
+
+		.body__maintext{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: center;
+		}
+
+		.padnone{
+			padding-inline-start: 0;
+		}
+
+		.body__maintext_obj{
+			font-size: 12px;
+			line-height: 16px;
+			text-align: right;
+			white-space: nowrap;
+			list-style: none;
+			margin-top: 5px;
+		}
+
+		.body__maintext_key{
+			font-size: 12px;
+			line-height: 16px;
+			font-weight: 300;
+			/*white-space: nowrap;*/
+			list-style: none;
+			margin-left: 10px;
+			margin-top: 5px;
+		}		
+
+		.mt{
+			margin-top: 145px;
+		}
+
+		.img{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: space-between;
+			-ms-align-items: center;
+			align-items: center;
+			border-bottom: 0.5px solid #C4C4C4;
+			margin-left: 10px;
+			width: 144px;
+			margin-top: 15px;
+		}
+
+		.img__text{
+			font-size: 12px;
+			line-height: 16px;
+			font-weight: 300;	
+		}
+
+		.comp{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: space-around;
+		}
+
+		.competentions{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: space-around;
+		}
+
+		.body__list_item{
+			font-size: 12px;
+			line-height: 16px;
+			color: #1D3351;
+			list-style-type: none;
+			margin-top: 10px;
+			text-align: left;
+		}
+
+		.body__list_num{
+			font-weight: 600;
+			font-size: 12px;
+			line-height: 16px;
+			color: #63C9A4;
+			list-style-type: none;
+			margin-top: 10px;
+		}
+
+		.mart{
+			margin-top: 30px;
+		}
+
+		.ta{
+			text-align: right;
+		}
+
+		.status__text{
+			font-size: 12px;
+			line-height: 16px;
+			letter-spacing: -0.03em;
+			text-align: center;
+		}
+
+		.sqr{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: center;
+		}
+
+		.el{
+			width: 40px;
+			height: 40px;
+			background: #C4C4C4;
+			margin-left: 25px;
+		}
+
+		.comp__text{
+			font-weight: 300;
+			font-size: 12px;
+			line-height: 16px;
+			text-align: center;
+		}
+
+		.cont{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: space-around;
+			-ms-align-items: center;
+			align-items: center;
+		}
+		</style>
+		{% endblock %}
+		{% block content %}
+		{# <div id="filter">
+
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Пользователи" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>	
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Статусы" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Роли" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Компетенции" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Профессиональные интересы" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>
+		</div> #}
+		
+		<div class="container-fluid p-0">
+			<div class="row pr-0 mr-0">
+			{% if students %}
+				{% for student in students %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+					<div class="crd project-card" style="margin: 0 !important;">
+						<div class="increq-card-header">
+							<img src="/img/per.png">
+							<p>
+								{{ student.personal_branch.surname}} {{ student.personal_branch.name }} <br>{{ student.personal_branch.patr}}
+							</p>
+							<p>Студент</p>
+						</div>
+
+						<div class="row">
+							<span class="col-sm-7">Факультет:</span>
+							<span style="word-break: break-word;" class="col-sm-5">{{ student.education.faculty }}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-7">Специальность:</span>
+							<span class="col-sm-5">{{ student.education.speciality }}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-7">Группа:</span>
+							<span class="col-sm-5">{{ student.education.group }}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-7">Роли:</span>
+							<span class="col-sm-5">{{ student.roles_count }}<br></span>
+						</div>
+
+						<div class="row" style="margin-bottom: 50px;">
+							<span class="col-sm-7">Опыт разработки проектов:</span>
+							<span class="col-sm-5">{{ student.projects_count }}</span>
+						</div>
+
+						<!-- <div class="row">
+							<span class="col-sm-7">Опыт наставничества:</span>
+							<span class="col-sm-5">3 проекта</span>
+						</div> -->
+
+						<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+							{% if student.mentorExperience == 0 %}
+							{# <button type="button" class="btn" style="background: #DFC7AF;" data-toggle="modal" data-target="#modal2">Подоробнее</button> #}
+							{% endif %}
+							{% if is_granted("ROLE_MODERATOR") %}
+							<button type="button" onclick="$('#student_id').attr('value', '{{ student.id }}'); $('#employee_id').attr('value', '');" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" style="background: #015C65; color: white;">Пригласить</button>
+							{% endif %}
+						</div>
+
+					</div>
+				</div>
+				{% endfor %}
+			{% endif %}
+			{# Modal #}
+			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalCenterTitle">Пригласить участника на роль в проект</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div align="center">
+								<label style="margin-right: 20px"><b>Проект: </b></label>
+								{% if projects or dayNProjects %}
+								<select onchange="getProjectRoles()" id="project_id" style="width: auto" data-placeholder="Выберите проект...">
+									<option selected disabled>Выберите проект...</option>
+									{% for project in projects %}
+									<option value="{{ project.id }}">{{ project.name }}</option>
+									{% endfor %}
+									{% for project in dayNProjects %}
+										<option value="dayn{{ project.id }}">Дни Навигации - {{ project.title }}</option>
+									{% endfor %}
+								</select>
+								{% else %}
+								<p>Нет доступных проектов!</p>
+								{% endif %}
+							</div>
+							<div align="center" id="roles">
+
+							</div>
+							<input type="hidden" name="student_id" id="student_id">
+							<input type="hidden" name="employee_id" id="employee_id">
+							<input type="hidden" name="role_id" id="role_id">
+							<input type="hidden" name="project_id" id="project_id_h">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+							{# <button type="button" class="btn btn-primary">Выслать приглашение</button> #}
+						</div>
+					</div>
+				</div>
+			</div>
+			{# Shapranov second modal #}
+			<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="modal_2">
+					<div class="modal-content">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="modal-header" style="background-color: #8E8E8E">
+									<div class="modal-header__image">
+										<img src="/img/foto.png" alt="">
+									</div>
+									<div class="modal-header__name">
+										<p class="modal-header__name_fullname">
+											Фамилия Имя Отчество
+										</p>
+										<p class="modal-header__name_position">
+											Студент
+										</p>
+									</div>		
+									<div class="modal-header__close">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="row modal-body modal-window-body">
+								<div class="col-md modal_item">
+									<div class="modal__title">
+										<p class="modal__title_tit">
+											Образование:
+										</p>
+									</div>
+
+									<div class="modal__item_text">
+										<div class="modal__object" >
+
+											<ul>
+
+
+												<li class="modal__object_text">
+													Учебное заведение: 
+												</li>
+
+												<li class="modal__object_text">
+													Факультет: 
+												</li>
+												<li class="modal__object_text">
+													Кафедра:
+												</li>
+
+												<li class="modal__object_text">
+													Специальность:	
+												</li>
+
+												<li  class="modal__object_text">
+													Группа:	
+												</li>
+
+												<li class="modal__object_text">
+													Уровень образования:
+												</li>
+
+
+												<li class="modal__object_text">
+													Уровень образования:
+												</li>
+
+												<li class="modal__object_text">
+													Специальность:
+												</li>
+											</ul>
+										</div>
+										<div class="modal__key">
+											<ul>
+
+												<li class="modal__key_text" style="width: 100%;height: auto;">
+													Донской государственный технический университет
+												</li>
+
+												<li class="modal__key_text" >
+													Медипродюссирование
+												</li>
+
+
+												<li class="modal__key_text" >
+													МКТ-32 
+												</li>
+
+
+												<li class="modal__key_text" >
+													Медипродюссирование
+												</li>
+
+
+												<li class="modal__key_text" >
+													МКТ-32 
+												</li>
+
+
+												<li class="modal__key_text" >
+													Среднее профессиональное 
+												</li>
+
+
+												<li class="modal__key_text" >
+													Техникум экономики и управления 
+												</li>
+
+
+												<li class="modal__key_text" >
+													Товароведение
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md modal_item">
+									<div class="modal__title">
+										<p class="modal__title_tit">
+											Профессиональные интересы:
+										</p>
+									</div>
+
+									<div class="modal__item_text">
+										<div class="modal__object" style="display: flex;flex-direction: column;">
+											<div class="modal__object_blocktext" style="align-self: flex-start;margin-top: 20px;">
+												<ul>
+													<li class="modal__object_text">
+														Сфера деятельности:
+													</li>
+												</ul>
+											</div>
+
+											<div class="modal__object_blocktext" style="align-self: flex-end;margin-top: 125px;">
+												<ul>
+													<li class="modal__object_text" style="">
+														Сертификаты:
+													</li>
+												</ul>
+											</div>
+
+										</div>
+										<div class="modal__key">
+											<ul>
+												<li class="modal__key_text">
+													Название 1 ваваолрлфыа фывроаорывпылыфпв
+												</li>
+
+												<li class="modal__key_text">
+													Название 3 ваваолрлфыа фывроаорывпылыфпв
+												</li>
+												<li class="modal__key_text">
+													Название 3 ваваолрлфыа фывроаорывпылыфпв
+												</li>
+
+												<li class="modal__key_text">
+													Название 3 ваваолрлфыа фывроаорывпылыфпв
+												</li>
+											</ul>
+											<div class="icons">
+												<div class="icons__text">
+													<p class="modal__key_text">
+														Название 1 
+													</p>
+
+													<img src="/img/pdf.png" alt="" class="img-fluid" style="margin-bottom: 16px;">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="characters">
+										<div class="characters__descr">
+											<p class="characters__descr_text">
+												Опыт разработки:
+											</p>
+
+											<p class="characters__descr_text">
+												Опыт наставничества:
+											</p>
+
+											<p class="characters__descr_text">
+												Участие в мероприятиях:
+											</p>
+										</div>
+
+										<div class="characters__num">
+											<p class="characters__num_text" style= "margin-bottom: 50px;">
+												5
+											</p>
+
+
+											<p class="characters__num_text">
+												7
+											</p>
+										</div>
+									</div>
+
+									<div class="sqrs">
+										<p class="modal__title_tit" style="font-weight: normal;font-size: 14px;color: #000;margin-right: 10px;">
+											Статусы:
+										</p>
+
+										<div class="el1" style="margin: 0;">
+
+										</div>
+
+										<div class="el1">
+
+										</div>
+
+									</div>
+								</div>
+								<div style="border: 0.5px solid #C4C4C4;box-sizing: border-box;	border-radius: 5px;margin: 5px;width: 100%;">
+									<div class="row modal-body modal-window-body">
+										<div class="col-md-12 modal-window-body__title">
+											<p class="modal__title_tit">
+												Компетенции
+											</p>
+										</div>
+									</div>
+
+									<div class="row modal-window-body">
+										<div class="col-md-4">
+											<div class="modal__cards">
+												<div class="modal__cards_text">
+													<p class="modal__cards_text_descr">
+														Базовые:
+													</p>
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+												</div>
+
+												<div class="modal__cards_num" style="margin-top: 0;">
+													<p class="modal__cards_num_nm">
+														3
+													</p>
+
+													<p class="modal__cards_num_nm">
+														5
+													</p>
+
+													<p class="modal__cards_num_nm">
+														2
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="modal__cards">
+												<div class="modal__cards_text">
+													<p class="modal__cards_text_descr">
+														Профессиональные:
+													</p>
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+
+												</div>
+
+												<div class="modal__cards_num">
+													<p class="modal__cards_num_nm">
+														3
+													</p>
+
+													<p class="modal__cards_num_nm">
+														5
+													</p>
+
+													<p class="modal__cards_num_nm">
+														2
+													</p>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-4">
+											<div class="modal__cards">
+												<div class="modal__cards_text">
+													<p class="modal__cards_text_descr">
+														Надпрофессиональные:
+													</p>
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+
+
+													<p class="modal__cards_text_descr">
+														компетенции
+													</p>
+												</div>
+
+												<div class="modal__cards_num">
+													<p class="modal__cards_num_nm">
+														3
+													</p>
+
+													<p class="modal__cards_num_nm">
+														5
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- </div> -->
+			<!-- <div class="crd project-card">
+				<div class="increq-card-header">
+					<img src="/img/kittenz.jpg">
+					<p>
+						Фамилия Имя <br>Отчество
+					</p>
+					<p>Отраслевой эксперт </p>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Организация:</span>
+					<span class="col-sm-5">1</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Должность:</span>
+					<span class="col-sm-5">2</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Ученая степень:</span>
+					<span class="col-sm-5">3</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Профессиональные интересы:</span>
+					<span class="col-sm-5">4<br>5</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Заказчик проектов:</span>
+					<span class="col-sm-5">3 проекта</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Опыт экспертной поддержки:</span>
+					<span class="col-sm-5">3 проекта</span>
+				</div>
+
+				<div class="crd-buttons crd-buttons-bottom crd-buttons">
+					<button type="button" class="btn" style="background: #DFC7AF;">Подоробнее</button>
+					<button type="button" class="btn btn-success" style="background: #015C65; color: white;">Пригласить</button>
+				</div>
+
+			</div> !-->
+			{% if employees %}
+				{% for item in employees %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+					<div id="employeeCont{{ item.id }}" class="crd project-card" style="margin: 0 !important;">
+						<div class="increq-card-header">
+							<img src="/img/per.png">
+							<p>
+								{{item.personal.surname}} {{item.personal.name}} <br>{{item.personal.patr}}
+							</p>
+							<p>Сотрудник</p>
+						</div>
+
+						<div class="row">
+							<span class="col-sm-7">Подразделение:</span>
+							<span class="col-sm-5">{{item.activity.structure}}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-7">Должность:</span>
+							<span class="col-sm-5">{{item.activity.position}}</span>
+						</div>
+						<div class="row">
+							<span class="col-sm-7">Ученая степень:</span>
+							<span class="col-sm-5">{{item.education.academic_degree}}</span>
+						</div>
+						<!-- <div class="row">
+							<span class="col-sm-7">Профессиональные интересы:</span>
+							<span class="col-sm-5">4<br>5</span>
+						</div> -->
+
+						<!-- <div class="row">
+							<span class="col-sm-7">Преподаваемые дисциплины:</span>
+							<span class="col-sm-5">4<br>5<br>4<br>5</span>
+						</div> -->
+
+						<div class="row" style="margin-bottom: 50px;">
+							<span class="col-sm-7">Заказчик проектов:</span>
+							<span class="col-sm-5">{{ item.projectCounter }}</span>
+						</div>
+
+						<!-- <div class="row">
+							<span class="col-sm-7">Опыт экспертной поддержки:</span>
+							<span class="col-sm-5">3 проекта</span>
+						</div> -->
+
+
+						<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+							{% if is_granted("ROLE_MODERATOR") %}
+							<button data-toggle="modal" data-target="#employeeCard" onclick="getEmployeeFullInfo({{item.id}});"  type="button" class="btn" style="background: #DFC7AF;">Подробнее</button>
+							
+							<button type="button" data-toggle="modal" data-target="#exampleModalCenter" onclick="$('#employee_id').attr('value', '{{ item.id }}'); $('#student_id').attr('value', '');" class="btn btn-success" style="background: #015C65; color: white;">Пригласить</button>
+							{% endif %}
+						</div>
+
+					</div>
+				</div>
+			{% endfor %}
+			{% endif %}
+			</div>
+		</div>
+		<!-- moderator modal -->
+
+		<div class="modal fade" id="employeeCard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div id="employeeContent" class="modal-content">
+					<img style="margin: 0 30%; width: 40%; height: auto;" src="/img/loading.gif">
+				</div>
+			</div>
+		</div>
+
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li class="page-item">
+					<a class="page-link" href="#" aria-label="Previous">
+						<span aria-hidden="true">&laquo;</span>
+						<span class="sr-only">Previous</span>
+					</a>
+				</li>
+				{% for page in range(1,pages) %}
+				<li class="page-item"><a class="page-link" href="/users/{{ page }}">{{ page }}</a></li>
+				{% endfor %}
+				<li class="page-item">
+					<a class="page-link" href="#" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+						<span class="sr-only">Next</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+		{% endblock %}

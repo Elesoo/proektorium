@@ -1,0 +1,317 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+  <link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/event_create.css">
+
+  <script src="/js/cropper.js"></script>
+
+  <link rel="stylesheet" href="/css/cropper.css">
+
+  <style>
+    .img-container img {
+      max-width: 100%;
+    }
+
+  </style>
+
+  <!-- Preloader -->
+  <style>
+    .preloader {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1001;
+      background: url("/img/loading.gif") hsla(218, 4%, 39%, .5) no-repeat;
+      background-position: center center;
+    }
+  </style>
+
+  <script type="text/javascript">
+    var listString = {};
+    var photo_header;
+		var fd = new FormData(); 
+    var avatar = $('#avatar');
+    var image = $('#image_load');
+    var input = $('#input');
+    var cropper;
+
+
+    var minCroppedWidth = 320;
+    var minCroppedHeight = 160;
+    var maxCroppedWidth = 1484;
+    var maxCroppedHeight = 405;
+
+    $(document).ready(function(){
+
+      $('#headerImage').on('change', function (e) {
+        var files = e.target.files;
+        var done = function (url) {
+          input.value = '';
+          $('#image_load').attr('src', url);
+          $('#modal').modal('show');
+        };
+        var reader;
+        var file;
+        var url;
+
+        if (files && files.length > 0) {
+          file = files[0];
+
+          if (URL) {
+            done(URL.createObjectURL(file));
+          } else if (FileReader) {
+            reader = new FileReader();
+            reader.onload = function (e) {
+              done(reader.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      });
+
+      $('#modal').on('shown.bs.modal', function () {
+        var image = $('#image_load')[0];
+        console.log(image);
+        cropper = new Cropper(image, {
+          aspectRatio: 2 / 1,
+          // cropBoxResizable: false,
+          viewMode: 3,
+          data: {
+            width: (minCroppedWidth + maxCroppedWidth),
+            height: (minCroppedHeight + maxCroppedHeight),
+          },
+          crop: function(){
+
+            var width = event.detail.width;
+            var height = event.detail.height;
+
+            // if (
+            // width < minCroppedWidth
+            // || height < minCroppedHeight
+            // || width > maxCroppedWidth
+            // || height > maxCroppedHeight
+            // ) {
+            //   cropper.setData({
+            //     width: Math.max(maxCroppedWidth, maxCroppedWidth),
+            //     height: Math.max(maxCroppedHeight, maxCroppedHeight),
+            //   });
+            // }
+          },
+        });
+      }).on('hidden.bs.modal', function () {
+        cropper.destroy();
+        cropper = null;
+      });
+
+      $('#load_btn').on('click', function () {
+        var initialAvatarURL;
+        var canvas;
+
+        $('#modal').modal('hide');
+
+        if (cropper) {
+          canvas = cropper.getCroppedCanvas({
+            width: maxCroppedWidth,
+            height: maxCroppedHeight,
+          });
+          initialAvatarURL = avatar.src;
+          avatar.src = canvas.toDataURL();
+          canvas.toBlob(function (blob) {
+
+            photo_header = blob;
+
+            $('#head_input').append('<span class="badge-success ml-2">Добавлено</span>');
+
+          });
+        }
+      });
+
+      $("#program").on('change', function(){
+        $('#progma_input').append('<span class="badge-success ml-2">Добавлено</span>');
+      })
+    });
+
+
+		function sendEvent() {
+			listString['title'] = $("#title").val();
+			listString['description'] = $("#description").val();
+			listString['date'] = $("#date").val();
+			listString['partners'] = $("#partners").val();
+			listString['place'] = $("#place").val();
+			listString['embeded'] = $("#embeded").val();
+			for (var key in listString) {
+				if (listString[key] == "")
+				{
+					alert("Заполните пустые поля!");
+					return true;
+				}
+			}
+			console.log($("#program")[0].files.length);
+			if ($("#program")[0].files.length > 0){
+				attachment = $("#program")[0].files[0];
+				fd.append('program', attachment, attachment.name);
+			}
+			else
+			{
+				alert("Вы не указали файл с программой мероприятия!");
+				return true;
+			}
+			if ($("#headerImage")[0].files.length > 0){
+				fd.append('headerImage', photo_header);
+			}
+			else
+			{
+				alert("Вы не указали файл с шапкой для мероприятия!");
+				return true;
+			}
+			var json = "";
+			json = JSON.stringify(listString);
+			fd.append('listString', json);
+			$.ajax({
+				url: "/user/moderator/eventClaim/{{ claim.id }}/allowClaim",
+				method: "POST",
+				data: fd,
+				processData: false,
+				contentType: false,
+
+        beforeSend: function(){
+          $('.preloader').css("display", 'block');
+          $('body').css('overflow', 'hidden');
+        },
+
+				success: function() {
+          $('.preloader').css("display", 'none');
+          $('body').css('overflow', 'auto');
+					alert("Мероприятие опубликовано!");
+					window.location.href = "/user";
+				},
+				error: function() {
+          $('.preloader').css("display", 'none');
+          $('body').css('overflow', 'auto');
+					alert("Ошибка! Перезагрузите страницу");
+				}
+			});
+		}
+
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+<div class="preloader"></div>
+
+	    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-6 mb-3">
+          <div class="card_window">
+            <div class="card_header">Заявка на создание мероприятия</div>
+            <div class="card_body">
+              <table class="table_sub">
+                <tbody class="tbody_sub">
+                  <tr>
+                    <td>Название мероприятия ?*</td><td><textarea>{{ claim.info.title }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Описание мероприятия?*</td><td><textarea placeholder="Подробно опишите концепцию мероприятия">{{ claim.info.description }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Актуальность ?</td><td><textarea rows="6" placeholder="Обоснуйте  почему проведение мероприятия представляет в настоящий момент интерес для университета. Обоснуйте важность, значительность события в современных реалих.">{{ claim.info.actuality }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Дата проведения?*</td><td><input type="date" name="" value="{{ claim.info.date }}"></td>
+                  </tr>
+                  <tr>
+                    <td>Целевая аудитория?*</td><td><textarea rows="7" placeholder="Набором каких компетенций должны обладать участники мероприятия, студенты каких направлений подготовки приглашаются на данное событие. Данная информация послужит фильтром при наборе участников.">{{ claim.info.auditory }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Программа меропритяия?*</td><td><label onclick="window.location.href='/events/attachment/program/{{ claim.attachments.program }}'" class="label_file" for="load_claim_event"><img src="/img/jpg.png"><img src="/img/pdf.png"><img src="/img/doc.png"><img src="/img/ppt.png"></label></td>
+                  </tr>
+                  <tr>
+                    <td>Партнёры?</td><td><textarea rows="1">{{ claim.info.partners }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Прогнозируемые результаты ?*</td><td><textarea rows="2" placeholder="Какой положительный эффект несёт ваше мероприятие?">{{ claim.info.results }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Место проведения?*</td><td><textarea rows="2" placeholder="адрес , корпус и номер аудиторий ( поиск по базе по ключевым словам)">{{ claim.info.place }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Ресурсы на реализацию проекта?*</td><td><textarea rows="2" placeholder="Какими ресурсами вы располагаете для запуска мероприятия.">{{ claim.info.resources }}</textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Изображение шапки*</td><td><label class="label_file" for="load_claim_head"><img src="/img/jpg.png"><a href="/events/attachment/headerImage/{{ claim.attachments.headerImage}}">Прикрепленный файл</a></label></td>
+                  </tr>
+                  <tr>
+                    <td>Фото для пресс-релиза:</td><td><a href="/events/attachment/photo/{{ claim.attachments.photo}}">Прикрепленный файл</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 mb-3">
+          <div class="card_window">
+            <div class="card_header">Редактор страницы мероприятия</div>
+            <div class="card_body">
+              <table class="table_sub">
+                <tbody class="tbody_sub">
+                  <tr>
+                    <td>Название мероприятия ?*</td><td><textarea id="title"></textarea></td>
+                  </tr>
+                  <tr>
+                    <td>О мероприятии?*</td><td><textarea id="description" rows="4"></textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Фото/Видео ?</td><td><textarea id="embeded" rows="2"></textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Дата проведения?*</td><td><input id="date" type="date" name=""></td>
+                  </tr>
+                  <tr>
+                    <td>Место проведения?*</td><td><textarea id="place" rows="2" placeholder="адрес , корпус и номер аудиторий"></textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Партнёры?</td><td><textarea id="partners" rows="1"></textarea></td>
+                  </tr>
+                  <tr>
+                    <td>Программа меропритяия?</td><td><label class="label_file" id="progma_input" for="program"><img src="/img/pdf.png"><img src="/img/doc.png"><img src="/img/ppt.png"></label><br><input class="sr-only" type="file" id="program" name=""></td>
+                  </tr>
+                  <tr>
+                    <td>Изображение шапки</td><td><label class="label_file" id="head_input" for="headerImage"><img src="/img/jpg.png"></label><br><input class="sr-only" type="file" id="headerImage" name=""></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button onclick="sendEvent();" type="button" class="btn btn_publish">Отправить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,812 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<!-- <link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+ -->	<link rel="stylesheet" href="/css/event.css" crossorigin="anonymous">
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+	<script src="/js/cropper.js"></script>
+	<script src="/js/edit_events.js"></script>
+
+	<link rel="stylesheet" href="/css/cropper.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+	 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+	 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+	 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+	<!-- styles -->
+
+	<script>
+		$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	</script>
+	<style>
+	*{
+		margin: 0;
+		padding: 0;
+		font-family: 'Open-Sans',sans-serif;
+	}
+	/*cards*/
+	/*.bg{
+		background-color: #E3E6F2;
+	}*/
+
+	.cards{
+		margin-top: 65px;
+		padding-bottom: 156px;
+	}
+
+	.cardstext__text{
+		padding-top: 62px;
+		font-weight: bold;
+		text-align: center;
+		font-size: 36px;
+		line-height: 146.18%;
+		color: #1D1D1D;
+	}
+
+	.card__close{
+		display: none;
+		position: absolute;
+		top: 22px;
+		right: 31px;
+		cursor: pointer;
+	}
+
+	.title_name{
+		font-weight: bold;
+		font-size: 36px;
+		line-height: 146.18%;
+		background-color: transparent;
+		outline: none;
+		border: none;
+		cursor: default;
+	}
+
+	.cardsitem{
+		margin: 15px auto;
+		padding: 15px 10px;
+		min-height: 236px;
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		align-items: center;
+		-webkit-align-items: center;
+		-moz-align-items: center;
+		-ms-align-items: center;
+		-o-align-items: center;
+		justify-content: center;
+		-webkit-justify-content: center;
+		-moz-justify-content: center;
+		-ms-justify-content: center;
+		-o-justify-content: center;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+	}
+
+	.cardsitem__image img{
+		margin: 39px auto;
+	}
+
+	.cardsitem__text_descr{
+		font-size: 16px;
+		line-height: 146.18%;
+		text-align: center;
+		max-width: 250px;
+		margin: 0 auto;
+	}
+
+	.btn_show {
+		padding: 15px;
+		background-color: #1D3351;
+		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		border-radius: 10px;
+		text-align: center;
+		color: #fff;
+		cursor: pointer;
+		/*padding: 13px 79px; */
+		/*margin: -30px 30%;*/
+		border: none;
+		/*position: absolute;*/
+	}
+
+	textarea{
+		resize: none;
+		text-align: center;
+		width: 90%;
+		background-color: transparent;
+		border: 0;
+		border-bottom: 1px solid silver;
+	}
+
+	/*persons*/
+	.persons{
+		box-sizing: border-box;
+		background-color: #fff;
+		padding-bottom: 88px;
+	}
+
+	.persons__item{
+		min-height: 342px;
+		margin: 15px auto;
+		padding: 20px 10px;
+		-webkit-display: flex;
+		-moz-display: flex;
+		-ms-display: flex;
+		-o-display: flex;
+		display: flex;
+		align-items: center;
+		-webkit-align-items: center;
+		-moz-align-items: center;
+		-ms-align-items: center;
+		-o-align-items: center;
+		justify-content: center;
+		-webkit-justify-content: center;
+		-moz-justify-content: center;
+		-ms-justify-content: center;
+		-o-justify-content: center;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;	
+	}
+
+	.persons__text_descr{
+		text-align: left;
+		font-weight: bold;
+		font-size: 36px;
+		line-height: 49px;
+	}
+
+	.persons__item_img img{
+		border-radius: 50%;
+	}
+
+	.persons__item_text_name{
+		padding-top: 20px;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 22px;
+		text-align: center;
+		color: #1D1D1D;
+	}
+
+	.persons__item_text_job{
+		padding-top: 10px;
+		font-size: 16px;
+		font-weight: 600;
+		line-height: 22px;
+		color: #1D3351;
+		text-align: center;
+	}
+
+	.persons__item_text_position{
+		padding-top: 10px;
+		font-size: 16px;
+		line-height: 19px;
+		color: #1D1D1D;
+		text-align: center;
+		width: 237px;
+		margin: 0 auto;
+	}
+
+	.load_img{
+		width: 120px;
+		height: 120px;
+		cursor: pointer;
+	}
+
+	.btn_save{
+		display: none;
+	}
+
+	.table_title {
+		font-family: "Open Sans", sans-serif;
+		font-weight: bold;
+		font-size: 36px;
+	}
+
+	.table_scroll {
+		height: auto; 
+		max-height: 400px;
+		overflow-y: scroll;
+		width: 95%;
+		margin-left: 5%;
+	}
+
+	.table_send{
+		background-color: #fff;
+		width: 100%;
+	}
+
+	.table_send .tbody_send .tr_send{
+		width: 100%;
+		height: 40px;
+	}
+
+	.table_send .tr_send td{
+		text-align: center;
+	}
+
+	.btn-download{
+		height: 33px;
+		color: white;
+		font-family: "Open Sans", sans-serif;
+		font-size: 15px;
+		line-height: 20px;
+		background-color: #1B4F44;
+		border-radius: 10px;
+		margin: 10px auto;
+	}
+	
+	.project-place {
+		right: 151px;
+	}
+
+	.video {
+		float: right; 
+		margin-left: 30px;
+	}
+	</style>
+
+	<style>
+		/*header__cont*/
+		.header-container{
+
+			background-size: 100% 100% !important; 
+			background-repeat: no-repeat !important;
+			-webkit-background-size: 100% 100% !important;
+			background-position: center !important;
+			border-radius: 15px;
+			width: 100%;
+			height: 450px;
+			margin-bottom: 2rem;
+		}
+
+		.nav__list{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			-ms-align-items: center;
+			align-items: center;
+			justify-content: space-around;
+			padding-top: 30px;
+			text-transform: uppercase;
+		}
+
+		.list__item{
+			list-style-type: none;
+			text-align: center;
+			width: 100%;
+		}
+
+		.list__link{
+			color: #fff;
+			font-size: 14px;
+			font-weight: 600;
+			text-decoration: none;
+		}
+
+		.list__link:hover{
+			color: #fff;
+			text-decoration: none;
+		}
+
+		.header__cont{
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+			justify-content: center;
+			-ms-align-items: center;
+			align-items: center;
+			padding-top: 70px;
+		}
+
+		.header__title{
+			font-size: 36px;
+			color: #fff;
+			font-weight: bold;
+			line-height: 49px;
+			text-align: center;
+		}
+
+		.header__desc{
+			color: white;
+			width: 50%;
+			text-align: center;
+		}
+
+		.header__text{
+			font-weight: 600;
+			font-size: 16px;
+			line-height: 22px;
+			color: #FFFFFF;
+			margin-top: 10px;
+			margin-bottom: 72px;
+		}
+
+		.header__btn{
+			width: 253px;
+			height: 45px;
+			background: #DFC7AF;
+			box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+			border-radius: 8px;
+			border: none;
+			font-size: 15px;
+			line-height: 20px;
+			text-align: center;
+			color: #1D1D1D;
+		}
+
+		.list_input{
+			background-color: transparent;
+			border: 0;
+			font-size: 20px;
+			text-align: center;
+		}
+
+		.cw{
+			color: white;
+			border-bottom: .5px solid white;
+		}
+
+		.fz_medium{
+			font-size: 14px;
+		}
+
+		.cb{
+			color: black;
+			border-bottom: .5px solid black;
+		}
+
+		.list_input::-webkit-input-placeholder { color: white; }
+
+		.input_textarea{
+			float: left;
+			width: 55%;
+			min-height: 317px;
+			text-align: left;
+			margin-bottom: 15px;
+		}
+
+		.btn_event {
+			border-radius: 10px;
+			border: 1px solid #1B4F44;
+			box-sizing: border-box;
+		}
+
+		.buttons .btn_event {
+			width: 250px;
+		}
+
+		@media (max-width: 1688px) {
+			.input_textarea{
+				float: none;
+				width: 100%;
+			}
+			.video {
+				float: none;
+				margin-left: 0;
+			}
+
+			.video > *{
+				width: 70%;
+				height: 315px;
+				margin: 10px 15%;
+			}
+		}
+
+		@media (max-width: 1000px){
+			.section{
+				margin-top: 70px;
+			}
+
+			.project-place{
+				position: absolute;
+				top: -65px;
+			}
+		}
+
+		@media(max-width: 700px) {
+			.video > *{			
+				margin: 20px 0 !important;
+				width: 100% !important;
+			}
+		}
+
+		/*mobile*/
+
+		@media(max-width: 1045px) {
+			.nav__list{
+				display: -webkit-flex;
+				display: -moz-flex;
+				display: -ms-flex;
+				display: -o-flex;
+				display: flex;
+				-webkit-flex-direction: column;
+				-moz-flex-direction: column;
+				-ms-flex-direction: column;
+				-o-flex-direction: column;
+				flex-direction: column;
+				justify-content: center;
+				-ms-align-items: center;
+				align-items: center;
+				padding-left: 0;
+			}
+			
+			.list__item{
+				margin-top: 10px;
+			}
+
+			.list__link{
+				font-size: 12px;
+			}
+
+			.header__cont{
+				padding-top: 20px;
+			}
+
+			.header__desc{
+				width: 100%;
+			}
+
+		}
+			.img-container > img {
+			  max-width: 100%;
+			}
+
+		@media(max-width: 450px) {
+			.btn__change,
+			.btn__save {
+				width: 70% !important;
+				margin: 15px 15% !important;
+			} 
+
+			.prof__class {
+				width: 100%;
+				position: static !important;
+				top: 0;
+				right: 0;
+				text-align: center;
+				margin-top: 30px;
+			}
+
+			.prof__class p {
+				max-width: 100%;
+				text-align: center;
+			}
+
+			.section-caption {
+				text-align: center;
+			}
+			
+			.btn_event {
+				margin-bottom: 10px;
+			}
+			
+			.title_name {
+				width: 100%;
+			}
+
+
+		}	
+	</style>
+
+	<!-- Preloader -->
+	<style>
+		.preloader {
+		  display: none;
+		  position: fixed;
+		  left: 0;
+		  top: 0;
+		  right: 0;
+		  bottom: 0;
+		  z-index: 1001;
+		  background: url("/img/loading.gif") hsla(218, 4%, 39%, .5) no-repeat;
+		  background-position: center center;
+		}
+	</style>
+
+	<script type="text/javascript">
+function getProjectCard(project, container)
+{
+	$.ajax({
+		url:"/event/getProjectCard/"+project,
+		type:'POST',
+		success: function(data){
+			$('#containerProject'+container).html(data);
+		}
+	});
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="preloader"></div>
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+
+	<header>
+		<div class="header-container" style="background: linear-gradient(rgba(29, 51, 81, 0.76), rgba(29, 51, 81, 0.76)), url('/events/attachment/event/headerImage/{{event.attachments.headerImage}}');">
+			<nav>
+				<ul class="nav__list">
+					<li class="list__item">
+						<a href="#" class="list__link"><input class="list_input cw fz_medium" type="text" name="thesis_1" placeholder="Заполните тезисы" value="{{ event.info.thesis_1 }}"></a>
+					</li>
+					<li class="list__item">
+						<a href="#" class="list__link"><input class="list_input cw fz_medium" type="text" name="thesis_2" placeholder="Заполните тезисы" value="{{ event.info.thesis_2 }}"></a>
+					</li>
+					<li class="list__item">
+						<a href="#" class="list__link"><input class="list_input cw fz_medium" type="text" name="thesis_3" placeholder="Заполните тезисы" value="{{ event.info.thesis_3 }}"></a>
+					</li>
+				</ul>
+			</nav>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="header__cont">
+							<p class="header__title"><input class="list_input cw" name="title" type="text" value="{{ event.info.title }}" placeholder="Введите Название" required></p>
+							<p class="header__desc">{{ event.info.description[:140] }}...</p>
+							<p class="header__text" style="text-align: center;"><input class="list_input cw" name="date_1" type="date" value="{{ event.info.date_1 }}" required> - <input class="list_input cw" name="date_2" type="date" value="{{ event.info.date_2 }}" required></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+<!-- </div> -->
+<div style="width: 100%;">
+	<button class="btn btn-secondary btn__change" id="btn_header" style="width: 20%; margin: 0 40%;" onclick="file_head.click()" data-toggle="tooltip" data-placement="top" title="Выберете шапку не менее 1920x1080">Изменить фото шапки</button>
+	<input type="file" id="file_head" name="file_header" class="sr-only">
+	<button class="btn btn-secondary btn__save" style="width: 20%; margin: 15px 40%;" onclick="load_advantage('#card_advantage', {{ event.id }})">Сохранить</button>
+</div>
+<div class="section">
+
+	
+	<p class="section-caption" style="margin-bottom: 60px;">О мероприятии</p>
+	{# <iframe style="float: right" width="560" height="315" src="https://www.youtube.com/embed/qtnQINRvKGk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> #}
+	<div>
+		<textarea class="input_textarea" name="description" required>{{event.info.description}}</textarea>
+		<div class="video">
+			{{ event.info.embeded|raw }}
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<h2 style="font-weight: bold; text-align: left;">Местоположение</h2>
+	<p><input class="list_input cb" name="place" type="text" value="{{event.info.place}}" required></p>
+	<p class="partner">Партнеры: <input class="list_input cb" name="partners" type="text" value="{{event.info.partners}}" required></p>
+</div>
+<div class="section" style="margin-top: 50px; text-align: center;">
+		<div class="container">
+			<div class="row d-flex justify-content-end">
+				<button class="btn btn_edit btn_event" style="margin-top: 30px; margin-bottom: 10px;" id="advantage_edit">Изменить</button>
+				<button class="btn btn_save btn_event" style="margin-top: 30px; margin-bottom: 10px;" id="advantage_save" onclick="save_advantage()">Сохранить</button>
+			</div>
+		</div>
+	<div class="container-fluid">
+		<div class="row">
+			<input type="text" name="" class="title_name" id="title_advantage" placeholder="Введите название раздела" value="{{ event.reasons.title }}" readonly>
+		</div>
+		<div class="cards">
+			<div class="row" id="card_advantage">
+				{% for item in event.reasons.reasons %}
+					<div class="col-md-12 col-lg-6 col-xl-4">
+						<div class="cardsitem">
+							<div class="card__close" onclick="delete_item(this)">
+								<img src="/img/close.png">
+							</div>
+							<div class="cardsitem__image">
+								<img src="{{ item.photo }}" alt="" class="load_img">
+							</div>
+							<div class="cardsitem__text">
+								<p class="cardsitem__text_descr">
+									{{ item.text }}
+								</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<label class="btn_show">Смотреть программу мероприятия</label>
+		<div class="buttons">
+			<button class="btn btn_event" id="event_add" onclick="load_file.click()">Изменить программу</button>
+			<button class="btn btn_event">Удалить программу</button>
+		</div>
+		<input class="btn_save" id="load_file" type="file" name="">
+	</div>
+</div>
+
+{# {% if event.people %}
+	<div class="container-fluid persons">
+		<div class="row d-flex justify-content-end">
+				<button class="btn btn_edit" style="margin-top: 10px; margin-bottom: 10px;" id="persone_edit">Изменить</button>
+				<button class="btn btn_save" style="margin-top: 10px; margin-bottom: 10px;" id="persone_save" onclick="load_all('#card_persone')">Сохранить</button>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<p class="persons__text_descr">
+					Действующие лица
+				</p>
+			</div>
+		</div>
+		<div class="row" id="card_persone">
+			<div class="col-md-12 col-lg-6 col-xl-4">
+				<div class="persons__item">
+					<div class="card__close" onclick="delete_item(this)">
+						<img src="/img/close.png">
+					</div>
+					<div class="persons__item_img">
+						<img src="/img/person/2.png" alt="" class="img-fluid">
+					</div>
+					<div class="persons__item_text">
+						<p class="persons__item_text_name">
+							Тимолянов Константин Андреевич
+						</p>
+						<p class="persons__item_text_job">
+							Спикер
+						</p>
+						<p class="persons__item_text_position">
+							Системы автоматизированного проектирования
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-lg-6 col-xl-4">
+				<div class="persons__item">
+					<div class="card__close" onclick="delete_item(this)">
+						<img src="/img/close.png">
+					</div>
+					<div class="persons__item_img">
+						<img src="/img/person/3.png" alt="" class="img-fluid">
+					</div>
+					<div class="persons__item_text">
+						<p class="persons__item_text_name">
+							Толмачев Виктор Владимирович
+						</p>
+						<p class="persons__item_text_job">
+							Спикер
+						</p>
+						<p class="persons__item_text_position">
+							Мастер-классы по 3D-моделированию
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-lg-6 col-xl-4">
+				<div class="persons__item">
+					<div class="card__close" onclick="delete_item(this)">
+						<img src="/img/close.png">
+					</div>
+					<div class="persons__item_img">
+						<img src="/img/person/4.png" alt="" class="img-fluid">
+					</div>
+					<div class="persons__item_text">
+						<p class="persons__item_text_name">
+							Мощенко Вадим Федорович
+						</p>
+						<p class="persons__item_text_job">
+							Эксперт-практик
+						</p>
+						<p class="persons__item_text_position">
+							Роботехника
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-lg-6 col-xl-4">
+				<div class="persons__item">
+					<div class="card__close" onclick="delete_item(this)">
+						<img src="/img/close.png">
+					</div>
+					<div class="persons__item_img">
+						<img src="/img/person/5.png" alt="" class="img-fluid">
+					</div>
+					<div class="persons__item_text">
+						<p class="persons__item_text_name">
+							Озеров Сергей Алексеевич
+						</p>
+						<p class="persons__item_text_job">
+							Эксперт-практик
+						</p>
+						<p class="persons__item_text_position">
+							Автоматизация технологических процессов
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-12 col-lg-6 col-xl-4">
+				<div class="persons__item">
+					<div class="card__close" onclick="delete_item(this)">
+						<img src="/img/close.png">
+					</div>
+					<div class="persons__item_img">
+						<img src="/img/person/6.png" alt="" class="img-fluid">
+					</div>
+					<div class="persons__item_text">
+						<p class="persons__item_text_name">
+							Шумилин Алексей Сергеевич
+						</p>
+						<p class="persons__item_text_job">
+							Эксперт-практик
+						</p>
+						<p class="persons__item_text_position">
+							Маркетинг
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %} #}
+{% if event.projects %}
+	<div class="container-fluid p-0">
+		<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты</p>
+		<div class="row pr-0 mr-0">
+			{% set eventID = event.id %}
+			{# {% include 'events/add_btn.html.twig' with [projects, eventID] %} #}
+			{% endif %}
+			{% if event.projects %}
+			{% for item in event.projects %}
+			<div id="containerProject{{item}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+				<script type="text/javascript">
+				$('#containerProject{{ item.id }}').on('show', getProjectCard({{ item }}, {{ item }} ));
+				</script>
+				<div  style="background-image: url('/img/af.jpg'); background-size: cover;" class="project-card-header">
+					<img style="width: 40%; height: auto;" src="/img/loading.gif">
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		<p>В этом мероприятии не создано ни одного проекта.</p>
+	</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block sidebar_menu %}
+    
+{% endblock %}
+
+{% block header_buttons %}
+    
+{% endblock %}
+
+{% block includes %}
+	<link rel="stylesheet" href="/css/registration.css" crossorigin="anonymous">
+	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+	<script type="text/javascript">
+	var acctype_send;
+
+	function selectAccType(acctype) {
+		acctype_send=acctype;
+		$('#acctypeslist').hide({ effect: "slide", direction: "up" , duration: 1000, complete: function() {
+			$("."+acctype+"_reg").show();
+			$('#regform').show({ effect: "slide", direction: "down" , duration: 500});
+		}});
+	}
+		
+	function sendForm() {
+		data={};
+		form=$(".center input");
+		$("input").each(function(){
+		 	data[$(this).attr('id').substring($(this).attr('id').indexOf('_')+1)] = $(this).val(); 
+		}); //Creates data JSON by inputs
+		data['acctype']=acctype_send;
+		$.ajax({
+			url: "/registration/action",
+			method: "POST",
+			data: data,
+			success: function() {
+				alert("Регистрация завершена");
+				window.location.href = "/";
+			},
+			error: function() {
+				alert("Ошибка");
+			}
+		}); 
+	}
+</script>
+{% endblock %}
+
+{% block main %}
+	<div id="acctypeslist">
+		<div class="center">
+			<!-- <h1>Добро пожаловать в Личный Кабинет!</h1> -->
+			<h2 style="margin-bottom: 50px;">Для регистрации необходимо выбрать тип аккаунта</h2>
+			<div>
+				<div class="acctype" onclick="selectAccType('stud')">
+					<img style="margin-top: 15px;" width=150 height=150 src="/img/stud.png">
+					<p style="margin-top: 25px;"><b>Студент</b></p>
+				</div>
+				<div class="acctype" onclick="selectAccType('employee')">
+					<img style="margin-top: 15px;" width=150 height=150 src="/img/employee.png">
+					<p style="margin-top: 25px;"><b>Сотрудник</b></p>
+				</div>
+<!-- 				<div class="acctype" onclick="selectAccType('expert')">
+					<img style="margin-top: 15px;" width=150 height=150 src="/img/expert.png">
+					<p style="margin-top: 25px;"><b>Отраслевой эксперт</b></p>
+				</div> -->
+				<div class="acctype" onclick="selectAccType('org')">
+					<img style="margin-top: 15px;" width=150 height=150  src="/img/client.png">
+					<p style="margin-top: 25px;"><b>Предприятие</b></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style type="text/css">
+		.reg_btn_b{
+			margin-bottom: 10px;
+		}
+	</style>
+	
+<div  id="regform">
+	<div class="center">
+		{{ form_start(form, {'attr': {'id': 'reg_form'}}) }}
+		<p class="enter">Регистрация</p>
+		<a href="/login" class="center__text">Уже зарегистрированы?</a>
+		<div class="form_errors">
+			{{ form_errors(form) }}
+		</div>
+		{{ form_widget(form.surname, {'attr': {'class': 'reg_btn_b stud_reg employee_reg expert_reg reg_input', 'placeholder': 'Фамилия', 'id': 'surname'}}) }}
+		{{ form_widget(form.name, {'attr': {'class': 'reg_btn_b stud_reg employee_reg expert_reg reg_input', 'placeholder': 'Имя'} }) }}
+		{{ form_widget(form.patr, {'attr': {'class': 'reg_btn_b stud_reg employee_reg expert_reg reg_input', 'placeholder': 'Отчество'}}) }}
+		{{ form_widget(form.fullorgname, {'attr': {'class': 'reg_btn_b org_reg reg_input', 'placeholder': 'Полное название организации'}}) }}
+		{{ form_widget(form.university, {'attr': {'class': 'reg_btn_b stud_reg reg_input', 'placeholder': 'Учебное заведение'}}) }}
+		{# {{ form_widget(form.group, {'attr': {'class': 'stud_reg', 'placeholder': 'Группа'}}) }} #}
+		{{ form_widget(form.position, {'attr': {'class': 'reg_btn_b employee_reg expert_reg reg_input', 'placeholder': 'Должность'}}) }}
+		{{ form_widget(form.orgname, {'attr': {'class': 'reg_btn_b expert_reg reg_input', 'placeholder': 'Название организации', 'id': 'orgname'}}) }}
+		{{ form_widget(form.fio_contact, {'attr': {'class': 'reg_btn_b org_reg reg_input', 'placeholder': 'ФИО контактного лица'}}) }}
+		{{ form_widget(form.contact_position, {'attr': {'class': 'reg_btn_b org_reg reg_input', 'placeholder': 'Должность контактного лица'}}) }}
+		{{ form_widget(form.structure, {'attr': {'class': 'reg_btn_b employee_reg reg_input', 'placeholder': 'Структура'}}) }}
+		{{ form_widget(form.phone, {'attr': {'class': 'reg_btn_b stud_reg employee_reg expert_reg reg_input', 'placeholder': 'Мобильный телефон'}}) }}
+		{{ form_widget(form.email, {'attr': {'class': 'reg_btn_b stud_reg employee_reg expert_reg org_reg reg_input', 'placeholder': 'Email'}}) }}
+		{#{ form_widget(form.save) }#}
+		<!-- <button type="button" class="btn btn-success" onclick="sendForm()">Получить пароль по почте</button> -->
+		{{ form_end(form) }}
+	</div>
+</div>
+{% endblock %}

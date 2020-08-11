@@ -1,0 +1,592 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+<script src="/js/about.js"></script>
+<style type="text/css">
+	
+	.title_font{
+		font-weight: bold;
+	    text-align: left;
+	    font-size: 34px;
+	    color: #1d1d1d;
+	    font-family: Arial;
+	    width: 100%;
+	    margin-bottom: 1.5rem;
+	    color: #1D3351;
+	}
+
+	.font{
+		font-family: "Open Sans", sans-serif;
+		font-style: normal;
+		font-size: 18px;
+		text-align: justify;
+		font-feature-settings: 'salt' on;
+		line-height: 221.68%;
+	}
+
+	.width {
+		width: 427px;
+	}
+
+	.font_bold{
+		font-weight: bold !important;
+	}
+
+
+	.mb_big{
+		margin-bottom: 150px !important;
+	}
+
+	.mb_medium{
+		margin-bottom: 100px !important;
+	}
+
+	@media (max-width: 1200px){
+		.mb_big{
+			margin-bottom: 30px !important;
+		}
+	}
+
+	.card{
+		border-radius: 10px;
+		display: none;
+		width: 85%;
+		margin: 15px 15%;
+	}
+
+	.card-title{
+		margin: 10px 0 60px 70px;
+	}
+
+	.active{
+		display: block;
+	}
+
+	.group_img{
+		float: left;
+		width: 50%;
+		height: auto;
+		display: flex;
+		align-self: center;
+		/*shape-outside: circle(50%);*/
+		/*clip-path: circle(50%);*/
+		/*margin-right: 15px;*/
+	}
+
+	.group_item{
+		margin: 30px 0;
+		cursor: pointer;
+	}
+
+	.group_item:hover{
+		text-decoration: underline;
+	}
+
+	.group_type{
+		list-style-type: none;
+		display: flex;
+		/*align-items: center;*/
+		flex-direction: column;
+		padding-inline-start: 0px;
+	}
+
+	.group_type > li > div {
+		display: inline-block;
+	}
+
+	.group_type > li > img {
+		display: inline-block;
+	}
+
+	.float_img{
+		width: 64px !important;
+		height: 64px;
+	}
+
+	.card_img{
+		position: absolute;
+		top: 10px;
+    	left: 20px;
+		width: 64px;
+		height: 64px;
+	}
+
+	.btn-proj{
+		width: 40%;
+		margin: 0 30%;
+		border: 1px solid #2D9CDB;
+		border-radius: 10px;
+		color: #2D9CDB;
+		font-size: 14px;
+	}
+
+	.flex_group{
+		display: flex;
+		align-items: center;
+	}
+
+
+	table{
+		margin-bottom: 20px;
+	}
+
+	td:first-child{
+		vertical-align: top;
+		padding: 20px 15px;
+	}
+
+	@media (max-width: 1200px){
+		.card{
+			width: 100%;
+			margin: 15px 0;
+		}
+
+		.w-80{
+			width: 100% !important;
+		}
+	}
+</style>
+
+<!-- Modal 1 -->
+<style>
+.modal_tbody{
+	padding: 30px 15px;
+	display: flex;
+	flex-direction: column;
+}
+.modal_tr {
+	padding: 5px;
+	display: flex;
+	flex-direction: row;
+	align-content: flex-start;
+	width: 100%;
+}
+
+.modal_tr .modal_td:first-child{
+	width: 15%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.modal_tr .modal_td{
+	width: 85%;
+	padding: 0 15px;
+	text-align: justify;
+}
+
+.modal_tr .modal_td span {
+	display: block;
+	color: #7C7C7C;
+}
+
+/*new styles*/
+
+.content {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	-ms-align-items: center;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.light__bg {
+	background: #EBEFFC;
+}
+
+.dark__bg {
+	background: #E3E6F2;
+	border-radius: 15px;
+}
+
+.dark__bg .col-xl-6,
+.col-md-6: {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.about__title {
+	width: 82%;
+	margin: 15px auto;
+	font-size: 20px;
+	line-height: 28px;
+	color: #1D1D1D;
+	font-weight: bold;
+}
+
+.about__list {
+	width: 90%;
+	margin: 15px auto;
+}
+
+.about__item {
+	list-style: none;
+	font-size: 18px;
+	line-height: 28px;
+	text-indent: 1.5px;
+	font-feature-settings: 'liga' off;
+	color: #1D1D1D;
+}
+
+.row {
+	padding: 0 80px;
+}
+
+
+@media(max-width: 450px) {
+	.about__title {
+		width: 100%;
+	}
+
+	.about__list {
+		width: 100%;
+		padding: 0;
+	}
+
+	.row {
+		padding: 0;
+	}
+
+	.text-center {
+		text-align: left !important;
+	}
+}
+
+</style>
+    
+{% endblock %}
+
+{% block content %}
+		<h1 class="title_font mb_medium">О платформе</h1>
+		<div class="container-fluid pb-5">
+			<div class="row">
+				<div class="col-xl-6 text-center">
+					<img class="img-fluid" src="/img/donstu_logo.png">
+				</div>
+				<div class="col-xl-6 d-flex align-items-center">
+					<p class="width font text-center font_bold" style="margin: 5% auto;">«Проекториум» – платформа, разработанная ДГТУ для эффективной организации проектной деятельности среди студентов. Проекториум  позволяет обучающимся присоединяться к разработке реальных проектов от действующих предприятий.</p>
+				</div>
+			</div>
+		</div>
+
+    <div class="container-fluid pt-5 pb-5 dark__bg ">
+    	<div class="row">
+    		<div class="col-xl-6 d-flex align-items-center">
+    			<p class="width font" style="margin: 5% auto;">Точкой входа в «Проекториум» для предприятий является заполнение заявки с техническим заданием для создания собственной задачи на доске проектов.  Заказчиком проекта также может выступать и сам университет в лице структурных подразделений, сотрудников, осуществляющих исследования, разработки и коммерциализацию научной деятельности, а также малые инновационные предприятия.</p>
+    		</div>
+    		<div class="col-xl-6  text-center">
+    			<img class="img-fluid" src="/img/About_proectorium.png">
+    		</div>
+    	</div>
+    </div>
+
+	<div class="container-fluid pt-5 pb-5">
+    	<div class="row content">
+    		<div class="col-xl-6 text-center">
+    			<img class="img-fluid" src="/img/Group 180.png">
+    		</div>
+    		<div class="col-xl-6">
+    			<p class="about__title">Студентам платформа позволяет:</p>
+    			<ul class="about__list">
+    				<li class="about__item">
+    					– участвовать в проектных мероприятиях
+    				</li>
+    				<li class="about__item">
+    					– присоединяться к разработке реальных   проектов от предприятий в определённой роли
+    				</li>
+    				<li class="about__item">
+    					– прикоснуться к будущей профессиональной деятельности
+    				</li>
+    				<li class="about__item">
+    					– отслеживать актуальные компетенции и работать над их развитием
+    				</li>
+    				<li class="about__item">
+    					– попробовать себя в других ролях, нехарактерных для его профиля обучения
+    				</li>
+    				<li class="about__item">
+    					– заинтересовать потенциальных работодателей, участвуя в разработке проектов и демонстрируя свои компетенции
+    				</li>
+    			</ul>
+    		</div>
+    	</div>
+    </div>
+
+	<div class="container-fluid pt-5 pb-5 dark__bg">
+    	<div class="row content">
+    		<div class="col-xl-6">
+    			<p class="about__title">Предприятиям платформа позволяет:</p>
+    			<ul class="about__list">
+    				<li class="about__item">
+						– решать текущие производственные задачи с применением новых и свежих идей
+    				</li>
+    				<li class="about__item">
+    					– проводить научно-исследовательские работы на базе университета
+    				</li>
+    				<li class="about__item">
+    					– разрабатывать и внедрять инновационные проекты по повышению производительности труда
+    				</li>
+    				<li class="about__item">
+    					– разрабатывать и внедрять инновационные проекты по повышению производительности труда
+    				</li>
+    				<li class="about__item">
+    					– выявлять талантливых студентов и приглашать заинтересованных на стажировку или работу
+    				</li>
+    			</ul>
+    		</div>
+    		<div class="col-xl-6   text-center">
+    			<img class="img-fluid" src="/img/Group 170.png">
+    		</div>
+    	</div>
+    </div>	
+
+	<div class="container-fluid pt-5 pb-5">
+    	<div class="row content">
+    		<div class="col-xl-6  text-center">
+    			<img class="img-fluid" src="/img/Group 171.png">
+    		</div>
+    		<div class="col-xl-6">
+    			<p class="about__title">Сотрудникам платформа позволяет:</p>
+    			<ul class="about__list">
+    				<li class="about__item">
+						– принимать участие в решении реальных задач и проектов, предоставленных предприятиями
+    				</li>
+    				<li class="about__item">
+    					 – воплощать собственные идеи, инициируя проекты
+    				</li>
+    				<li class="about__item">
+    					– получить поддержку от заказчиков проекта в рамках проведения научно-исследовательских работ и выполнения  хоздоговорных работ
+    				</li>
+    				<li class="about__item">
+    					– предложить студентам проекты для прохождения практик, в качестве тематик курсовых и дипломных работ
+    				</li>
+    				<li class="about__item">
+    					– получать информацию о своих студентах, задействованных в решении задач и проектов
+    				</li>
+    			</ul>
+    		</div>
+    	</div>
+    </div>
+
+    <div class="container-fluid pt-5 pb-5 dark__bg">
+    	<div class="row content">
+    		<div class="col-xl-6">
+    			<p class="about__title">Отраслевым экспертам платформа позволяет:</p>
+    			<ul class="about__list">
+    				<li class="about__item">
+						– укрепить личный бренд эксперта определенной профессиональной области, оказывая экспертную поддержку проектным командам
+    				</li>
+    				<li class="about__item">
+    					–  воплотить собственные идеи, создавая проекты на базе университета
+    				</li>
+    				<li class="about__item">
+    					– принимать участие в проектных мероприятиях
+    				</li>
+    			</ul>
+    		</div>
+    		<div class="col-xl-6  text-center">
+    			<img class="img-fluid" src="/img/Group 173.png">
+    		</div>
+    	</div>
+    </div>
+<!--     <div class="container-fluid">
+    	<div class="row">
+    		<div class="col-xl-6 h-50 w-100 flex_group">
+    			<img class="group_img" src="/img/shester.png">
+    			<ul class="group_type">
+    				<li class="group_item" data-target="stud"><img class="float_img" src="/img/stud.png" alt=""> Студентам</li>
+    				<li class="group_item" data-target="client"><img class="float_img" src="/img/client.png" alt=""> Предприятиям</li>
+    				<li class="group_item" data-target="employee"><img class="float_img" src="/img/employee.png" alt=""> Сотрудникам</li>
+    				<li class="group_item text-nowrap" data-target="expert"><img class="float_img" src="/img/expert.png" alt="">Отраслевым экспертам</li>
+    			</ul>
+    			<div class="clearfix"></div>
+    		</div>
+    		<div class="col-xl-6 list_card">
+    			<div class="card active" id="stud">
+				  <div class="card-body">
+				  	<img src="/img/stud.png" class="card_img" alt="">
+				    <h5 class="card-title"> Студентам платформа позволяет:</h5>
+				    <table>
+	    				<tbody>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>участвовать в проектных мероприятиях</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>присоединяться к разработке реальных проектов от предприятий в определённой роли</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>отслеживать актуальные компетенции и работать над их развитием</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>прикоснуться к будущей профессиональной деятельности</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>попробовать себя в других ролях, нехарактерных для его профиля обучения</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>заинтересовать потенциальных работодателей, участвуя в разработке проектов и демонстрируя свои компетенции</td>
+	    					</tr>
+	    				</tbody>
+	    			</table>
+				    <div style="text-align: right;">
+					    <a href="#" data-toggle="modal" data-target=".modal-1">Подробнее о ролях >></a>
+				    </div>
+				  </div>
+				</div>
+				<div class="card" id="client">
+				  	<div class="card-body">
+						<img src="/img/client.png" class="card_img" alt=""> 
+					    <h5 class="card-title">Предприятиям платформа позволяет:</h5>
+					    <table>
+	    				<tbody>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>решать текущие производственные задачи с применением новых и свежих идей</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>проводить научно-исследовательские работы на базе университета</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>разрабатывать и внедрять инновационные проекты по повышению производительности труда</td>
+	    					</tr>
+	    					<tr>
+	    						<td><img src="/img/check_list.png" alt=""></td>
+	    						<td>выявлять талантливых студентов и приглашать заинтересованных на стажировку или работу</td>
+	    					</tr>
+	    				</tbody>
+	    			</table>
+				    <button class="btn btn-proj">Предложить проект</button>
+				  </div>
+				</div>
+				<div class="card" id="employee">
+				  <div class="card-body">
+				  	<img src="/img/employee.png" class="card_img" alt="">
+				    <h5 class="card-title"> Сотрудникам платформа позволяет:</h5>
+				    <table>
+				    	<tbody>
+				    		<tr>
+				    			<td><img src="/img/check_list.png" alt=""></td>
+				    			<td>возможность принять участие в решении реальных задач и проектов, предоставленных предприятиями:
+									<ul class="group_type">
+										<li class="pt-2 pb-2"> - реализация научно-исследовательских проектов,  имеющих практическое применение</li>
+										<li class="pb-2"> - выполнение хоздоговорных работ</li>
+										<li class="pb-2"> - написание научных статей</li>
+									</ul>
+								</td>
+				    		</tr>
+				    		<tr>
+				    			<td><img src="/img/check_list.png" alt=""></td>
+				    			<td>возможность воплощать собственные идеи, инициируя проекты</td>
+				    		</tr>
+				    		<tr>
+				    			<td><img src="/img/check_list.png" alt=""></td>
+				    			<td>получение поддержки от заказчиков проекта в рамках проведения научно-исследовательских работ и хоздоговорных работ</td>
+				    		</tr>
+				    		<tr>
+				    			<td><img src="/img/check_list.png" alt=""></td>
+				    			<td>предложение студентам проектов для прохождения практик, в качестве тематик курсовых и дипломных работ с использованием платформы как банка с техническими заданиями</td>
+				    		</tr>
+				    		<tr>
+				    			<td><img src="/img/check_list.png" alt=""></td>
+				    			<td>получение информации о своих студентах, задействованных в решении задач и проектов</td>
+				    		</tr>
+				    	</tbody>
+				    </table>
+				  </div>
+				</div>
+				<div class="card" id="expert">
+				  <div class="card-body">
+				  	<img src="/img/expert.png" class="card_img" alt="">
+				    <h5 class="card-title">Отраслевым экспертам платформа позволяет:</h5>
+				    <table>
+				    	<tbody>
+				    		<tr>
+				    			<td><img src="/img/check_list.png" alt=""></td>
+				    			<td>укрепление личного бренда эксперта определенной профессиональной области, оказывая экспертную поддержку проектным командам</td>
+				    		</tr>
+				    		<tr>
+								<td><img src="/img/check_list.png" alt=""></td>
+								<td>возможность воплощать собственные идеи, создавая проекты на базе университета</td>
+				    		</tr>
+				    	</tbody>
+				    </table>
+				    <div style="text-align: right;">
+					    <a href="#" data-toggle="modal" data-target=".modal-2">Кто такие отраслевые эксперты?</a>
+				    </div>
+				  </div>
+				</div>
+    		</div>
+    	</div>
+    </div>
+
+    <div class="modal fade modal-1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<table class="modal_table">
+					<tbody class="modal_tbody">
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/role.png"></td><td class="modal_td">Роль – функции, которые выполняет участник в команде, они характеризуются базовыми, техническими и надпрофессиональными компетенциями, которые необходимы для выполнения задач в рамках роли.</td>
+						</tr>
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/lamp.png"></td><td class="modal_td">Базовые компетенции – компетенции, свойственные конкретной профессиональной отрасли, которые приобретаются за счет программ формального образования и обучения в рамках теоретических знаний.<span class="example">Например, умение работать с технической документацией ЕСКД , знание языка программирования Python,знание основ маркетинга.</span></td>
+						</tr>
+						<tr class="modal_tr">
+							<td class="modal_td"class="modal_td"><img src="/img/hammer.png"></td><td class="modal_td">Технические компетенции – компетенции, необходимые для выполнения прикладных задач. Способности и знания для практического применения конкретных инструментов, оборудования и программного обеспечения. К ним относятся информационные технологии, математические, научные знания и многое другое, характерное для определенной профессиональной деятельности.<span class="example">Например, проектирование в SolidWorks, создание иллюстраций в Adobe Illustrator, математическое моделирование в Matlab.</span></td>
+						</tr>
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/plugin.png"></td><td class="modal_td">Надпрофессиональные компетенции – это компетенции, необходимые для успеха в профессиональной деятельности. Личностные качества, которые усиливают технические компетенции и позволяют лучше осваивать базовые компетенции.<span class="example">Например, эмоциональный интеллект, усидчивость, стрессоустойчивость.</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<table class="modal_table">
+					<tbody class="modal_tbody">
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/group_expert.png"></td><td class="modal_td">Отраслевой эксперт – это представитель от компании (организации), владеющий актуальными знаниями в своей профессиональной области.)</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div> -->
+{% endblock %}

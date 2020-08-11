@@ -1,0 +1,180 @@
+{% block roleProject %}
+<style>
+.reg_header{
+    background-color: #8E8E8E;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    height: 65px;
+    display: flex;
+    align-items: center;
+}
+
+.reg_header p {
+    margin: 0; 
+    font-size: 14px;
+}
+
+.reg_header img {
+    margin-left: 20px;
+    margin-right: 25px;
+}
+
+.reg_body{
+    padding: 23px 35px !important;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    text-align: justify;
+}
+
+.btn-give {
+    width: auto;
+    margin: 20px auto;
+}
+</style>
+{% if not is_granted("ROLE_USER") %}
+    <div id="regmodal" class="modal fade modal-reg-401-platform" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header reg_header">
+                <img src="/img/reg.png">
+                <p>Вы не зарегистрированы на платформе!</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body reg_body">
+                <p>Для того чтобы принять участие в проекте в качестве какой либо роли необходимо зарегистрироваться. После регистрации вернитесь на «Главную страницу» платформы, где будет опубликован предстоящий проект. Чтобы присоединиться, нажмите «Подать заявку на участие».</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% if role.name == "Наставник" or role.name == "Куратор"%}
+<div class="card_team">
+	<div class="card_team_head">
+		<img class="card_team_img" src="/img/per.png"><p class="card_team_title">{{role.name}}</p>
+	</div>
+	<div class="card_team_body">
+		<p class="body_title">Требуемые компетенции:</p>
+		<table>
+			<tbody class="list_compet">
+				{% for key,item in role.base %}
+				{% if key < 2 %}
+				<tr class="item_compet">
+					<td>{{item|raw}}</td><td><!-- <img src="/static/img/star.png"> --></td>
+				</tr>
+				{% endif %}
+				{% endfor %}
+
+                  <!-- <tr class="item_compet"> 
+                    <td>инженерный менеджмент</td><td>6<img src="/static/img/star.png"></td>
+                  </tr>
+                  <tr class="item_compet">
+                    <td>тьюторство</td><td>3<img src="/static/img/star.png"></td>
+                </tr> -->
+            </tbody>
+        </table>
+        <div class="text_info">
+        	<!-- <p>Опыт наставничества: <span>не требуется</span></p> -->
+        </div>
+        {% if is_granted('ROLE_STUDENT') %}
+        <button  style="background-color:  #1B4F44; color: white" type="button" onclick="sendClaim('{{ role.id }}', {{ user.id }});" class="btn btn-create">Подать заявку на участие</button>
+        {% elseif is_granted('ROLE_EMPLOYEE') and role.id == 'curator' %}
+        <button  style="background-color:  #1B4F44; color: white" type="button" onclick="sendEmployeeClaim('{{ role.id }}', {{ user.id }});" class="btn btn-create">Подать заявку на участие</button>
+        {% elseif not is_granted("ROLE_USER") %}
+            <button style="background-color:  #1B4F44; color: white" type="button" data-toggle="modal" data-target="#regmodal" class="btn btn-create">Подать заявку на участие</button>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="card_team_hire">
+	<img class="card_team_hire_img" src="/img/per.png">
+	<div class="card_team_hire_head">
+		<p class="card_team_hire_title">{{role.name}}</p> 
+	</div>
+	<div class="card_team_hire_body">
+		<p class="body_hire_title">Компетенции:</p>
+		<table>
+			<tbody class="list_hire_compet">
+				{% if role.base %}
+				<tr class="item_hire_compet">
+					<td>Базовые:</td><td>{{role.base[0]|raw}}</td>
+				</tr>
+				{% endif %}
+				{% if role.tech %}
+				<tr class="item_hire_compet"> 
+					<td>Профессиональные:</td><td>{{role.tech[0]|raw}}</td>
+				</tr>
+				{% endif %}
+				{% if role.profi %}
+				<tr class="item_hire_compet">
+					<td>Надпрофес<br>сиональные:</td><td>{{role.profi[0]|raw}}</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		{% set modalId = random() %}
+		<div data-toggle="modal" data-target=".modal{{modalId}}" class="btn-more btn_1">Показать все>></div>
+		<div class="text_hire_info">
+			<!-- <p>Опыт разработки: <span>3  проекта</span></p> -->
+{% if is_granted('ROLE_STUDENT') and not flag %}
+	<button  style="color: white" type="button" onclick="sendClaim('{{ role.id }}', {{ user.id }});" class="btn btn-give">Подать заявку на участие</button>
+{% elseif is_granted('ROLE_STUDENT') and flag %}
+    <button style="background: #F4A732FF !important" type="button" class="btn btn-give">Вы уже подали заявку!</button>
+{% elseif is_granted('ROLE_EMPLOYEE') and role.id == 'curator' %}
+	<button  style="color: white" type="button" onclick="sendEmployeeClaim('{{ role.id }}', {{ user.id }});" class="btn btn-give">Подать заявку на участие</button>
+{% elseif not is_granted("ROLE_USER") %}
+            <div class="text_mentor_info">
+                <button style="background-color:  #1B4F44; color: white" type="button" data-toggle="modal" data-target="#regmodal" class="btn btn-create">Подать заявку на участие</button>
+            </div>
+{% endif %}
+		</div>
+	</div>
+</div>
+<div id="{{modalId}}" class="modal fade bd-example-modal-lg modal{{modalId}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg maxw">
+    <div class="modal-content">
+      	<div class="modal-header">
+			<p class="modal__header_title">Роль “{{role.name}}”</p>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			    <span aria-hidden="true">&times;</span>
+    		</button>
+      </div>
+      <div class="modal-body">
+        	<div class="container-fluid">
+        		<div class="row">
+        			<div class="col-md-12">
+        				<!-- <p class="modal__body_title">{{project.info.title}}</p> -->
+        			</div>
+        			<div class="col-md-4">
+        				<ul class="modal__body_list">
+        					<li class="modal__body_item bold">Базовые:</li>
+        					{% for item in role.base %}
+        					    <li class="modal__body_item">{{item|raw}}</li>
+        					{% endfor %}
+        				</ul>
+        			</div>
+        			<div class="col-md-4">
+        				<ul class="modal__body_list pl-5">
+        					<li class="modal__body_item bold">Профессиональные:</li>
+        					{% for item in role.tech %}
+        					    <li class="modal__body_item">{{item|raw}}</li>
+        					{% endfor %}
+        				</ul>
+        			</div>
+        			<div class="col-md-4">
+        				<ul class="modal__body_list">
+        					<li class="modal__body_item bold">Надпрофессиональные:</li>
+        					{% for item in role.profi %}
+        					    <li class="modal__body_item">{{item|raw}}</li>
+        					{% endfor %}
+        				</ul>
+        			</div>
+        		</div>
+        	</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

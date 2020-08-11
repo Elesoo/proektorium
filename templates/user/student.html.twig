@@ -1,0 +1,909 @@
+{% block includes %}
+    <link rel="stylesheet" type="text/css" href="/css/inquirer.css">
+    <link rel="stylesheet" href="/css/select2.css">
+	<script src="/js/select2.full.js"></script>
+
+	    <script src="/js/cropper.js"></script>
+<script src="/js/upload_avatars.js"></script>
+
+<link rel="stylesheet" href="/css/cropper.css">
+{% endblock %}
+{% block modals %}
+<script type="text/javascript">
+function getUserSkills(){
+	$.ajax({
+		url:"/user/student/getSkills/skills",
+		type:'GET',
+		success: function(data){
+			$('#skills-body').html(data);
+		}
+	});
+}
+function getUserWannaLearn(){
+	$.ajax({
+		url:"/user/student/getSkills/wannalearn",
+		type:'GET',
+		success: function(data){
+			$('#wannalearn').html(data);
+		}
+	});
+}
+function getProjectInvite(projid, roleid, containerid)
+{
+	$.ajax({
+		url:"/user/student/showInvite/"+projid+"/"+roleid,
+		type:'GET',
+		success: function(data){
+			$('#container'+containerid).html(data);
+		}
+	});
+}
+function getMyProject(projid, roleid, containerid)
+{
+	$.ajax({
+		url:"/user/student/getRoleCard/"+projid,
+		type:'POST',
+		data: {role: roleid},
+		success: function(data){
+			$('#containerRole'+containerid).html(data);
+		}
+	});
+}
+function denyRole(projid, roleid)
+{
+	$.ajax({
+		url:"/user/student/project/"+projid+"/denyRole",
+		type:'POST',
+		data: {role: roleid},
+		success: function(data){
+			alert("Заявка отклонена!");
+			window.location.href = "/user";
+		},
+		error: function(data){
+			alert("Ошибка при отклонении заявки!");
+		}
+	});
+}
+function allowRole(projid, roleid)
+{
+	$.ajax({
+		url:"/user/student/project/"+projid+"/allowRole",
+		type:'POST',
+		data: {role: roleid},
+		success: function(data){
+			if (data == "busy")
+				alert("Роль уже занята!");
+			else
+				alert("Заявка принята!");
+			window.location.href = "/user";
+		},
+		error: function(data){
+			alert("Ошибка при принятии заявки!");
+		}
+	});
+}
+function getClaimStud(projid, roleid, studid, containerid)
+{
+	$.ajax({
+		url:"/user/student/mentor/"+projid,
+		type:'POST',
+		data: {role: roleid, stud: studid},
+		success: function(data){
+			$('#claimCtr'+containerid).html(data);
+		}
+	});
+}
+function allowRoleByMentor(projid, roleid, studid)
+{
+	$.ajax({
+		url:"/user/student/mentor/"+projid+"/allowRole",
+		type:'POST',
+		data: {role: roleid, stud: studid},
+		success: function(data){
+			if (data == "all good")
+			{
+				alert("Заявка успешно одобрена!");
+				window.location.href = "/user";
+			}
+		},
+		error: function(data){
+			if (data == "Didn't allow to hold more than one role in one project")
+			{
+				alert("Нельзя брать студента в одну команду на две роли!");
+				window.location.href = "/user";
+			}
+			else
+				alert("Не удалось принять заявку!");
+		}
+	});
+}
+function denyRoleByMentor(projid, roleid, studid)
+{
+	$.ajax({
+		url:"/user/student/mentor/"+projid+"/denyRole",
+		type:'POST',
+		data: {role: roleid, stud: studid},
+		success: function(data){
+			if (data == "all good")
+			{
+				alert("Заявка успешно отклонена!");
+				window.location.href = "/user";
+			}
+		},
+		error: function(data){
+			alert("Не удалось отклонить заявку!");
+		}
+	});	
+}
+
+	$(document).ready(function(){
+		$('.js-example').val("{{student.education.group}}");
+		$('.js-example').select2();
+	});
+</script>
+
+<style>
+	
+	.img-container img {
+  max-width: 100%;
+}
+</style>
+
+
+<!-- Modal 1 -->
+<style>
+.modal_tbody{
+	padding: 50px 61px 62px 32px;
+	display: flex;
+	flex-direction: column;
+}
+.modal_tr {
+	padding-bottom: 30px;
+	display: flex;
+	flex-direction: row;
+	align-content: flex-start;
+	width: 100%;
+}
+
+.modal_tr .modal_td:first-child{
+	width: 15%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding-right: 25px;
+}
+
+.modal_tr .modal_td{
+	width: 85%;
+	/*padding: 0 15px;*/
+	text-align: justify;
+	line-height: 22px;
+	font-size: 16px;
+}
+
+.modal_tr .modal_td span {
+	display: block;
+	color: #7C7C7C;
+}
+</style>
+
+
+<!-- Reg well modal -->
+<style>
+.modal-content{
+	border-radius: 10px;
+}
+.reg_header{
+	background-color: #8E8E8E;
+	color: white;
+	border-radius: 10px 10px 0 0;
+	height: 65px;
+	display: flex;
+	align-items: center;
+}
+
+.reg_header p {
+	margin: 0; 
+}
+
+.reg_header img {
+	margin-left: 20px;
+	margin-right: 25px;
+}
+
+.reg_body{
+	padding: 23px 35px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	text-align: justify;
+}
+
+.modal_link{
+	text-decoration: underline;
+}
+</style>
+
+<style>
+.role_student_compet_block{
+	padding: 19px 30px;
+}
+
+.role_student_compet_title{
+	color: #1D3351;
+	font-family: "Open Sans", sans-serif;
+}
+
+.role_student_compet_list{
+	list-style-type: none;
+	padding-inline-start: 0px;
+	padding-left: 0px !important;
+	color: #1D3351;
+	border-bottom: .5px solid #AAAAAA;
+	max-height: 90px;
+	overflow-y: auto;
+	padding: 0 10px;
+}
+
+.role_student_compet_item{
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.numb{
+	width: 80%;
+	display: flex;
+	align-items: center;
+}
+
+.numb:before{
+	content: "";
+	width: 7px;
+	height: 1px;
+	background-color: #AAAAAA;
+	margin-right: 8px;
+}
+
+.color_green{
+	color: #63C9A4;
+}
+
+.role_student_compet_list::-webkit-scrollbar {
+	width: 5px;
+}
+
+.role_student_compet_list::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px #AAAAAA; 
+	border-radius: 10px;
+}
+
+.role_student_compet_list::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px #000000; 
+}
+
+.select2-container{
+	width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+	text-align: left;
+	padding-left: 0;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single{
+	background-color: #fff;
+}
+
+.select2-container--default .select2-selection--single{
+	border-radius: 0;
+	background-color: #fff;
+	border: 0 !important;
+	border-bottom: 0.5px solid #837E7E !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b{
+	border-width: 6px 3px 0px 3px;
+	border-color: black transparent transparent transparent;
+	margin-left: 2px;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b{
+	border-width: 6px 3px 0px 3px;
+	border-color: black transparent transparent transparent;
+}
+
+</style>
+
+<div class="modal fade modal-1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<table class="modal_table">
+					<tbody class="modal_tbody">
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/role.png"></td><td class="modal_td"><span style="font-weight: bold;color: #000;display: inline-block;">Роль </span> – функции, которые выполняет участник в команде, они характеризуются базовыми, техническими и надпрофессиональными компетенциями, которые необходимы для выполнения задач в рамках роли.</td>
+						</tr>
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/lamp.png"></td><td class="modal_td"><span style="font-weight: bold;color: #000;display: inline-block;">Базовые компетенции </span> – компетенции, свойственные конкретной профессиональной отрасли, которые приобретаются за счет программ формального образования и обучения в рамках теоретических знаний.<span class="example">Например, умение работать с технической документацией ЕСКД , знание языка программирования Python,знание основ маркетинга.</span></td>
+						</tr>
+						<tr class="modal_tr">
+							<td class="modal_td"class="modal_td"><img src="/img/hammer.png"></td><td class="modal_td"><span style="font-weight: bold;color: #000;display: inline-block;">Профессиональные компетенции </span> – компетенции, необходимые для выполнения прикладных задач. Способности и знания для практического применения конкретных инструментов, оборудования и программного обеспечения. К ним относятся информационные технологии, математические, научные знания и многое другое, характерное для определенной профессиональной деятельности.<span class="example">Например, проектирование в SolidWorks, создание иллюстраций в Adobe Illustrator, математическое моделирование в Matlab.</span></td>
+						</tr>
+						<tr class="modal_tr">
+							<td class="modal_td"><img src="/img/plugin.png"></td><td class="modal_td"><span style="font-weight: bold;color: #000;display: inline-block;">Надпрофессиональные компетенции </span> – это компетенции, необходимые для успеха в профессиональной деятельности. Личностные качества, которые усиливают технические компетенции и позволяют лучше осваивать базовые компетенции.<span class="example">Например, эмоциональный интеллект, усидчивость, стрессоустойчивость.</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="mySkillsModal" tabindex="-1" role="dialog" aria-labelledby="mySkillsModal" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Мои навыки</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="skills-body" class="modal-body" style="margin-bottom: 60px;">
+				{% block modal_body %}
+				<img style="width: 20%; margin: 0 40%;" src="/img/loading.gif">	
+				{% endblock %}
+			</div>
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single" style="bottom: 30px;">
+				<button style="background-color:  #1B4F44; color: white" type="button" class="btn" onclick="sendSkills()">Сохранить</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="wannaLearnModal" tabindex="-1" role="dialog" aria-labelledby="wannaLearnModal" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" style="max-width: 1000px;" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Хочу освоить</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="wannalearn" class="modal-body" style="margin-bottom: 60px;">
+				<img style="width: 20%; margin: 0 40%;" src="/img/loading.gif">
+			</div>
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single" style="bottom: 30px;">
+				<button style="background-color:  #1B4F44; color: white" type="button" class="btn" onclick="sendSkills(true)">Сохранить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+<!-- Modal reset Password -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="inputPassword5">Старый пароль*</label>
+		<input type="password" id="inputPasswordPast" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Новый пароль*</label>
+		<input type="password" id="inputPasswordNew" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Повторно новый пароль*</label>
+		<input type="password" id="inputPasswordNewRep" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">Сменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+<div class="section">
+	<p>ВАШ ЛИЧНЫЙ КАБИНЕТ</p>
+	<div id="leftbar">
+		<div class="crd profile-card">
+			<p>{{ student.full_name }}</p>
+			<img class="img_profile" width=200 height=200 src="/user/getAvatar">
+			<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+				<button type="button" class="btn btn-profile" onclick="load_input.click()">Изменить фото</button>
+				<input id="load_input" class="sr-only" type="file" accept="image/*">
+				<button type="button" class="btn btn-profile" data-toggle="modal" data-target="#resetPassword">Изменить пароль</button>
+			</div>
+		</div>
+
+		<div class="crd statusicons-card">
+			<p class="crd-caption crd-caption-left">Мои статусы</p>
+					{# <img width=60 height=60 src="img/logo.png">
+					<img width=60 height=60 src="img/logo.png">
+					<img width=60 height=60 src="img/logo.png"> #}
+					{% if student.statuses %}
+					{% for status in student.statuses %}
+					<img width="60" height="60" src="img/logo.png">
+					{% endfor %}
+					{% else %}
+					<p>У вас еще нет статусов!</p>
+					{% endif %}
+				</div>
+
+				<div class="crd">
+					<p class="crd-caption">Опыт проектирования</p>
+					<p>Опыт разработки <span class="experience-count">{{ student.projects_count }}</span></p>
+					<p>Участие в мероприятиях <span class="experience-count">0</span></p>
+					<p>Опыт наставничества <span class="experience-count">{{ student.mentorExperience }}</span></p>
+				</div>
+
+
+				<div class="crd">
+					<p class="crd-caption">Роли</p>
+					{% if data4 %}
+					<ul style="max-height: 100px; overflow: auto;">
+						{% for role in data4 %}
+							<li>{{role}}</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<p> У вас нет ролей </p>
+					{% endif %}
+				</div>
+
+
+				<div class="crd">
+					<p class="crd-caption">Мои компетенции</p>
+					<div class="role_student_compet_block">
+						<p class="role_student_compet_title">Базовые:</p>
+						<ul class="role_student_compet_list">
+							{% if data2['base'] %}
+							{% for skill in data2['base'] %}
+							<li class="role_student_compet_item"><span class="numb">{{skill.name}}</span><span class="color_green">0</span></li>
+							{% endfor %}
+							{% else %}
+							<li class="role_student_compet_item"><span class="numb">Нет компетенций этой категории</span><span class="color_green"></span></li>
+							{% endif %}
+						</ul>
+						<p class="role_student_compet_title">Профессиональные:</p>
+						<ul class="role_student_compet_list">
+							{% if data2['tech'] %}
+							{% for skill in data2['tech'] %}
+							<li class="role_student_compet_item"><span class="numb">{{skill.name}}</span><span class="color_green">0</span></li>
+							{% endfor %}
+							{% else %}
+							<li class="role_student_compet_item"><span class="numb">Нет компетенций этой категории</span><span class="color_green"></span></li>
+							{% endif %}
+						</ul>
+						<p class="role_student_compet_title">Надпрофессиональные:</p>
+						<ul class="role_student_compet_list">
+							{% if data2['profi'] %}
+							{% for skill in data2['profi'] %}
+							<li class="role_student_compet_item"><span class="numb">{{skill.name}}</span><span class="color_green">0</span></li>
+							{% endfor %}
+							{% else %}
+							<li class="role_student_compet_item"><span class="numb">Нет компетенций этой категории</span><span class="color_green"></span></li>
+							{% endif %}
+						</ul>
+					</div>
+					<div class="crd-buttons crd-buttons-wight mb-3">
+						<button type="button" data-toggle="modal" data-target="#mySkillsModal" class="btn btn-profile" onclick="getUserSkills();">Добавить</button>
+					</div>
+					<p class="crd-caption">Хочу освоить:</p>
+					<div class="role_student_compet_block">
+						<p class="role_student_compet_title">Базовые:</p>
+						<ul class="role_student_compet_list">
+							{% if data3['base'] %}
+							{% for skill in data3['base'] %}
+							<li class="role_student_compet_item"><span class="numb">{{skill.name}}</span><span class="color_green">0</span></li>
+							{% endfor %}
+							{% else %}
+							<li class="role_student_compet_item"><span class="numb">Нет компетенций этой категории</span><span class="color_green"></span></li>
+							{% endif %}
+						</ul>
+						<p class="role_student_compet_title">Профессиональные:</p>
+						<ul class="role_student_compet_list">
+							{% if data3['tech'] %}
+							{% for skill in data3['tech'] %}
+							<li class="role_student_compet_item"><span class="numb">{{skill.name}}</span><span class="color_green">0</span></li>
+							{% endfor %}
+							{% else %}
+							<li class="role_student_compet_item"><span class="numb">Нет компетенций этой категории</span><span class="color_green"></span></li>
+							{% endif %}
+						</ul>
+						<p class="role_student_compet_title">Надпрофессиональные:</p>
+						<ul class="role_student_compet_list">
+							{% if data3['profi'] %}
+							{% for skill in data3['profi'] %}
+							<li class="role_student_compet_item"><span class="numb">{{skill.name}}</span><span class="color_green">0</span></li>
+							{% endfor %}
+							{% else %}
+							<li class="role_student_compet_item"><span class="numb">Нет компетенций этой категории</span><span class="color_green"></span></li>
+							{% endif %}
+						</ul>
+					</div>
+					<div class="crd-buttons crd-buttons-wight">
+						<button type="button" data-toggle="modal" data-target="#wannaLearnModal" class="btn btn-profile" onclick="getUserWannaLearn();">Добавить</button>
+						<hr>
+						<button data-toggle="modal" data-target=".modal-1" type="button" class="btn btn-profile">Как это работает?</button>
+					</div>
+
+				</div>
+
+			</div>
+
+
+			<div id="rightbar">
+				<div class="profile">
+					<div class="container">
+						<div class="scroller scroller-left"><i class="fas fa-chevron-left"></i></div>
+						<div class="scroller scroller-right"><i class="fas fa-chevron-right"></i></div>
+						<div class="wrapper">
+
+							<ul class="nav nav-tabs list">
+								<li class="nav-item">
+									<a class="nav-link active" data-toggle="tab" href="#personal">Личные данные</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#education">Образование</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#profinterest">Профессиональные интересы</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#contact">Контактные данные</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="tab" href="#passport">Паспортные данные</a>
+								</li>
+
+							</ul>
+
+						</div>
+					</div>
+
+					<div class="tab-content">
+						<div id="personal" class="tab-pane fade in active show">
+
+							<div class="form-group row">
+								<label for="surname" class="col-sm-3 col-form-label">Фамилия</label>
+								<div class="col-sm-9">
+									<input class="forminput" id="surname" value="{{ student.surname }}">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="name" class="col-sm-3 col-form-label">Имя</label>
+								<div class="col-sm-9">
+									<input class="forminput" id="name" value="{{ student.name }}">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="secondname" class="col-sm-3 col-form-label">Отчество</label>
+								<div class="col-sm-9">
+									<input class="forminput" id="patr" value="{{ student.patr }}">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="sex" class="col-sm-3 col-form-label">Пол</label>
+								<div class="col-sm-9">
+									<select class="forminput" id="gender" value="{{ student.gender }}">
+										<option>Мужской</option>
+										<option>Женский</option>
+									</select>          </div>
+								</div>
+
+								<div class="form-group row">
+									<label for="birthday" class="col-sm-3 col-form-label">Дата рождения</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="birth_date" value="{{ student.birth_date}}">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="clothsize" class="col-sm-3 col-form-label">Размер одежды</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="clothing_size" value="{{student.clothing_size}}">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Фактическое место проживания</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="actual_house" value="{{student.actual_house}}">
+									</div>
+								</div>
+
+							</div>
+
+
+							<div id="education" class="tab-pane fade">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Учебное заведение</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="university" value="{{student.university}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Факультет</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="faculty" value="{{student.faculty}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Кафедра</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="cathedra" value="{{student.cathedra}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Направление подготовки</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="speciality" value="{{student.speciality}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Образовательная программа</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="speciality">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Группа</label>
+									<div class="col-sm-9">
+										<!-- <input class="forminput" id="group" value="{{student.group}}"> -->
+										{% set class = 'group_select js-example forminput' %}
+										{% set id = 'group' %}
+										{% include 'user/groups.html.twig' with [class, id] %}
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Законченное образование</label>
+									<div class="col-sm-9">
+										<select class="forminput" id="edu_lvl" value="{{student.edu_lvl}}">
+											<option>Среднее профессиональное</option>
+											<option>Бакалавриат</option>
+											<option>Специалитет</option>
+											<option>Магистратура</option>
+											<option>Аспирантура</option>
+											<option>Докторнатура</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Номер зачётной книжки</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="markbook" value="{{student.markbook}}">
+									</div>
+								</div>
+
+							</div>
+
+							<div id="profinterest" class="tab-pane fade">
+								<textarea style="display: none;" class="forminput" id="lectures">{{student.lectures}}</textarea>
+
+
+								<div>
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Название</label>
+										<div class="col-sm-9">
+											<input oninput="updateLecturesList()" class="profintNameInput">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-3 col-form-label">Описание</label>
+										<div class="col-sm-9">
+											<textarea oninput="updateLecturesList()" class="profintDescInput"></textarea>
+										</div>
+									</div>
+									<hr>
+								</div>
+
+								<div class="form-group row">
+									<div class="col-sm-3"></div>
+									<div class="col-sm-9">
+										<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+											<button type="button" id="addLecture" onclick="addLecture()" class="btn btn-profile">Добавить</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="contact" class="tab-pane fade">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Телефон</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="phone" value="{{student.phone}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Почта</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="email" value="{{student.email}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">ВК</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="vk" value="{{student.vk}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Facebook</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="facebook" value="{{student.facebook}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Twitter</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="twitter" value="{{student.twitter}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Instagram</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="instagram" value="{{student.instagram}}">
+									</div>
+								</div>
+							</div>
+
+							<div id="passport" class="tab-pane fade">
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Гражданство</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="citizenship" value="{{student.citizenship}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">Серия, номер паспорта</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="serial" value="{{student.serial}}">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-3 col-form-label">СНИЛС</label>
+									<div class="col-sm-9">
+										<input class="forminput" id="snils" value="{{student.snils}}">
+									</div>
+								</div>
+
+							</div>
+
+							<div style="width:100%; overflow: auto;"><button type="button" id="savebutton" class="btn btn-profile" onclick="changeFormState()">Сохранить</button></div>
+
+
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+
+					<div class="container-fluid p-0">
+						<p style="font-weight: bold; text-align: left; font-size: 36px;">ПРИГЛАШЕНИЯ</p>
+						<div class="row pr-0 mr-0">
+							{% if student.projects.claims %}
+							{% for key,item in student.projects.claims %}
+							<script type="text/javascript">
+							$('#container{{ key }}').on('show', getProjectInvite({{ item.proj_id }}, "{{ item.role_id }}", {{ key }} ));
+							</script>
+							<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category" id="container{{key}}">
+								<div class="project-card-header">
+									<p>
+										<img style="width: 40%; height: auto;" src="/img/loading.gif">
+									</p>
+								</div>
+							</div>
+							{% endfor %}
+							{% else %}
+							<p style="margin-left: 15px;">Вас пока не приглашали в проекты!</p>
+							{% endif %}
+						</div>
+					</div>
+
+					{% if student.projects.projects %}
+					<div class="container-fluid p-0">
+						<p style="font-weight: bold; text-align: left; font-size: 36px;">Мои проекты</p>
+						<div class="row pr-0 mr-0">
+							{% for key, item in student.projects.projects %}
+							<script type="text/javascript">
+							$('#containerRole{{ key }}').on('show', getMyProject({{ item.proj_id }}, "{{ item.role_id }}", {{ key }} ));
+							</script>
+							<div id="containerRole{{key}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+								<div class="project-card-header invitation-card-header">
+									<p>
+										<img style="width: 40%; height: auto;" src="/img/loading.gif">
+									</p>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+
+					{% if data %}
+					<div class="container-fluid p-0">
+						<p style="font-weight: bold; text-align: left; font-size: 36px;">ВХОДЯЩИЕ ЗАЯВКИ</p>
+						<div class="row pr-0 mr-0">
+							{% for key,item in data %}
+							{% set id = random() %}
+							<script type="text/javascript">
+							$('#claimCtr{{ id }}').on('show', getClaimStud({{ key }}, "{{ item.role_id }}", {{ item.stud_id }},{{ id }} ));
+							</script>
+							<div id="claimCtr{{id}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+								<div class="increq-card-header">
+									<!-- <img src="/img/kittenz.jpg"> -->
+									<p>
+										<img style="width: 40%; height: auto;" src="/img/loading.gif">
+									</p>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					{% endif %}
+
+					{# <div class="section proj-section">
+						<p>Отправленные заявки</p>
+						<div class="crd claim-card">
+							<div>
+								<p>Заявка на участие в проекте</p>
+							</div>
+							<p><b>Роль:</b>  Программист</p>
+							<p><b>Название проекта:</b>  проекториум</p>
+							<p><b>Дата подачи заявки</b>: 11.11.2019</p>
+							<p><b>Ответ:</b> -</p>
+
+							<div class="crd-buttons crd-buttons-single">
+
+								<button type="button" onclick="window.location.href='user/claimCard?id=$id'" class="btn btn-primary">Подробнее</button>
+							</div>
+						</div>
+					</div> #}
+
+					{% endblock %}

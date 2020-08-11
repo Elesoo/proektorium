@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/orgs.css" crossorigin="anonymous">
+	<script src="/js/orgs.js" crossorigin="anonymous"></script>
+	<script src="/js/chosen.jquery.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/chosen.min.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/inquirer.css">
+	<script type="text/javascript">
+
+		function filterProjects() {
+			projtype=$("input[name='proj_type_filter']:checked").val();
+			$(".project-card").hide();
+			$("."+projtype).show();
+			$(".proj-section").eq(0).find(".project-card").show();
+		}
+
+		//$(document).ready(function() {$("input[name='proj_type_filter']").change(filterProjects);});
+
+
+		$(document).ready(function() {
+			chosenInit();
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+	<!-- <div id="proj_header">
+	</div> -->
+
+	<div class="search_all">
+		<div class="orgs_search">
+			<i class="fas fa-search"></i>
+			<input type="text" class="orgs__search_input">
+		</div>
+
+	</div>
+
+	<div class="section proj-section">
+		{% for item in orgs %}
+		<div class="crd brand-project">
+			<img src="{{ item.head }}">
+			<p>{{ item.name }}</p>
+			<p style="text-align: center; margin-top: 5px;">{{ item.desc }}</p>
+			<div>
+				<hr>
+				<div class="cardStat">
+					<p >Проекты набирающие команду</p>
+					<p>{{item.steam}}</p> 
+				</div>
+
+				<div class="cardStat">
+					<p>Проекты в разработке</p>
+					<p>{{item.inwrk}}</p> 
+				</div>
+
+				<div class="cardStat">
+					<p>Проектов завершено</p>
+					<p>{{item.ended}}</p> 
+				</div>
+			</div>
+
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+				<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/org/show/{{ item.id }}'" class="btn">Подробнее</button>
+			</div>
+		</div>
+		{% endfor %}
+		{# <div class="crd brand-project">
+			<img src="/img/logo_mediapark.png">
+			<p>МЕДИАПАРК</p>
+			<ul>
+				<li>Мультимедийный центр</li>
+				<li>Продюсерский центр</li>
+				<li>Пространство OPEN SPACE</li>
+			</ul>
+			<div>
+				<hr>
+				<div class="cardStat">
+					<p >Проекты набирающие команду</p>
+					<p>5</p> 
+				</div>
+
+				<div class="cardStat">
+					<p>Проекты в разработке</p>
+					<p>3</p> 
+				</div>
+
+				<div class="cardStat">
+					<p>Проектов завершено</p>
+					<p>10</p> 
+				</div>
+			</div>
+
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+				<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Подробнее</button>
+			</div>
+		</div> #}
+	</div>
+{% endblock %}

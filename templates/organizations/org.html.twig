@@ -1,0 +1,238 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/brand_project.css" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="/css/cropper.css">
+
+	<script src="/js/cropper.js"></script>
+	<script src="/js/load_avatars_org.js"></script>
+
+	<style type="text/css">
+		.img-container img {
+		  max-width: 100%;
+		}
+
+		.preloader {
+		  display: none;
+		  position: fixed;
+		  left: 0;
+		  top: 0;
+		  right: 0;
+		  bottom: 0;
+		  z-index: 1001;
+		  background: url("/img/loading.gif") hsla(218, 4%, 39%, .5) no-repeat;
+		  background-position: center center;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="preloader"></div>
+	<!-- Cropper modal LoGo -->
+	<div class="modal fade" id="modal_logo" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="img-container">
+	          <img id="image_load_logo" src="">
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+	        <button type="button" class="btn btn-primary" id="load_logo_btn">Загрузить</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- End Cropper modal -->
+
+	<!-- Cropper modal -->
+	<div class="modal fade" id="modal_header" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="img-container">
+	          <img id="image_load_header" src="">
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+	        <button type="button" class="btn btn-primary" id="load_header_btn">Загрузить</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- End Cropper modal -->
+
+	<!-- Modal edit -->
+	<div class="modal fade" id="editPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Редактировать</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <div class="accordion" id="accordionExample">
+					  <div class="card">
+					    <div class="card-header" id="headingOne">
+					      <h5 class="mb-0">
+					        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					          Изменение Логотипа
+					        </button>
+					      </h5>
+					    </div>
+
+					    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+					      <div class="card-body">
+					       	<input type="file" name="" id="load_input_logo">
+					      </div>
+					    </div>
+					  </div>
+					  <div class="card">
+					    <div class="card-header" id="headingTwo">
+					      <h5 class="mb-0">
+					        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+					          Изменение Хедера
+					        </button>
+					      </h5>
+					    </div>
+					    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+					      <div class="card-body">
+					        <input type="file" name="" id="load_input_header">
+					      </div>
+					    </div>
+					  </div>
+					</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+	<!-- ОСТОРОЖНО, ТУТ АДАПТИВНЫЙ КОСТЫЛЬ ОТ БЭКЭНДЕРА!!!!! Пока не убирайте плез(((( -->
+	<div id="proj_header" style="background-image: url('{{ org.info.header }}'); background-repeat: no-repeat; background-size: 100%; background-position: center -45px;"></div>
+	{# <button style="margin: 0 45%;" class="btn btn-secondary" data-toggle="modal" data-target="#editPhoto">Редактировать</button> #}
+	<div class="section">
+		<p style="margin-bottom: 60px;" class="head__text">{{ org.info.shortname }}</p>
+		<p>{{org.info.fulldescription}}</p>
+		<h2 style="font-weight: bold;">Местоположение</h2>
+		<p>{{org.info.legalAddress}}</p>
+	</div>
+	{% if projects.projects %}
+	<div class="container-fluid p-0">
+		<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты</p>
+		<div class="row pr-0 mr-0">
+			{% for item in projects.projects %}
+			<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+				<div class="crd project-card" style="margin: 0 !important;">
+					<div style="background-image: url('/project/header/{{ item.docs.headerImage }}'); background-size: cover;" class="project-card-header">
+						<p></p>
+						<p>{{ item.info.title }}</p>
+					</div>
+
+					<p class="crd-caption-left"></p>
+					<p class="project-description">{{item.info.shortDesc}}</p>
+					{# <ul class="project-card-theses">
+						<li>исследовательский проект</li>
+						<li>тяжёлая промышленность, сельскохозяйственное машиностроение</li>
+
+					</ul> #}
+
+					{% if item.state == "2" %}
+						<p class="project-card-status" style="color: #0C7CBB; text-align: center;">Идёт набор в команду</p>
+					{% elseif item.state == "3" %}
+						<p class="project-card-status" style="color: #0C7CBB; text-align: center;">В разработке</p>
+					{% elseif item.state == "1" %}
+						<p class="project-card-status" style="color: #0C7CBB; text-align: center;">Поиск наставника или куратора</p>
+					{% endif %}
+					<div class="card__footer">
+						<div  style="display: inline-block; float: left; font-size: 13px;">
+							<p style="color: gray; font-weight: bold;text-align:center;">Сроки реализации:</p>
+							<p>{{item.info.date_start}} - {{item.info.date_close}}</p>	
+						</div>
+						
+						<div style="display: inline-block; float: right; font-size: 13px;">
+							<p style="color: gray; font-weight: bold;text-align:center;">Заказчик проекта:</p>
+							<p style="text-align:center; white-space: pre-wrap;">{{item.info.creator}}</p>	
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+						<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show/{{ item.id }}'" class="btn">Подробнее</button>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+	{% if projects.archive %}
+	<div class="container-fluid p-0">
+		<p class="graybox">Архив проектов</p>
+		<div class="row pr-0 mr-0">
+			{% for item in projects.archive %}
+			<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+				<div class="crd project-card" style="margin: 0 !important;">
+					<div style="background-image: url('/project/header/{{ item.docs.headerImage }}'); background-size: cover;" class="project-card-header">
+						<p></p>
+						<p>{{ item.info.title }}</p>
+					</div>
+
+					<p class="crd-caption-left"></p>
+					<p class="project-description">{{item.info.shortDesc}}</p>
+					{# <ul class="project-card-theses">
+						<li>исследовательский проект</li>
+						<li>тяжёлая промышленность, сельскохозяйственное машиностроение</li>
+
+					</ul> #}
+
+					<p class="project-card-status" style="color: #0C7CBB; text-align: center;">Завершен</p>
+					<div class="card__footer">
+						<div  style="display: inline-block; float: left; font-size: 13px;">
+							<p style="color: gray; font-weight: bold;text-align:center;">Сроки реализации:</p>
+							<p>{{item.info.date_start}} - {{item.info.date_close}}</p>
+						</div>
+						
+						<div style="display: inline-block; float: right; font-size: 13px;">
+							<p style="color: gray; font-weight: bold;text-align:center;">Заказчик проекта:</p>
+							<p style="text-align:center; white-space: pre-wrap;">{{item.info.creator}}</p>	
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+						<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show/{{ item.id }}'" class="btn">Подробнее</button>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+{% endblock %}

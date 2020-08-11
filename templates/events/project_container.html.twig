@@ -1,0 +1,46 @@
+{% block projectContainer %}
+
+<div class="crd project-card" style="margin: 0 !important;">	
+	<div style="background-image: url('/project/header/{{project.docs.headerImage}}'); background-size: cover;" class="project-card-header">
+			<p></p>
+			<p>{{ project.info.title }}</p>
+		</div>
+
+		<p class="crd-caption-left"></p>
+		<p class="project-description">{{ project.info.shortDesc }}</p>
+		{# <ul class="project-card-theses">
+			<li>исследовательский проект</li>
+			<li>тяжёлая промышленность, сельскохозяйственное машиностроение</li>
+
+		</ul> #}
+
+
+		<p class="project-card-status" style="color: #0C7CBB; text-align: center;">
+			{% if project.state == "1" %}
+				Поиск наставника
+			{% elseif project.state == "2" %}
+				Набор команды
+			{% elseif project.state == "3" %}
+				В разработке
+			{% else %}
+				Завершен
+			{% endif %}
+		</p>
+		<div class="card__footer">
+			<div  style="display: inline-block; float: left; font-size: 13px;">
+				<p style="color: gray; font-weight: bold;">Сроки реализации:</p>
+				<p>{{ project.info.date_start }} - {{ project.info.date_close }}</p>	
+			</div>
+
+			<div style="display: inline-block; float: right; font-size: 13px;">
+				<p style="color: gray; font-weight: bold;">Заказчик проекта:</p>
+				<p>{{ project.info.creator }}</p>	
+			</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+			<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show/{{ project.id }}'" class="btn">Подробнее</button>
+	</div>
+</div>
+{% endblock %}

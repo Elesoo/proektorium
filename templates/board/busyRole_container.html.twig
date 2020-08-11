@@ -1,0 +1,322 @@
+{% block containerStud %}
+<div class="card_team_add" style="background-color: white;">
+	{% if is_granted("ROLE_MODERATOR_PROJECTS") %}
+	<div class="btn_close"><img src="/img/close.png"></div>
+	{% endif %}
+	<img class="card_team_add_img" src="/img/per.png">
+	<div class="card_team_add_head">
+		<div class="card_team_add_head">
+			{% if is_granted("ROLE_MODERATOR_PROJECTS") %}
+			<div class="btn_close_name"><img onclick="denyPersonFromRole({{projectID}},{{role.id}}, {{student.id}});" src="/img/close.png"></div>
+			{% endif %}
+			<p class="card_team_add_title">{{rolename}}</p>
+			<p class="card_team_add_name">{{student.personal_branch.surname}} {{student.personal_branch.name}}</p>
+		</div>
+	</div>
+	<div class="card_team_add_body">
+		<p class="body_add_title">Компетенции:</p>
+		<table>
+			<tbody class="list_add_compet">
+				<tr class="item_add_compet">
+					<td>Базовые:</td><td>{{role.base[0]|raw}}</td>
+				</tr>
+				<tr class="item_add_compet"> 
+					<td>Профессиональные:</td><td>{{role.tech[0]|raw}}</td>
+				</tr>
+				<tr class="item_add_compet">
+					<td>Надпрофессиональные:</td><td>{{role.profi[0]|raw}}</td>
+				</tr>
+			</tbody>
+		</table>
+		{% set modalRole = random() %}
+		<div class="btn-more btn_3" data-toggle="modal" data-target=".modalRole{{modalRole}}">Показать все>></div>
+		<div class="text_add_info">
+			<p>Опыт разработки: <span>{{ student.projects.history|length }}</span></p>
+			{% set modalStud = random() %}
+			{% if is_granted("ROLE_MODERATOR_PROJECTS") %}
+			<button class="btn btn-give" style="margin: 20px auto !important" data-toggle="modal" data-target="#modalStud{{modalStud}}">Подробнее</button>
+			{% endif %}
+		</div>
+		
+	</div>
+	
+</div>
+<style type="text/css">
+.modal-header{
+	background: #1D3351;
+}
+.modal__header_title{
+	font-weight: 600;
+	font-size: 16px;
+	text-align: center;
+	color: #FFFFFF;
+	margin-left: 50%;
+	transform: translateX(-50%);
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.modal__body_title{
+	font-size: 14px;
+	line-height: 19px;
+	text-align: center;
+	text-decoration-line: underline;
+	color: #0C7CBB;
+}
+
+.modal__body_list{
+	padding: 0;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	justify-content: space-around;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+}
+
+.modal__body_item{
+	list-style-type: none;
+	font-size: 14px;
+	line-height: 16px;
+	margin-top: 10px;
+	padding: 0;
+}
+</style>
+<div class="modal fade bd-example-modal-lg modalRole{{modalRole}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg maxw">
+		<div class="modal-content">
+			<div class="modal-header" style="background: #1D3351;">
+				<p class="modal__header_title">Роль "{{role.name}}"</p>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							{# <p class="modal__body_title">Название проектаНазвание <br> проекта</p> #}
+						</div>
+						<div class="col-md-4">
+							{% if role.base %}
+							<ul class="modal__body_list">
+								<li class="modal__body_item bold">Базовые:</li>
+								{% for item in role.base %}
+								<li class="modal__body_item">{{item|raw}}</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
+						<div class="col-md-4">
+							{% if role.tech %}
+							<ul class="modal__body_list">
+								<li class="modal__body_item bold">Профессиональные:</li>
+								{% for item in role.tech %}
+								<li class="modal__body_item">{{item|raw}}</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
+						<div class="col-md-4">
+							{% if role.profi %}
+							<ul class="modal__body_list">
+								<li class="modal__body_item bold">Надпрофессиональные:</li>
+								{% for item in role.profi %}
+								<li class="modal__body_item">{{item|raw}}</li>
+								{% endfor %}
+							</ul>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% if is_granted("ROLE_MODERATOR_PROJECTS") %}
+<div class="modal fade" id="modalStud{{modalStud}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<img src="/img/foto.png" alt="" class="img-fluid">
+				<div class="header__text">
+					<span class="header__text_name">{{student.personal_branch.surname}} {{student.personal_branch.name}} {{student.personal_branch.patr}}</span>
+					<span class="headr__text_role">Студент</span>
+				</div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<img src="/img/close.png" alt="" class="img-fluid">
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md table">
+							<p class="body__title">
+								Образование: 
+							</p>
+							<div class="body__maintext">
+								<table style="border: none;">
+									<tbody class="list_add_compet">
+										<tr class="item_add_compet">
+											<td><b>Учебное заведение:</b></td>
+											<td>{{student.education.university}}</td>
+										</tr>
+										<tr class="item_add_compet">
+											<td><b>Факультет:</b></td>
+											<td>{{student.education.faculty}}</td>
+										</tr>
+										<tr class="item_add_compet">
+											<td><b>Кафедра:</b></td>
+											<td>{{student.education.cathedra}}</td>
+										</tr>
+										<tr class="item_add_compet">
+											<td><b>Специальность:</b></td>
+											<td>{{student.education.speciality}}</td>
+										</tr>
+										<tr class="item_add_compet">
+											<td><b>Группа:</b></td>
+											<td>{{student.education.group}}</td>
+										</tr>
+										<tr class="item_add_compet">
+											<td><b>Уровень образования:</b></td>
+											<td>{{student.education.edu_lvl}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="col-md table">
+							<p class="body__title">
+								Контактные данные: 
+							</p>
+							<div class="body__maintext">
+								<table style="border: none;">
+									<tbody class="list_add_compet">
+										<tr class="item_add_compet">
+											<td><b>Почта:</b></td>
+											<td>{{student.contacts.email}}</td>
+										</tr>
+										<tr class="item_add_compet">
+											<td><b>Телефон:</b></td>
+											<td>{{student.contacts.phone}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md table">
+							{% set tech = {} %}
+							{% set base = {} %}
+							{% set profi = {} %}
+							{% for item in student.skills.skills %}
+							{% if compindex[item.id].category == "base" %}
+							{% set base = base|merge([compindex[item.id].name]) %}
+							{% elseif compindex[item.id].category == "tech" %}
+							{% set tech = tech|merge([compindex[item.id].name]) %}
+							{% elseif compindex[item.id].category == "profi" %}
+							{% set profi = profi|merge([compindex[item.id].name]) %}
+							{% endif %}
+							{% endfor %}
+							<p class="body__title">Компетенции:</p>
+							<div class="comp">
+								<div class="col-md-4">
+									<div class="competentions">
+										<ul class="padnone">
+											<li class="body__list_item"><b>Базовые:</b></li>
+											{% for item in base %}
+											<li class="body__list_item">{{item|raw}}</li>
+											{% endfor %}
+										</ul>
+								<!-- <ul class="padnone mart">
+									<li class="body__list_num">3</li>
+									<li class="body__list_num">5</li>
+									<li class="body__list_num">2</li>
+								</ul> -->
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="competentions">
+								<ul class="padnone">
+									<li class="body__list_item"><b>Профессиональные:</b></li>
+									{% for item in tech %}
+									<li class="body__list_item">{{item|raw}}</li>
+									{% endfor %}
+								</ul>
+								<!-- <ul class="padnone mart">
+									<li class="body__list_num">3</li>
+									<li class="body__list_num">5</li>
+									<li class="body__list_num">2</li>
+								</ul> -->
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="competentions">
+								<ul class="padnone">
+									<li class="body__list_item"><b>Надпрофессиональные:</b></li>
+									{% for item in profi %}
+									<li class="body__list_item">{{item|raw}}</li>
+									{% endfor %}
+								</ul>
+								<!-- <ul class="padnone mart">
+									<li class="body__list_num">3</li>
+									<li class="body__list_num">5</li>
+									<li class="body__list_num">5</li>
+								</ul> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md table">
+					<p class="body__title">
+						Статусы студента: 
+					</p>
+					<div class="status">
+						<div class="sqr">
+							{% if student.statuses %}
+							{% for item in student.statuses %}
+								<div class="el">{{item}}</div>
+							{% endfor %}
+							{% else %}
+								<ul class="padnone">
+									<li class="body__list_item ta"><b>У студента еще нет статусов!</b></li> 
+								</ul>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="col-md table">
+					<p class="body__title">
+						Проектная активность: 
+					</p>
+					<div class="competentions">
+						<ul class="padnone">
+							<li class="body__list_item ta"><b>Опыт разработки:</b></li> 
+							{# <li class="body__list_item ta">Опыт наставничества:</li> #}
+							{# <li class="body__list_item ta">Участие в мероприятиях:</li> #}
+						</ul>
+    					<ul class="padnone">
+    						<li class="body__list_num">{{ student.projects.history|length }}</li>
+							<!-- <li class="body__list_num">6</li> -->
+							<!-- <li class="body__list_num">7</li> -->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+{% endif %}
+{% endblock %}

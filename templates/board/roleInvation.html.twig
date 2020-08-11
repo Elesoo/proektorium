@@ -1,0 +1,213 @@
+{% block role_inv %}
+	<style type="text/css">
+	.modal_window{
+		width: 700px;
+		height: 100%;
+		position: fixed;
+		display: none;
+		top: 0;
+		left: 50%;
+		z-index: 1000;
+		transform: translate(-50%);
+		overflow-x: hidden;
+		border-radius: 10px;
+		background-color: #fff;
+		border: none;
+		margin-top: 60px;
+	}
+
+	.first{
+		display: none;
+		position: fixed;
+		background-color: #4E4848C4;
+		z-index: 500;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.header{
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		justify-content: space-between;
+		padding-top: 13px;
+	}
+
+	.header__text_title{
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+		color: #FFFFFF;
+		/*margin: 0 auto;*/
+	}
+
+
+	.header__close_btn{
+		border: none;
+		background-color: transparent;
+		width: 10px;
+		height: auto;
+		padding-right: 20px;
+	}
+
+	.cont__title_tit{
+		font-size: 16px;
+		line-height: 19px;
+		margin: 10px auto;
+		text-align: center;
+		text-decoration-line: underline;
+		color: #0C7CBB;
+		width: 40%;
+	}
+	.header__close_btn{
+		outline: none;
+	}
+	</style>
+	<div class="crd project-card" style="margin: 0 !important;">
+		<div class="project-card-header">
+			<p>
+				{{ project.info.title }}
+			</p>
+			<p>Приглашение на роль <b>{{ role.name }}</b></p>
+		</div>
+
+		{% if not nocomp %}
+			<p class="graybox" style="font-weight: bold;">Требуемые компетенции:</p>
+			{% if role.base %}
+				<div class="row">
+					<span class="col-sm-7">Базовые:</span>
+					<span style="word-wrap: break-word;" class="col-sm-5">{{ role.base[0]|raw }}</span>
+				</div>
+			{% endif %}
+			{% if role.tech %}
+				<div class="row">
+					<span class="col-sm-7">Профессиональные:</span>
+					<span style="word-wrap: break-word;" class="col-sm-5">{{ role.tech[0] }}</span>
+				</div>
+			{% endif %}
+			{% if role.profi %}
+				<div class="row">
+					<span class="col-sm-7">Надпрофессиональные:</span>
+					<span style="word-wrap: break-word;" class="col-sm-5">{{ role.profi[0] }}</span>
+				</div>
+			{% endif %}
+			<div style="text-align: right; padding-right: 20px; color: #0C7CBB; font-weight: bold; font-size: 13px;">
+				<a data-toggle="modal" data-target="#exampleModalCenter{{role.id}}">Смотреть все >>></a>
+			</div>
+
+	<!-- <div class="row">
+		<span class="col-sm-7 graybox" style="text-decoration: underline;">Опыт разработки:</span>
+		<span class="col-sm-5">3 проекта</span>
+	</div> -->
+
+	<hr>
+{% endif %}
+<div class="card__footer" style="margin-bottom: 50px;">
+	<div  style="display: inline-block; float: left;">
+		<p class="graybox">Сроки реализации:</p>
+		<p>{{ project.info.date_start|date("d.m.Y") }} - {{ project.info.date_close|date("d.m.Y") }}</p> 
+	</div>
+
+	<div style="display: inline-block; float: right; width: calc(50% - 5px);text-align: left;">
+		<p class="graybox">Заказчик проекта:</p>
+		<p style="white-space: pre-wrap;">{{ project.info.creator }}</p> 
+		{% if not daynproject %}
+			<a style="color: #0C7CBB/*#563d7c*/; font-weight: bold; font-size: 13px; margin-top: -40px;" onclick="window.location.href='/project/show/{{ project.id }}'">Подробнее о проекте >>></a>
+		{% else %}
+			<a style="color: #0C7CBB/*#563d7c*/; font-weight: bold; font-size: 13px; margin-top: -40px;" onclick="window.location.href='/project/dayn/show/{{ project.id }}'">Подробнее о проекте >>></a>
+		{% endif %}
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div class="crd-buttons crd-buttons-bottom crd-buttons-single" style="">
+	{% if not daynproject %}
+		<button onclick="denyRole({{project.id}}, '{{ role.id }}');" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+		<button onclick="allowRole({{project.id}}, '{{ role.id }}');" type="button" class="btn btn-success" style="background: #015C65; color: white;">Принять</button>
+	{% else %}
+		<button onclick="denyDaynRole({{project.id}});" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+		<button onclick="allowDaynRole({{project.id}});" type="button" class="btn btn-success" style="background: #015C65; color: white;">Принять</button>
+	{% endif %}
+</div>
+</div>
+
+{# modal #}
+<div class="modal fade" id="exampleModalCenter{{role.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="container " style="padding-right: 0px; height: auto;" id="modal_1">
+				<div class="row">
+					<div class="" style="width: 100%; background-color: #1D3351;">
+						<div class="modal-header" style="background-color: inherit;">
+							<div style="margin: 0 auto; padding-top: 10px;">
+								<p class="header__text_title"> 
+									Роль {{ role.name }}
+								</p> 	
+							</div>
+
+							<div class="header__close">
+								<button class="header__close_btn" data-dismiss="modal" id="close_1"><img src="/img/close.png" alt="" img-fluid></button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12">
+						<div style="margin: 0 auto;">
+							<p class="cont__title_tit" style="text-align: center">
+								{{ project.info.title }}
+							</p>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<p>
+							<b>Базовые: </b>
+						</p>
+						{% if role.base %}
+							{% for item in role.base %}
+								<p>
+									{{ item|raw }}
+								</p>
+							{% endfor %}
+						{% endif %}
+					</div>
+
+					<div class="col-md-4">
+						<p>
+							<b>Профессиональные: </b>
+						</p>
+						{% if role.tech %}
+							{% for item in role.tech %}
+								<p>
+									{{ item }}
+								</p>
+							{% endfor %}
+						{% endif %}
+					</div>
+
+					<div class="col-md-4">
+						<p>
+							<b>Надпрофессиональные: </b>
+						</p>
+						{% if role.profi %}
+							{% for item in role.profi %}
+								<p>
+									{{ item }}
+								</p>
+							{% endfor %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

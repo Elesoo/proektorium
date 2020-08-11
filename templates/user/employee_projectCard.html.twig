@@ -1,0 +1,57 @@
+{% block projectCard %}
+	
+	<div class="card" style="margin: 0 !important;">
+			<div class="card-header">
+				<p class="card__header_title">{{ project.info.title }}</p>
+				<div class="card__header_subtitle">
+					{% if is_granted("ROLE_EMPLOYEE") %}
+					<p class="card__subtitle">Участие в роли Куратора </p>
+					{% endif %}
+				</div>
+			</div>
+		  <div class="card-body">
+		    <p class="card-text">{{ project.info.description|raw }}</p>
+		    <ul>
+		    	{% if not daynProject %}
+			    	<li class="card__text">{{ project.info.specialization|trans }}</li>
+		    	{% endif %}
+		    	<li class="card__text">{{ project.info.industry }}</li>
+		    </ul>
+			<p class="card__body_descr">
+				{% if project.state == "1" %}
+			Идет поиск наставника
+		{% elseif project.state == "2" %}
+			Идет набор в команду
+		{% elseif project.state == "3" %}
+			В работе
+		{% else %}
+			Завершен
+		{% endif %}
+			</p>
+			<div class="card__block">
+				<div class="card__block_item">
+					<p class="card__block_text">Сроки реализации:</p>
+					<p class="card__block_text">{{ project.info.date_start|date("d.m.Y") }} - {{ project.info.date_close|date("d.m.Y") }}</p>
+				</div>
+				<div class="card__block_item">
+					<p class="card__block_text">Организатор:</p>
+					<p class="card__block_text">{{ project.info.creator }}</p>
+				</div>
+			</div>
+		  </div>
+		  <div class="card__footer">
+		  	{% if not daynProject %}
+			  	<button class="card__footer_more" onclick="window.location.href='/project/show/{{project.id}}'">Подробнее</button>
+			{% else %}
+				<button class="card__footer_more" onclick="window.location.href='/project/dayn/show/{{project.id}}'">Подробнее</button>
+		  	{% endif %}
+		  	{% if is_granted("ROLE_EMPLOYEE") %}
+		  		{% if not daynProject %}
+				  	<button class="card__footer_list" onclick="window.location.href='/user/employee/getProjectList/{{project.id}}'"> Список участников</button>
+				{% else %}
+					<button class="card__footer_list" onclick="window.location.href='/user/employee/dayn/getProjectList/{{project.id}}'"> Список участников</button>
+			  	{% endif %}
+		  	{% endif %}
+		  </div>
+	</div>
+{% endblock %}

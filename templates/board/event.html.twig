@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+{% block includes %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	
+	<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+
+  <script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/event.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+    <div id="proj_header" style="background: linear-gradient(rgba(29, 51, 81, 0.76), rgba(29, 51, 81, 0.76)), url('/img/rsm_header.png');   background-size: contain;">
+			<div class="header_text">
+				<p>Проекториум<br>RSM</p>
+				<p>3 апреля - 24 апреля</p>
+				<!-- <button  style="background-color:  #DFC7AF;" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Подать заявку на участие</button> -->
+
+			</div>
+		</div>
+		</div>
+
+		<div class="section">
+
+			<div class="project-place">
+				<img src="/img/place.svg" width="27" height="37">
+				<p>г. Ростов-на-Дону, Евдокимова, 37</p>
+			</div>
+			<div class="float__block_text">
+				<p style="margin-bottom: 60px;" class="univ__text">О мероприятии</p>
+			</div>
+			<iframe style="float: right" width="560" height="315" src="https://www.youtube.com/embed/qtnQINRvKGk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<p>        Проблемно-ориентированный образовательный интенсив «Проекториум RSM»  пройдет на площадках Промышленного коворкинга «Garaж», а также на территории производственных цехов и в аудиториях учебного центра Ростсельмаш. Участники мероприятия получат возможность предложить свои проекты в рамках  решения текущих производственных задач компании.
+    В течение трех недель участники Проекториума ознакомятся с особенностями технологического процесса крупнейшего производителя сельхозтехники в России. 
+       Обучающие семинары и мастер-классы позволят командам начинающих инженеров эффективней справиться с решением предложенных заказчиком задач. В качестве консультационной поддержки выступят выступят приглашенные эксперты, кураторы, преподаватели ДГТУ, сотрудники Промышленного коворкинга «Garaж» и опытные инженеры Ростсельмаш.</p>
+       <p class="partner">Ключевой партнёр <img src="/img/rsm.png"></p>
+			</div>
+
+
+		<div class="section" style="overflow: auto; text-align: center;">
+			<p>6 причин принять участие в Проекториуме</p>
+			<img src="/img/reasons.svg" style="margin-top: 80px;">
+		</div>
+
+		<div class="section" style="overflow: auto; text-align: center;">
+			<p>Действующие лица</p>
+			<img src="/img/acting_persons.png" style="margin-top: 80px;">
+		</div>
+
+			<!-- <div class="section proj-section">
+				<p>Проекты</p> -->
+
+<!-- <div class="crd project-card projtype-$category">
+
+        <div style="background-image: url('/img/af.jpg'); background-size: cover;" class="project-card-header">
+          <p></p>
+          <p>$title</p>
+        </div>
+
+	<p class="crd-caption-left"></p>
+	<p class="project-description">$description</p>
+	<ul class="project-card-theses">
+		<li>исследовательский проект</li>
+		<li>тяжёлая промышленность, сельскохозяйственное машиностроение</li>
+
+	</ul>
+
+
+	<p class="project-card-status" style="color: #0C7CBB;">Идёт набор в команду</p>
+	<div  style="display: inline-block; float: left; font-size: 13px;">
+		<p style="color: gray; font-weight: bold;">Сроки реализации:</p>
+		<p>$date - </p>	
+	</div>
+
+	<div style="display: inline-block; float: right; font-size: 13px;">
+		<p style="color: gray; font-weight: bold;">Заказчик проекта:</p>
+		<p>ООО "Вектор"</p>	
+	</div>
+
+	<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+		<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Подробнее</button>
+	</div>
+</div> -->
+
+
+
+		<!-- 	</div> -->
+{% endblock %}

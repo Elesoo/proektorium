@@ -1,0 +1,466 @@
+{% block includes %}
+<link rel="stylesheet" type="text/css" href="/css/account_moder.css">
+<link rel="stylesheet" type="text/css" href="/css/anotherShapranov.css">
+<!-- <script src="/js/inquirer.js"></script> -->
+
+<script src="/js/cropper.js"></script>
+<script src="/js/upload_avatars.js"></script>
+
+<link rel="stylesheet" href="/css/cropper.css">
+{% endblock %}
+{% block content %}
+<style>
+	
+	.img-container img {
+  max-width: 100%;
+}
+</style>
+<script type="text/javascript">
+function denyMentor(projid, studidv)
+{
+	$.ajax({
+		url:"/user/moderator/project/"+projid+"/denyMentor",
+		type:'POST',
+		data: {studid: studidv},
+		success: function(data){
+			alert("Заявка успешно отклонена!");
+			window.location.href='/user/';
+		},
+		error: function(data){
+			alert("Не получилось отклонить заявку. Возможно, вам не хватает прав")
+		},
+	});
+}
+function allowMentor(projid, studidv)
+{
+	$.ajax({
+		url:"/user/moderator/project/"+projid+"/allowMentor",
+		type:'POST',
+		data: {studid: studidv},
+		success: function(data){
+			alert("Заявка успешно принята!");
+			window.location.href='/user/';
+		},
+		error: function(data){
+			alert("Не получилось принять заявку. Возможно, вам не хватает прав")
+		},
+	});
+}
+function denyCurator(projid, employeeid)
+{
+	$.ajax({
+		url:"/user/moderator/project/"+projid+"/denyCurator",
+		type:'POST',
+		data: {'employeeid': employeeid},
+		success: function(data){
+			alert("Заявка успешно отклонена!");
+			window.location.href='/user/';
+		},
+		error: function(data){
+			alert("Не получилось отклонить заявку. Возможно, вам не хватает прав")
+		},
+	});
+}
+function allowCurator(projid, employeeid)
+{
+	$.ajax({
+		url:"/user/moderator/project/"+projid+"/allowCurator",
+		type:'POST',
+		data: {'employeeid': employeeid},
+		success: function(data){
+			alert("Заявка успешно принята!");
+			window.location.href='/user/';
+		},
+		error: function(data){
+			alert("Не получилось принять заявку. Возможно, вам не хватает прав")
+		},
+	});
+}
+function denyProjectClaim(claimId)
+{
+	$.ajax({
+		url:"user/moderator/projectClaim/deny/"+claimId,
+		type:'GET',
+		success: function(data){
+			alert("Заявка успешно отклонена!");
+			window.location.href='/user/';
+		},
+		error: function(data){
+			alert("Не получилось отклонить заявку");
+		},
+	});
+}
+</script>
+
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+<!-- Modal reset Password -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="inputPassword5">Старый пароль*</label>
+		<input type="password" id="inputPasswordPast" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Новый пароль*</label>
+		<input type="password" id="inputPasswordNew" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Повторно новый пароль*</label>
+		<input type="password" id="inputPasswordNewRep" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">Сменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+	<p>ВАШ ЛИЧНЫЙ КАБИНЕТ</p>
+	<div id="leftbar">
+		<div class="crd profile-card">
+			{% if moderator.info.name == "" %}
+			<br>
+			{% else %}
+			<p>{{ moderator.info.name }}</p>
+			{% endif %}
+			<img class="img_profile" width=200 height=200 src="/user/getAvatar">
+			<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+				<button type="button" class="btn btn-profile" onclick="load_input.click()">Изменить фото</button>
+				<input id="load_input" class="sr-only" type="file" accept="image/*">
+				<button type="button" class="btn btn-profile" data-toggle="modal" data-target="#resetPassword">Изменить пароль</button>
+			</div>
+		</div>
+
+	</div>
+	<div id="rightbar">
+		<div class="profile">
+
+			<ul class="nav nav-tabs" class="container mt-3">
+				<li class="nav-item">
+					<a class="nav-link active" data-toggle="tab" href="#creds">Общая информация</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="creds" class="tab-pane fade in active show">
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">ФИО</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="name" value="{{ moderator.info.name }}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">Телефон</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="phone" value="{{ moderator.info.phone }}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="livingplace" class="col-sm-3 col-form-label">E-mail</label>
+						<div class="col-sm-9">
+							<input class="forminput" id="email" value="{{ moderator.info.email }}">
+						</div>
+					</div>
+				</div>
+				<div style="width:100%; overflow: auto;"><button type="button" id="savebutton" class="btn btn-profile" onclick="changeFormState()">Сохранить</button></div>
+			</div>
+		</div>
+		{% trans_default_domain 'messages' %}
+	</div>
+	<div class="clearfix"></div>
+		<div class="container-fluid p-0">
+			<p style="font-weight: bold; text-align: left; font-size: 36px;">Заявки на создание проектов</p>
+			<div class="row pr-0 mr-0">
+			{% if data %}
+			{# <div class="row pr-0 mr-0"> #}
+				{% for claim in data %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+				<div class="card_team_create" style="height: 100%;">
+					<div class="card_team_create_head">
+						<img class="card_team_create_img" src="/img/add_tz
+						.png">
+						<p class="card_team_create_title">{{ claim.name }}</p>
+					</div>
+					<div class="card_team_create_body">
+						<table style="width: 100%;">
+							<tbody class="list_create_compet">
+								<tr class="item_create_compet">
+									<td><b>Уровень</b></td>
+									<td>{{ claim.fields['projectCommerce'] }}</td>
+								</tr>
+								<tr class="item_create_compet">
+									<td><b>Тип:</b></td><td>{{ claim.category|trans }}</td>
+								</tr>
+								<tr class="item_create_compet">
+									<td><b>Отрасль:</b></td>
+									<!-- <td><a href="#">{{ claim.client_name}}</a></td> -->
+									<td>{{ claim.fields['projectIndustry'] }}</td>
+								</tr>
+								<tr class="item_create_compet">
+									<td><b>Заказчик:</b></td>
+									<td>{{ claim.fields['Заказчик?*']}}</td>
+								</tr>
+								<tr class="item_create_compet">
+									<td><b>Сроки реализации:</b></td><td>{{ claim.fields['Сроки реализации проекта?*']}}</td>
+								</tr>
+								<tr class="item_create_compet">
+									<td><b>Дата подачи:</b></td>
+									<!-- <td><a href="#">{{ claim.client_name}}</a></td> -->
+									<td>{{ claim.fields['date_create'] }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="text_create_info_more_one">
+							<a data-toggle="modal" data-target="#fullModal{{claim.id}}" href="">Смотреть полную заявку >></a>
+						</div>
+					</div>
+					<div class="button_create">
+						<button onclick="denyProjectClaim({{claim.id}});" class="btn btn-reject">Отклонить</button>
+						<button onclick="window.location.href='/claim/show/{{ claim.id }}'" class="btn btn-yes">Редактировать</button>
+					</div>
+				</div>
+				</div>
+				{# Shapranov Modal View #}
+				<div class="modal fade" id="fullModal{{claim.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content modal__width">
+							<div class="modal-header modal__header">
+								<h5 class="modal-title modal__title" id="exampleModalLabel">Техническое задание</h5>
+								<button type="button" class="close modal__close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<table class="modal__table">
+									<tbody>
+										<tr>
+											<td>
+												<b>Тип?*</b>	
+											</td>
+											<td>
+												{{ claim.category|trans }}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<b>Статус?*</b>
+											</td>
+											<td>
+												{{ claim.fields['projectCommerce'] }}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<b>Отрасль?*</b>
+											</td>
+											<td>
+												{{ claim.fields['projectIndustry'] }}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<b>Заказчик?*</b>
+											</td>
+											<td>
+												{{ claim.fields['Заказчик?*'] }}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<b>Контактное лицо?*</b>
+											</td>
+											<td>
+												{# <div class="form"> #}
+													<!-- <input type="text" placeholder="Должность"> -->
+													{{ claim.fields['Контактное лицо?*'] }}
+													<!-- <input type="text" placeholder="Телефон"> -->
+													<!-- <input type="text" placeholder="E-mail"> -->
+												{# </div> #}
+											</td>
+										</tr>
+										{% for key,field in claim.fields %}
+										{% if key != 'eventID' and key != 'type' and key != 'date_create' and key != 'projectCommerce' and key != 'projectIndustry' and key != 'Заказчик?*' and key != 'Контактное лицо?*' %}
+										    <tr>
+											<td>
+												<b>{{ key }}</b>
+											</td>
+											<td>
+												{{ field }}
+											</td>
+										</tr>
+										{% endif %}
+										{% endfor %}
+										{% if claim.attachment != false %}
+										<tr>
+											<td>
+												<b>Вложения</b>
+											</td>
+											<td class="label">
+												<label for="file__doc">
+												{% for file in claim.attachment %}
+											    
+													<a target="_blank" rel="noopener noreferrer" href="/claim/attachment/{{ file }}"><img src="/img/pdf.png" alt=""></a>
+												
+											{% endfor %}
+											</label>
+											</td>
+										</tr>
+										{% endif %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			{# </div> #}
+			{% else %}
+				{% if not data2 %}
+					<p style="margin-left: 15px;">Сейчас нет новых заявок</p>
+				{% endif %}
+			{% endif %}
+			{% if data2 %}
+				{# <div class="row pr-0 mr-0"> #}
+				{% for claim in data2 %}
+				<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+				<div class="card_team_create" style="height: 100%;display: flex;flex-direction: column;">
+					<div class="card_team_create_head">
+						<img class="card_team_create_img" src="/img/add_tz
+						.png">
+						<p class="card_team_create_title">{{ claim.fields['Название проекта?*'] }}</p>
+					</div>
+					<div class="card_team_create_body">
+						<table style="width: 100%;">
+							<tbody class="list_create_compet">
+								<tr class="item_create_compet">
+									<td><b>Подразделение-инициатор:</b></td>
+									<td>Кафедра “Программное обеспечение вычислительной техники и систем”</td>
+								</tr>
+								<tr class="item_create_compet">
+									<td><b>Руководитель проекта:</b></td>
+									<!-- <td><a href="#">{{ claim.client_name}}</a></td> -->
+									<td>Долгов Василий Юрьевич </td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="text_create_info_more_one">
+							<a data-toggle="modal" data-target="#fullModalDayn{{claim.id}}" href="">Смотреть полную заявку >></a>
+						</div>
+					</div>
+					<div class="button_create" style="display: flex;flex-grow: 1;flex-direction: row;align-items: flex-end;justify-content: space-around;">
+						<button onclick="denyProjectClaim({{claim.id}});" class="btn btn-reject">Отклонить</button>
+						<button onclick="window.location.href='/claim/dayn/editor/{{ claim.id }}'" class="btn btn-yes">Редактировать</button>
+					</div>
+				</div>
+				</div>
+				{# Shapranov Modal View #}
+				<div class="modal fade" id="fullModalDayn{{claim.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content modal__width">
+							<div class="modal-header modal__header">
+								<h5 class="modal-title modal__title" id="exampleModalLabel">Техническое задание</h5>
+								<button type="button" class="close modal__close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<table class="modal__table">
+									<tbody>
+										{% for key,field in claim.fields %}
+										{% if key != 'direction_id' %}
+										    <tr>
+											<td>
+												<b>{{ key }}</b>
+											</td>
+											<td>
+												{{ field }}
+											</td>
+										</tr>
+										{% endif %}
+										{% endfor %}
+										{% if claim.attachment != false %}
+										<tr>
+											<td>
+												<b>Вложения</b>
+											</td>
+											<td>
+												<label for="file__doc">
+													<a target="_blank" rel="noopener noreferrer" href="/claim_dayn/attachment/{{ claim.attachment }}"><img src="/img/jpg.png" alt=""></a>
+												</label>
+											</td>
+										</tr>
+										{% endif %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			{# </div> #}
+			{% endif %}
+		</div>
+		</div>
+
+		{% if claims_new %}
+		<div class="container-fluid p-0">
+			<p style="font-weight: bold; text-align: left; font-size: 36px;">Заявки на роль наставника</p>
+			<div class="row pr-0 mr-0">
+				{% for claim in claims_new %}
+				{% include 'user/moderator_claimStudent_container.html.twig' with claim %}
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+			<!-- 	<div class="section proj-section">
+			<p>ВОПРОСЫ</p>
+			<div class="crd project-card">
+				<p>От Пупкина Василия Васильевича</p>
+
+				<p>Когда появятся новые проекты?</p>
+				<textarea placeholder="Ответ"></textarea>
+				<button type="button" onclick="window.location.href='project.html'" class="btn btn-primary">Ответить</button>
+			</div>
+		</div> -->
+
+	</div>
+	{% endblock %}

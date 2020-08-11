@@ -1,0 +1,353 @@
+{% block content %}
+<link rel="stylesheet" href="/css/inquirer.css">
+<script src="/js/inquirer.js"></script>
+
+<style>
+	#file_doc{
+		display: none;
+	}
+
+	.btn-success{
+		height:30px !important;
+	}
+
+	.p_img{
+		position: relative;
+		bottom: 0;
+		left: 5px;
+		overflow: hidden; 
+		text-overflow: ellipsis;
+	}
+</style>
+
+<div class="modal fade" id="addInquirerModal" tabindex="-1" role="dialog" aria-labelledby="addInquirerModal" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-body" style="margin-bottom: 60px;">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<table class="table_inq">
+					<tbody class="inquirer_form_type">
+						<tr>
+							<td>Тип проекта?*</td>
+							<td>
+								<select id="typeselector" onchange="selectInquirerType(this.value)" style="height: 65px; background: none;">
+									{% for key,value in projects %}
+										<option value="{{key}}"> {{ value.name }}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				{% for key,value in projects %}
+				<table class="table_inq">
+					<tbody id="{{ key }}_project" class="inquirer_form">
+						<tr>
+							<td>Статус?*</td>
+							<td><select id="typeStatus" style="height: 65px; background: none;">
+								<option>Коммерческий</option>
+								<option>Некоммерческий</option>
+							</select></td>
+						</tr>
+
+						<tr>
+							<td>Отрасль?*</td>
+							<td><select id="typeIndustry" style="height: 65px; background: none;">
+								<option disabled>МАТЕМАТИКА И МЕХАНИКА</option>
+								<option>Математика</option>
+								<option>Прикладная математика и информатика</option>
+								<option>Механика и математическое моделирование</option>
+								<option>Прикладная математика</option>
+								<option>Статистика</option>
+								<option disabled>КОМПЬЮТЕРНЫЕ И ИНФОРМАЦИОННЫЕ НАУКИ</option>
+								<option>Математика и компьютерные науки</option>
+								<option>Фундаментальная информатика и информационные технологии</option>
+								<option>Математическое обеспечение и администрирование информационных систем</option>
+								<option disabled>ФИЗИКА И АСТРОНОМИЯ</option>
+								<option>Прикладные математика и физика</option>
+								<option>Физика</option>
+								<option>Радиофизика</option>
+								<option disabled>ХИМИЯ</option>
+								<option>Химия</option>
+								<option>Химия, физика и механика материалов</option>
+								<option disabled>НАУКИ О ЗЕМЛЕ</option>
+								<option>Геология</option>
+								<option>География</option>
+								<option>Картография и геоинформатика</option>
+								<option>Гидрометеорология</option>
+								<option>Прикладная гидрометеорология</option>
+								<option>Экология и природопользование</option>
+								<option>БИОЛОГИЧЕСКИЕ НАУКИ</option>
+								<option>Биология</option>
+								<option>Почвоведение</option>
+								<option disabled>АРХИТЕКТУРА</option>
+								<option>Архитектура</option>
+								<option>Реконструкция и реставрация архитектурного наследия</option>
+								<option>Дизайн архитектурной среды</option>
+								<option>Градостроительство</option>
+								<option disabled>ТЕХНИКА И ТЕХНОЛОГИИ СТРОИТЕЛЬСТВА</option>
+								<option>Строительство</option>
+								<option>ИНФОРМАТИКА И ВЫЧИСЛИТЕЛЬНАЯ ТЕХНИКА</option>
+								<option>Информатика и вычислительная техника</option>
+								<option>Информационные системы и технологии</option>
+								<option>Прикладная информатика</option>
+								<option>Программная инженерия</option>
+								<option disabled>ИНФОРМАЦИОННАЯ БЕЗОПАСНОСТЬ</option>
+								<option>ЭЛЕКТРОНИКА, РАДИОТЕХНИКА И СИСТЕМЫ СВЯЗИ</option>
+								<option>Радиотехника</option>
+								<option>Инфокоммуникационные технологии и системы связи</option>
+								<option>Конструирование и технология электронных средств</option>
+								<option>Электроника и наноэлектроника</option>
+								<option disabled>ФОТОНИКА, ПРИБОРОСТРОЕНИЕ, ОПТИЧЕСКИЕ И БИОТЕХНИЧЕСКИЕ СИСТЕМЫ И ТЕХНОЛОГИИ</option>
+								<option>Приборостроение</option>
+								<option>Оптотехника</option>
+								<option>Фотоника и оптоинформатика</option>
+								<option>Биотехнические системы и технологии</option>
+								<option>Лазерная техника и лазерные технологии</option>
+								<option disabled>ЭЛЕКТРО - И ТЕПЛОЭНЕРГЕТИКА</option>
+								<option>Теплоэнергетика и теплотехника</option>
+								<option>Электроэнергетика и электротехника</option>
+								<option>Энергетическое машиностроение</option>
+								<option disabled>ЯДЕРНАЯ ЭНЕРГЕТИКА И ТЕХНОЛОГИИ</option>
+								<option>Ядерная энергетика и теплофизика</option>
+								<option>Ядерные физика и технологии</option>
+								<option disabled>МАШИНОСТРОЕНИЕ</option>
+								<option>Машиностроение</option>
+								<option>Технологические машины и оборудование</option>
+								<option>Прикладная механика</option>
+								<option>Автоматизация технологических процессов и производств</option>
+								<option>Конструкторско-технологическое обеспечение машиностроительных производств</option>
+								<option>Мехатроника и робототехника</option>
+								<option disabled>ФИЗИКО-ТЕХНИЧЕСКИЕ НАУКИ И ТЕХНОЛОГИИ</option>
+								<option>Техническая физика</option>
+								<option>Высокотехнологические плазменные и энергетические установки</option>
+								<option>Холодильная, криогенная техника и системы жизнеобеспечения</option>
+								<option disabled>ОРУЖИЕ И СИСТЕМЫ ВООРУЖЕНИЯ</option>
+								<option>Корабельное вооружение</option>
+								<option>ХИМИЧЕСКИЕ ТЕХНОЛОГИИ</option>
+								<option>Химическая технология</option>
+								<option>Энерго- и ресурсосберегающие процессы в химической технологии, нефтехимии и биотехнологии</option>
+								<option disabled>ПРОМЫШЛЕННАЯ ЭКОЛОГИЯ И БИОТЕХНОЛОГИИ</option>
+								<option>Биотехнология</option>
+								<option>Продукты питания из растительного сырья</option>
+								<option>Продукты питания животного происхождения</option>
+								<option>Технология продукции и организация общественного питания</option>
+								<option disabled>ТЕХНОСФЕРНАЯ БЕЗОПАСНОСТЬ И ПРИРОДООБУСТРОЙСТВО</option>
+								<option>Техносферная безопасность</option>
+								<option>Природообустройство и водопользование</option>
+								<option disabled>ПРИКЛАДНАЯ ГЕОЛОГИЯ, ГОРНОЕ ДЕЛО, НЕФТЕГАЗОВОЕ ДЕЛО И ГЕОДЕЗИЯ</option>
+								<option>Нефтегазовое дело</option>
+								<option>Землеустройство и кадастры</option>
+								<option>Геодезия и дистанционное зондирование</option>
+								<option disabled>ТЕХНОЛОГИИ МАТЕРИАЛОВ</option>
+								<option>Материаловедение и технологии материалов</option>
+								<option>Металлургия</option>
+								<option disabled>ТЕХНИКА И ТЕХНОЛОГИИ НАЗЕМНОГО ТРАНСПОРТА</option>
+								<option>Технология транспортных процессов</option>
+								<option>Наземные транспортно-технологические комплексы</option>
+								<option>Эксплуатация транспортно-технологических машин и комплексов</option>
+								<option disabled>АВИАЦИОННАЯ И РАКЕТНО-КОСМИЧЕСКАЯ ТЕХНИКА</option>
+								<option>Ракетные комплексы и космонавтика</option>
+								<option>Системы управления движением и навигация</option>
+								<option>Баллистика и гидроаэродинамика</option>
+								<option>Авиастроение</option>
+								<option>Двигатели летательных аппаратов</option>
+								<option disabled>АЭРОНАВИГАЦИЯ И ЭКСПЛУАТАЦИЯ АВИАЦИОННОЙ И РАКЕТНО-КОСМИЧЕСКОЙ ТЕХНИКИ</option>
+								<option>Техническая эксплуатация летательных аппаратов и двигателей</option>
+								<option>Техническая эксплуатация авиационных электросистем и пилотажно-навигационных комплексов</option>
+								<option>Аэронавигация</option>
+								<option>Эксплуатация аэропортов и обеспечение полетов воздушных судов</option>
+								<option disabled>ТЕХНИКА И ТЕХНОЛОГИИ КОРАБЛЕСТРОЕНИЯ И ВОДНОГО ТРАНСПОРТА</option>
+								<option>Управление водным транспортом и гидрографическое обеспечение судоходства</option>
+								<option>Кораблестроение, океанотехника и системотехника объектов морской инфраструктуры</option>
+								<option>Водные пути, порты и гидротехнические сооружения</option>
+								<option disabled>УПРАВЛЕНИЕ В ТЕХНИЧЕСКИХ СИСТЕМАХ</option>
+								<option>Стандартизация и метрология</option>
+								<option>Управление качеством</option>
+								<option>Системный анализ и управление</option>
+								<option>Управление в технических системах</option>
+								<option>Инноватика</option>
+								<option disabled>НАНОТЕХНОЛОГИИ И НАНОМАТЕРИАЛЫ</option>
+								<option>Нанотехнологии и микросистемная техника</option>
+								<option>Наноинженерия</option>
+								<option>Наноматериалы</option>
+								<option disabled>ТЕХНОЛОГИИ ЛЕГКОЙ ПРОМЫШЛЕННОСТИ</option>
+								<option>Технология изделий легкой промышленности</option>
+								<option>Технологии и проектирование текстильных изделий</option>
+								<option>Технология полиграфического и упаковочного производства</option>
+								<option>Технология художественной обработки материалов</option>
+								<option>Конструирование изделий легкой промышленности</option>
+								<option disabled>СЕЛЬСКОЕ, ЛЕСНОЕ И РЫБНОЕ ХОЗЯЙСТВО</option>
+								<option>Лесное дело</option>
+								<option>Технология лесозаготовительных и деревоперерабатывающих производств</option>
+								<option>Агрохимия и агропочвоведение</option>
+								<option>Агрономия</option>
+								<option>Садоводство</option>
+								<option>Агроинженерия</option>
+								<option>Технология производства и переработки сельскохозяйственной продукции</option>
+								<option>Водные биоресурсы и аквакультура</option>
+								<option>Промышленное рыболовство</option>
+								<option>Ландшафтная архитектура</option>
+								<option>Гидромелиорация</option>
+								<option>ВЕТЕРИНАРИЯ И ЗООТЕХНИЯ</option>
+								<option>Ветеринарно-санитарная экспертиза</option>
+								<option>Зоотехния</option>
+								<option>ПСИХОЛОГИЧЕСКИЕ НАУКИ</option>
+								<option>Психология</option>
+								<option>Конфликтология</option>
+								<option disabled>ЭКОНОМИКА И УПРАВЛЕНИЕ</option>
+								<option>Экономика</option>
+								<option>Менеджмент</option>
+								<option>Управление персоналом</option>
+								<option>Государственное и муниципальное управление</option>
+								<option>Бизнес-информатика</option>
+								<option>Торговое дело</option>
+								<option>Товароведение</option>
+								<option>Жилищное хозяйство и коммунальная инфраструктура</option>
+								<option disabled>СОЦИОЛОГИЯ И СОЦИАЛЬНАЯ РАБОТА</option>
+								<option>Социология</option>
+								<option>Социальная работа</option>
+								<option>Организация работы с молодежью</option>
+								<option disabled>ЮРИСПРУДЕНЦИЯ</option>
+								<option>ПОЛИТИЧЕСКИЕ НАУКИ И РЕГИОНОВЕДЕНИЕ</option>
+								<option>Зарубежное регионоведение</option>
+								<option>Регионоведение России</option>
+								<option>Востоковедение и африканистика</option>
+								<option>Политология</option>
+								<option>Международные отношения</option>
+								<option>Публичная политика и социальные науки</option>
+								<option disabled>СРЕДСТВА МАССОВОЙ ИНФОРМАЦИИ</option>
+								<option>Реклама и связи с общественностью</option>
+								<option>Журналистика</option>
+								<option>Издательское дело</option>
+								<option>Телевидение</option>
+								<option>Медиакоммуникации</option>
+								<option disabled>СЕРВИС И ТУРИЗМ</option>
+								<option>Сервис</option>
+								<option>Туризм</option>
+								<option>Гостиничное дело</option>
+								<option disabled>ОБРАЗОВАНИЕ И ПЕДАГОГИЧЕСКИЕ НАУКИ</option>
+								<option>Педагогическое образование</option>
+								<option>Психолого-педагогическое образование</option>
+								<option>Специальное (дефектологическое) образование</option>
+								<option>Профессиональное обучение (по отраслям)</option>
+								<option>Педагогическое образование (с двумя профилями подготовки)</option>
+								<option disabled>ЯЗЫКОЗНАНИЕ И ЛИТЕРАТУРОВЕДЕНИЕ</option>
+								<option>Филология</option>
+								<option>Лингвистика</option>
+								<option>Фундаментальная и прикладная лингвистика</option>
+								<option>Интеллектуальные системы в гуманитарной сфере</option>
+								<option disabled>ИСТОРИЯ И АРХЕОЛОГИЯ</option>
+								<option>История</option>
+								<option>Документоведение и архивоведение</option>
+								<option>Антропология и этнология</option>
+								<option>Археология</option>
+								<option disabled>ФИЛОСОФИЯ, ЭТИКА И РЕЛИГИОВЕДЕНИЕ</option>
+								<option>Философия</option>
+								<option>Прикладная этика</option>
+								<option>Религиоведение</option>
+								<option disabled>ТЕОЛОГИЯ</option>
+								<option>Теология</option>
+								<option disabled>ФИЗИЧЕСКАЯ КУЛЬТУРА И СПОРТ</option>
+								<option>Физическая культура</option>
+								<option>Физическая культура для лиц с отклонениями в состоянии здоровья (адаптивная физическая культура)</option>
+								<option>Рекреация и спортивно-оздоровительный туризм</option>
+								<option disabled>ИСКУССТВОЗНАНИЕ</option>
+								<option>Искусства и гуманитарные науки</option>
+								<option>Изящные искусства</option>
+								<option>История искусств</option>
+								<option>Теория и история искусств</option>
+								<option disabled>КУЛЬТУРОВЕДЕНИЕ И СОЦИОКУЛЬТУРНЫЕ ПРОЕКТЫ</option>
+								<option>Культурология</option>
+								<option>Народная художественная культура</option>
+								<option>Социально-культурная деятельность</option>
+								<option>Музеология и охрана объектов культурного и природного наследия</option>
+								<option>Режиссура театрализованных представлений и праздников</option>
+								<option>Библиотечно-информационная деятельность</option>
+							</select></td>
+						</tr>
+
+						<tr>
+							<td>Заказчик?*</td>
+							<td><textarea></textarea></td>
+						</tr>
+
+						<tr>
+							<td>Контактное лицо?*</td>
+							<td><textarea rows="4" placeholder="ФИО, должность, телефон, E-mail"></textarea></td>
+						</tr>
+						{% for field, text in value.fields %}
+							<tr>
+								<td> {{ field }}</td>
+								<td><textarea rows="4" placeholder="{{ text }}"></textarea></td>
+							</tr>
+						{% endfor %}
+						<tr>
+							<td style="padding-top: 50px;">Вложение</td>
+							<td style="padding-top: 50px;">
+								<button class="btn btn-success ml-4" onclick="getClick()">Загрузить файл(-ы)</button>
+								<input id="file_doc" type="file" multiple>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<div class="container-fluid p-0 m-0 mt-4">
+									<div class="row block_load">
+										
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				{% endfor %}
+			</div> 
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single" style="bottom: 30px;">
+					<button style="background-color:  #0C7CBB; color: white" type="button" class="btn" onclick="generateString({{eventID}})">Отправить заявку</button>
+			</div>     
+		</div>
+		
+	</div>
+</div>
+
+
+<div class=" col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4" style="opacity: 0.5;">
+	<div class="crd project-card" style="margin: 0 !important;">
+
+
+		<div style="background-image: url('/img/newproj.svg'); background-size: cover; background-repeat: round;" class="project-card-header">
+			<p></p>
+			<p>Название проекта</p>
+		</div>
+
+		<p class="crd-caption-left"></p>
+		<p class="project-description">Кратко опишите, на решение какой проблемы направленно данное техническое задание: задачу, которую вы ставите перед разработчиками и  условия, в которых будет внедрятся конечная разработка. </p>
+		<ul class="project-card-theses">
+			<li>Тип проекта</li>
+			<li>Область проектирования</li>
+		</ul>
+
+
+		<p class="project-card-status">Этап проектирования</p>
+		<div class="card__footer">
+			<div  style="display: inline-block; float: left; font-size: 13px;">
+				<p style="color: gray; font-weight: bold;">Сроки реализации:</p>
+				<p>{{ date }}</p>	
+			</div>
+
+			<div style="display: inline-block; float: right; font-size: 13px;">
+				<p style="color: gray; font-weight: bold; white-space: pre-wrap;">Заказчик проекта:</p>
+				<p>-</p>	
+			</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+			<button data-toggle="modal" data-target="#addInquirerModal" type="button" class="btn btn-secondary">Предложить проект</button>
+		</div>
+	</div>
+</div>
+{% endblock %}

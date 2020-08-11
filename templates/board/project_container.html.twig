@@ -1,0 +1,69 @@
+<div class=" col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category filter">
+	<div class="crd project-card" style="margin: 0 !important;">
+		
+	
+	<input type="hidden" data-type="filter_projtype" name="type" value="{{ project.info.specialization }}">
+	<input type="hidden" data-type="filter_industry" name="category" value="{{ project.info.industry }}">
+	<input type="hidden" data-type="filter_status" name="commerce" value="{{ project.info.commerce }}">
+	<input type="hidden" data-type="filter_role" name="roles" value="{{ project.freeRoles|json_encode }}">
+	<input type="hidden" data-type="filter_place" name="place" value="{{ project.info.place }}">
+	{% if project.client['client'] != "" %}
+		<input type="hidden" data-type="filter_client" name="client" value="{{ project.client['client'] }}">
+	{% else %}
+	    <input type="hidden" data-type="filter_client" name="client" value="">
+	{% endif %}
+	{% if project.client['employee'] != "" %}
+		<input type="hidden" data-type="filter_employee" name="employee" value="{{ project.client['employee'] }}">
+	{% else %}
+	    <input type="hidden" data-type="filter_employee" name="employee" value="">
+	{% endif %}
+	
+	
+	{% if is_granted("ROLE_MODERATOR") %}
+	{# <div class="btn_close"><img src="/img/close.png"></div> #}
+	{% endif %}
+	<div style="background-image: url('/project/header/{{ project.docs.headerImage }}'); background-size: cover; background-position: center;" class="project-card-header">
+		<p></p>
+		<p>{{ project.info.title }}</p>
+	</div>
+
+	<p class="crd-caption-left"></p>
+	<div class="crd__text">
+		<p class="project-description">{{ project.info.shortDesc |nl2br }}</p>
+		<ul class="project-card-theses">
+			{% for item in project.info.theses %}
+				<li>{{ item }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+
+	<p class="project-card-status" style="color: #0C7CBB; text-align: center;">
+		{% if project.state == "1" %}
+			Идет набор куратора
+		{% elseif project.state == "2" %}
+			Идет набор в команду
+		{% elseif project.state == "3" %}
+			В процессе
+		{% else %}
+			Завершен
+		{% endif %}
+	</p>
+	<div class="card__footer">
+		<div  style="display: inline-block; float: left; font-size: 13px;">
+			<p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+			<p style="text-align: center; ">{{ project.info.date_start|date("d.m.Y") }} - {{ project.info.date_close|date("d.m.Y") }}</p>	
+		</div>
+		
+		<div style="display: inline-block; float: right; font-size: 13px;">
+			<p style="color: gray; font-weight: bold;  text-align: center;">Заказчик проекта:</p>
+			<p style="text-align: center; white-space: pre-wrap;">{{ project.info.creator }}</p>	
+		</div>
+		<div class="clearfix"></div>
+	</div>
+
+	<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+		<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show/{{ project.id }}'" class="btn">Подробнее</button>
+	</div>
+	</div>
+</div>

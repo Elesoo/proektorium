@@ -1,0 +1,38 @@
+{% block container_st %}
+<div class="crd project-card" style="margin: 0 !important;">
+	<div class="project-card-header invitation-card-header">
+		<p>
+			{{ project.info.title }}
+		</p>
+		<p>Участие в роли <b>{{ role.name }}</b></p>
+	</div>
+	<p class="crd-caption-left"></p>
+	<p class="project-description">{{ project.info.shortDesc }}</p>
+	<ul class="project-card-theses">
+		<li>{{ project.info.specialization|trans  }}</li>
+		<li>{{ project.info.industry }}</li>
+
+	</ul>
+
+	{% if project.state == "2" %}
+		<p class="project-card-status" style="color: #0C7CBB; text-align: center;">Идёт набор в команду</p>
+	{% elseif project.state == "3" %}
+		<p class="project-card-status" style="color: #0C7CBB; text-align: center;">В процессе</p>
+	{% endif %}
+	<div class="card__footer">
+		<div  style="display: inline-block; font-size: 13px;">
+			<p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+			<p style="text-align: center;">{{project.info.date_start}} - {{project.info.date_close}}</p> 
+		</div>
+
+		<div style="display: inline-block; font-size: 13px; margin-left: 30px">
+			<p style="color: gray; font-weight: bold;  text-align: center;">Заказчик проекта:</p>
+			<p style="text-align: center;">{{ project.info.creator }}</p> 
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+		<button  style="background-color: #015C65; color: white" type="button" onclick="window.location.href='/project/show/{{ project.id }}'" class="btn">Подробнее</button>
+	</div>
+</div>
+{% endblock %}

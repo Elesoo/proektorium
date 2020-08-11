@@ -1,0 +1,728 @@
+{% extends 'base.html.twig'%}
+{% block content %}
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+	<script src="/js/day_n_publish.js"></script>
+
+	<style>
+
+		.text__dayn {
+			background-color: #fff;
+			border-radius: 10px;
+			margin-right: 10px;
+			padding-bottom: 40px;
+			width: 100%;
+		}
+		
+		.tz__text b {
+			font-weight: bold !important;
+			font-family: 'Arial', sans-serif !important;
+		}
+		
+	
+		
+		.bold__text {
+			font-weight: bold !important;
+			font-family: 'Arial', sans-serif !important;	
+		}
+
+		.text__dayn p {
+			margin: 10px 10px 0 10px;
+			font-size: 14px;
+		}
+		
+		.main__block_red {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			-ms-align-items: flex-start;
+			align-items: flex-start;
+			justify-content: center;
+			width: 100%;
+		}
+		
+		/*redactor__head*/
+
+		.redactor {
+			width: 100%;
+			border-radius: 10px;
+			background-color: #fff;
+		}
+
+
+		.redactor__head {
+			background: #8E8E8E;
+			border-radius: 10px 10px 0 0;
+			height: 45px;
+		}
+
+		.redactor__head_title {
+			font-weight: bold;
+			font-size: 18px;
+			line-height: 25px;
+			text-align: center;
+			color: #fff;
+			padding-top: 15px;
+		}
+		
+
+		/*redactor__body*/	
+
+		.claster__select {
+			width: 200px;
+			height: 23px;
+			border: 0.2px solid #000;
+			font-weight: 300;
+			font-size: 12px;
+			-ms-text-align-last: center;
+			text-align-last: center;
+			outline: none !important;
+			line-height: 16px;
+			border-radius: 5px;
+			background-color: transparent;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			-ms-appearance: none;
+			appearance: none;
+			background: url('/img/ar.png') no-repeat 95% center;
+		}
+
+		.claster__select option {
+			text-align: center;
+
+		}
+
+		.navigation__table {
+			border-spacing: 30px;
+			border-collapse: separate !important;
+			width: 100%;
+		}
+
+		.navigation__table tr {
+			width: 100%;
+		}
+
+		.navigation__table tr td {
+			padding: 0;
+		}
+		
+
+		.modal__subtitle {
+			font-size: 14px;
+			line-height: 19px;
+			text-align: right;
+			color: #000;
+		}	
+
+		.navigation__table textarea {
+			border: none;
+			border-bottom: 0.5px solid #837E7E;
+			outline: none !important;
+			font-weight: 300;
+			font-size: 14px;
+			line-height: 19px;
+			color: #7C7C7C; 
+			padding-left: 15px;
+			width: 100%;
+		}
+		
+		.navigation__table td:first-child {
+			width: 30%;
+		}
+
+
+		.navigation__table td + td {
+			width: 70%;
+		}
+
+		.modal-footer {
+			border: none;
+		}
+
+		.modal-footer_send {
+			background: #0C7CBB;
+			box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+			border-radius: 10px;
+			width: 415px;
+			height: 40px;
+			font-weight: 600;
+			font-size: 18px;
+			line-height: 25px;
+			color: #fff;
+			border: none;
+			margin: 0 auto 50px;
+			outline: none !important;
+		}
+
+		.modal__text {
+			font-weight: 300;
+			font-size: 14px;
+			line-height: 19px;
+			color: #000;
+			margin: 0;
+		}
+
+		.inp__file {
+			display: none;
+		}
+
+		.file__label {
+			border: 1px solid #8E8E8E;
+			box-sizing: border-box;
+			border-radius: 10px;
+			width: 210px;
+			height: 25px;
+			font-size: 12px;
+			line-height: 20px;
+			text-align: center;
+			color: #8E8E8E;
+			cursor: pointer;
+		}
+
+		.redactor__footer {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+			-ms-align-items: center;
+			align-items: center;
+			justify-content: center;
+			margin-top: 40px;
+			padding-bottom: 40px;
+		}
+
+		.redactor__footer button {
+			width: 415px;
+			height: 41px;
+			border-radius: 10px;
+			font-size: 18px;
+			line-height: 25px;
+			text-align: center;
+			outline: none !important;
+		}
+
+		.readactor__footer_role {
+			border: 1px solid #0C7CBB;
+			background-color: transparent;
+			color: #0C7CBB;
+			margin-bottom: 30px;
+		}
+
+		.redactor__footer_publish {
+			color: #fff;
+			background: #0C7CBB;
+			border: none;
+			font-weight: 600;
+		}				
+
+		.disabled {
+			display: none !important;
+		}
+
+		.add__team {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			justify-content: space-around;
+			-ms-align-items: center;
+			align-items: center;
+			width: 80%;
+			margin-left: auto;
+		}
+
+		.add__team_count {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-ms-align-items: center;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.add__team_subt {
+			font-size: 14px;
+			line-height: 19px;
+			text-align: right;
+			margin-bottom: 0;
+			margin-right: 34px;
+		}
+
+		.text__count {
+			font-size: 14px;
+			line-height: 19px;
+			color: #7C7C7C;
+			margin: 0;
+		}
+
+		.counting__inp {
+			border: 1px solid #8E8E8E;
+			width: 40px;
+			height: 20px;
+			padding-left: 5px;
+			font-size: 10px;
+			color: #8E8E8E;
+			margin-left: 15px;
+			border-radius: 5px;
+			outline: none !important;
+		}
+
+		.add__team_rolebtn {
+			width: 155px;
+			height: 30px;
+			background: #1B4F44;
+			border-radius: 10px;
+			font-size: 14px;
+			line-height: 19px;
+			color: #fff;
+			border: none;
+		}
+
+		.readactor__role_block {
+			width: 100%;
+		}
+
+		.redactor__role_header {
+			width: 100%;
+		}
+
+		.role__name {
+			height: 55px;
+			border: none;
+			border-bottom: 0.5px solid #837E7E;
+			outline: none !important; 
+			width: 100%;
+			font-weight: 600;
+			font-size: 14px;
+			line-height: 19px;
+			color: #545353;
+			text-align: center;
+			padding: 0;
+			border-radius: 10px 10px 0 0;
+		}
+
+		.redactor__role_body {
+			border: 0.5px solid #545353;
+			box-sizing: border-box;
+			border-radius: 10px;
+			margin: 34px 30px 0;
+		}
+
+		.redactor__role_cards {
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: row;
+			-moz-flex-direction: row;
+			-ms-flex-direction: row;
+			-o-flex-direction: row;
+			flex-direction: row;
+			-ms-align-items: center;
+			align-items: center;
+			justify-content: center;
+			padding: 26px 25px 49px;
+			width: 100%;
+		}
+
+		.redactor__role_item {
+			margin-right: 67px;
+			width: 100%;
+			display: -webkit-flex;
+			display: -moz-flex;
+			display: -ms-flex;
+			display: -o-flex;
+			display: flex;
+			-webkit-flex-direction: column;
+			-moz-flex-direction: column;
+			-ms-flex-direction: column;
+			-o-flex-direction: column;
+			flex-direction: column;
+			-ms-align-items: center;
+			align-items: center;
+			justify-content: center;
+		}
+		
+
+		.redactor__role_item textarea {
+			border: none;
+			border-bottom: 0.5px solid #837E7E;
+			outline: none !important;
+			font-weight: 300;
+			font-size: 10px;
+			line-height: 14px;
+			color: #545353;
+			padding-left: 15px;
+			width: 100%;
+		}
+
+		.role__item_subtitle {
+			font-size: 12px;
+			line-height: 16px;
+			text-align: center;
+			color: #000000;
+		}
+
+		.redactor__item__btn {
+			width: 117px;
+			height: 25px;
+			background: #1B4F44;
+			border-radius: 5px;
+			border: none;
+			font-size: 18px;
+			line-height: 25px;
+			text-align: center;
+			color: #fff;
+			margin-top: 25px;
+		}
+
+		.input__td {
+			position: relative;
+		}		
+
+		.label__x {
+			position: absolute;
+			top: 5px;
+			left: 185px;
+			transform: translateX(-0%);
+			border: none;
+			background-color: transparent;
+		}
+
+		.redactor .select2-container {
+			width: 300px !important;
+		}
+
+		/*media*/
+
+		@media(max-width: 1200px) {
+			.main__block_red {
+				-webkit-flex-direction: column;
+				-moz-flex-direction: column;
+				-ms-flex-direction: column;
+				-o-flex-direction: column;
+				flex-direction: column;
+			}
+
+			.text__dayn {
+				margin-bottom: 15px;
+			}
+		}
+
+		@media(max-width: 500px) {
+			
+		}
+
+	</style>
+
+
+		
+	<script>
+		'use strict';
+
+		window.onload = () => {
+			let imageValue = document.querySelector('.inp__file'),
+				labelVal = document.querySelector('.file__label'),
+				addRole = document.querySelector('.readactor__footer_role'),
+				addTeamBlock = document.querySelector('.redactor__role_block'),
+				removeImg = document.querySelector('.label__x');
+
+
+			imageValue.addEventListener('change', () => {
+				if (imageValue.value != null) {
+					let imageVal = imageValue.value;
+					labelVal.textContent = imageVal.substring(12);
+				}
+			});
+
+			// remove file
+
+			removeImg.addEventListener('click', () => {
+				if (imageValue.value != null) {
+					labelVal.textContent = 'Загрузите изображение';
+					imageValue.value = null;
+				}				
+			});
+
+			// role editor
+			// addRole.addEventListener('click', () => {
+			// 	addRole.style.display = 'none';
+			// 	addTeamBlock.classList.remove('disabled');
+			// });
+
+
+		};
+
+
+
+
+		$(document).ready(function() {
+			let cafedra = document.querySelector('#cafedra').innerHTML,
+				valSelect = document.querySelectorAll('#valCafedra option');
+			$('#valCafedra').val(cafedra);
+    		$('.js-example-basic-single').select2();
+    		$('.js-example-basic-multiple').select2();
+		});
+	</script>
+
+
+<div class="main__block_red">
+	<div class="text__dayn">
+		<div class="redactor__head">
+			<h5 class="redactor__head_title">Техническое задание</h5>
+		</div>
+		<p class="tz__text"><b>Название проекта</b></p>
+		<p class="tz__text">{{claim.fields['Название проекта?*']}}</p>
+		<p class="tz__text"><b>Подразделение-инициатор</b></p>
+		<p class="tz__text" id="cafedra">{{claim.department.title}}</p>
+		{% for key,item in claim.fields %}
+			{% if key != 'direction_id' and key != 'Название проекта?*' %}
+				<p class="tz__text"><p class="bold__text" style="font-family: inherit; font-weight: bold;">{{key}}</p></p>
+				<p class="tz__text">{{item}}</p>
+			{% endif %}
+		{% endfor %}
+		{# <p class="tz__text">Руководитель проекта</p>
+		<p class="tz__text">Проблематика</p>
+		<p class="tz__text">Подробное описание содержания проектной работы</p>
+		<p class="tz__text">Цель и задачи проекта</p>
+		<p class="tz__text">Проектное задание</p>
+		<p class="tz__text">Сроки реализации проекта</p>
+		<p class="tz__text">Количество зачетных единиц</p>
+		<p class="tz__text">Форма итогового контроля</p>
+		<p class="tz__text">Формируемые компетенции</p>
+		<p class="tz__text">Требования к студентам, участникам проекта</p>
+		<p class="tz__text">Планируемые результаты проекта к 19.09.2020</p>
+		<p class="tz__text">Планируемые результаты проекта к концу семестра</p>
+		<p class="tz__text">Количество вакантных мест на проекте</p>	
+		<p class="tz__text">Рекомендуемые направления подготовки</p>
+		<p class="tz__text">Требуемые ресурсы</p>
+		<p class="tz__text">Изображение для шапки карточки проекта</p> #}
+	</div>
+	
+	
+	
+	
+	<div class="redactor">
+		<div class="redactor__head">
+			<h5 class="redactor__head_title">Редактор проектов</h5>
+		</div>
+		<div class="redactor__body">
+			<table class="navigation__table">
+				<tbody class="publish_body">
+					<tr>
+						<td class="modal__subtitle">
+							Кластер
+						</td>
+						<td>
+							<select id="cluster" name="select" class="claster__select">
+							  <option value="Discover"  selected="">Discover</option> 
+							  <option value="Solve">Solve</option>
+							  <option value="Invent">Invent</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Название проекта?*
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="2">{{ claim.fields['Название проекта?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Заказчик
+						</td>
+						<td>
+							<select class="js-example-basic-single" id="valCafedra">
+								{% for c in cathedras %}
+									<option value="{{ c.info.title }}">{{ c.info.title }}</option>
+								{% endfor %}
+							</select>
+						</td>	
+					</tr>
+					<tr>
+					<td class="modal__subtitle">
+						Номер телефона
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="2" placeholder="Введите номер телефона руководителя проекта в формате +7 ххх ххх хх хх">{{ claim.fields['Номер телефона'] }}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Электронная почта
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="1" placeholder="Введите адрес электронной почты руководителя проекта">{{ claim.fields['Электронная почта'] }}</textarea>
+					</td>
+				</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Проблематика?*
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="3">{{ claim.fields['Проблематика?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Подробное описание содержания проектной работы?*
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="3">{{ claim.fields['Подробное описание содержания проектной работы?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Цель и задачи проекта?*
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="3">{{ claim.fields['Цель и задачи проекта?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">						
+							Проектное задание ?*
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="2">{{ claim.fields['Проектное задание ?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Количество зачетных единиц?*
+						</td>
+						<td>
+							<p class="modal__text">3</p>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Формируемые компетенции
+						</td>
+						<td>
+							<select id="ok" name="select" class="claster__select">
+								  <option value="ok-6"  selected="">ОК-6, ОК-7 (для ФГОС 3+</option> 
+								  <option value="uk-1">УК-1, УК-2, УК-3, УК-6 (для ФГОС 3++)</option>
+								</select>
+							</td>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Требования к студентам, участникам проекта?
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="3" placeholder="Опишите какими компетенциями должны обладать участники проекта">{{ claim.fields['Требования к студентам, участникам проекта?'] }}</textarea>	
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">						
+							Продуктовый результат к 19.09.2020
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="2">{{ claim.fields['Планируемые результаты проекта к 19.09.2020?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">						
+							Продуктовый результат к концу семестра
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="2">{{ claim.fields['Планируемые результаты проекта к концу семестра?*'] }}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">						
+							Рекомендуемые направления подготовки
+						</td>
+						<td>
+							<select id="study_directions" class="js-example-basic-multiple" name="states[]" multiple="multiple">
+								{% for s in study_directions %}
+									<option value="{{ s.code }}">{{ s.title }}</option>
+								{% endfor %}
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Сроки реализации проекта?*
+						</td>
+						<td>
+							<p class="modal__text">Первый этап: 14.09.2020 – 19.09.2020</p>
+							<p class="modal__text">Второй этап: 21.09.2020 – 29.12.2020</p>
+						</td>
+					</tr>
+					<tr>
+						<td class="modal__subtitle">
+							Местоположение
+						</td>
+						<td>
+							<textarea name="" id="" cols="30" rows="2">{{ claim.fields['Предполагаемая аудитория для командной работы'] }}</textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table> 
+			{# <div class="redactor__role_block disabled">
+				<div class="add__team">
+					<p class="add__team_subt">Команда</p>
+					<div class="add__team_count">
+						<p class="text__count">количество</p>
+						<input type="text" class="counting__inp">
+					</div>
+					<button class="add__team_rolebtn">Добавить роль</button>
+				</div>
+				<div class="redactor__role_body">
+					<div class="refactor__role_header">
+						<input type="text" placeholder="Назвние роли" class="role__name">
+					</div>
+					<div class="redactor__role_cards">
+						<div class="redactor__role_item">
+							<p class="role__item_subtitle">Базовые компетенции</p>
+							<textarea name="" id="" cols="15" rows="1" placeholder="автозаполнение из базы"></textarea>
+							<button class="redactor__item__btn">+</button>
+						</div>
+						<div class="redactor__role_item">
+							<p class="role__item_subtitle">Технические компетенции</p>
+							<textarea name="" id="" cols="15" rows="1" placeholder="автозаполнение из базы"></textarea>
+							<button class="redactor__item__btn">+</button>
+						</div>
+						<div class="redactor__role_item mr-0">
+							<p class="role__item_subtitle">Надпрофессиональные компетенции</p>
+							<textarea name="" id="" cols="15" rows="1" placeholder="автозаполнение из базы"></textarea>
+							<button class="redactor__item__btn">+</button>
+						</div>
+					</div>
+				</div>
+			</div> #}
+		</div>
+		<div class="redactor__footer">
+			{# <button class="readactor__footer_role">Добавить роли</button> #}
+			<button onclick="publishNDay({{ claim.id }});" class="redactor__footer_publish">Опубликовать</button>
+		</div>
+	</div>
+</div>
+{% endblock %}

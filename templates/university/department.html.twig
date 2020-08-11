@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<link rel="stylesheet" href="/css/brand_project.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+<!-- КОСТЫЛЬ ОТ БЭКЭНДЕРА!!! ОДОПТИВНЫЙ И КЛАССНЫЙ (А ФОТО НЕТ) -->
+	<div id="proj_header" style="background-image: url('/department/header/{{ dep.info.header }}'); background-repeat: no-repeat; background-size: 100%; background-position: center -270px;">
+	</div>
+
+	<div style="overflow: auto;width:100%;" class="section">	
+
+		<div class="float__block_text">
+			<p  class="univ__text">{{ dep.info.title }}</p>
+		</div>
+
+		{#<div class="crd contact teammates">
+			<div>
+				<img src="/department/logo/{{ dep.info.attachment }}">
+				<div class="teammates-caption">
+
+					<p>Администратор подразделения</p>
+				</div>
+			</div>
+			<p style="text-align: center">{{ admin }}</p>
+					{# <p>Тел: 8-800-555-35-35</p>
+					<p>Email: pupa@lupa</p> #}
+					{# <div class="crd-buttons crd-buttons-single">
+						<button style="background-color: #1D3351" type="button" class="btn btn-primary" data-toggle="modal" data-target="#changeContactForm">
+								Задать вопрос
+							</button>
+						</div> 
+					</div>#}
+					<p>{{ dep.info.description }}</p>
+					<h2 style="font-weight: bold;">Местоположение</h2>
+					<p>{{ dep.info.place }}</p>
+				</div>
+
+				<div class="container-fluid p-0">
+					<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты</p>
+					<div class="row pr-0 mr-0">
+					{% if dep.projects %}
+						{% for item in projects %}
+							<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+								<div class="crd project-card" style="margin: 0 !important;">
+									<div style="background-image: url('/project/header/{{ item.docs.headerImage }}'); background-size: cover;" class="project-card-header">
+										<p></p>
+										<p>{{ item.info.title }}</p>
+									</div>
+
+									<p class="crd-caption-left"></p>
+									<p class="project-description">{{ item.info.description }}</p>
+									{# <ul class="project-card-theses">
+										<li>исследовательский проект</li>
+										<li>тяжёлая промышленность, сельскохозяйственное машиностроение</li>
+
+									</ul> #}
+
+
+									<p class="project-card-status" style="color: #0C7CBB; text-align: center;">
+										{% if item.state == "1" %}
+											Идет набор куратора
+										{% elseif item.state == "2" %}
+											Идет набор в команду
+										{% elseif item.state == "3" %}
+											В процессе
+										{% else %}
+											Завершен
+										{% endif %}
+									</p>
+									<div class="card__footer">
+										<div  style="display: inline-block; float: left; font-size: 13px;">
+											<p style="color: gray; font-weight: bold;">Сроки реализации:</p>
+											<p>{{item.info.date_start}} - {{item.info.date_close}}</p>	
+										</div>
+
+										<div style="display: inline-block; float: right; font-size: 13px;">
+											<p style="color: gray; font-weight: bold;">Заказчик проекта:</p>
+											<p style="white-space: pre-wrap;">{{item.info.creator}}</p>	
+										</div>
+
+										<div class="clearfix"></div>
+									</div>
+
+									<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+										<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show/{{item.id}}'" class="btn">Подробнее</button>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					{% else %}
+						<p style="margin-left: 15px;">У этого подразделения еще нет проектов</p>
+					{% endif %}
+
+					</div>
+				</div>
+
+{% if events %}
+<div class="container-fluid p-0">
+	<p style="font-weight: bold; text-align: left; font-size: 36px;">Мероприятия</p>
+	<div class="row pr-0 mr-0">
+		{% for item in events %}
+		<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+		<div class="crd project-card" style="margin: 0 !important;">
+			<div style="background-image: url('/events/attachment/event/headerImage/{{ item.attachments.headerImage }}'); background-size: cover;" class="project-card-header">
+				<p></p>
+				<p>{{ item.info.title }}</p>
+			</div>
+
+			<p class="crd-caption-left"></p>
+			<p class="project-description">{{ item.info.description[:140] }}...</p>
+			<p class="graybox">Партнёры мероприятия:</p>
+			{# <ul class="project-card-theses">
+				<li>партнёр 1</li>
+				<li>партнёр 2</li>
+
+			</ul> #}
+			<p>{{ item.info.partners }}</p>
+
+			{# <p class="project-card-status" style="color: #0C7CBB;">Предстоящее мероприятие</p> #}
+			<div class="card__footer">
+				<div  style="display: inline-block; float: left; font-size: 13px; margin-left: 20px;">
+					<p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+					<p style="text-align: center;">{{ item.info.date }}</p>	
+				</div>
+
+				<div style="display: inline-block; float: right; font-size: 13px; margin-right: 20px;">
+					<p style="color: gray; font-weight: bold;  text-align: center;">Организатор:</p>
+					<p style="text-align: center;">{{ item.info.creator }}</p>	
+				</div>
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+				<button  style="background-color:  #1D3351; color: white" type="button" onclick="window.location.href='/event/show/{{ item.id }}'" class="btn">Подробнее</button>
+			</div>
+		</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endif %}
+
+	{# <div class="section proj-section">
+		<p class="graybox">Архив проектов</p>
+
+		<div class="crd project-card projtype-$category">
+
+			<div style="background-image: url('/img/af.jpg'); background-size: cover;" class="project-card-header">
+				<p></p>
+				<p>$title</p>
+			</div>
+
+			<p class="crd-caption-left"></p>
+			<p class="project-description">$description</p>
+			<ul class="project-card-theses">
+				<li>исследовательский проект</li>
+				<li>тяжёлая промышленность, сельскохозяйственное машиностроение</li>
+
+			</ul>
+
+
+			<p class="project-card-status" style="color: #0C7CBB;">Идёт набор в команду</p>
+			<div class="card__footer">
+				<div  style="display: inline-block; float: left; font-size: 13px;">
+					<p style="color: gray; font-weight: bold;">Сроки реализации:</p>
+					<p>$date - </p>	
+				</div>
+
+				<div style="display: inline-block; float: right; font-size: 13px;">
+					<p style="color: gray; font-weight: bold;">Заказчик проекта:</p>
+					<p>ООО "Вектор"</p>	
+				</div>
+				<div class="clearfix"></div>
+			</div
+
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+				<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Подробнее</button>
+			</div>
+		</div>
+
+
+
+	</div>
+
+
+
+	<div class="section proj-section">
+		<p class="graybox">Архив мероприятий</p>
+					<div class="crd project-card projtype-$category">
+
+				<div style="background-image: url('/img/af.jpg'); background-size: cover;" class="project-card-header">
+					<p></p>
+					<p>$title</p>
+				</div>
+
+				<p class="crd-caption-left"></p>
+				<p class="project-description">$description</p>
+				<p class="graybox">Партнёры мероприятия:</p>
+				<ul class="project-card-theses">
+					<li>партнёр 1</li>
+					<li>партнёр 2</li>
+
+				</ul>
+
+
+				<p class="project-card-status" style="color: #0C7CBB;">Предстоящее мероприятие</p>
+				<div class="card__footer">
+					<div  style="display: inline-block; float: left; font-size: 13px; margin-left: 20px;">
+						<p style="color: gray; font-weight: bold; text-align: center;">Сроки реализации:</p>
+						<p style="text-align: center;">$date - </p>	
+					</div>
+
+					<div style="display: inline-block; float: right; font-size: 13px; margin-right: 20px;">
+						<p style="color: gray; font-weight: bold;  text-align: center;">Организатор:</p>
+						<p style="text-align: center;">ООО "Вектор"</p>	
+					</div>
+					<div class="clearfix"></div>
+				</div
+				
+			<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+				<button  style="background-color:  #1D3351; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Подробнее</button>
+			</div>
+			</div>
+		</div> #}
+	{% endblock %}

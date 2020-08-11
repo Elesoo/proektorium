@@ -1,0 +1,633 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+<script src="/js/news_create.js"></script>
+<style>
+*{
+	margin: 0;
+	padding: 0;
+}
+
+/*cont*/
+.header{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	padding: 20px 30px 15px;
+	justify-content: space-between;
+	-ms-align-items: center;
+	align-items: center;
+}
+
+.header__btn img{
+	width: 45px;
+	height: 45px;
+}	
+
+.header__zoom img{
+	width: 25px;
+	height: 25px;
+}
+
+.btn_news{
+	border: none;
+	color: #7C7C7C;
+	background-color: transparent;
+	outline: none;
+	margin-left: 25px;
+}
+
+.news__cont_title{
+	font-weight: bold;
+	font-size: 26px;
+	margin-top: 16px;
+}
+
+.news__text_descr{
+	font-size: 16px;
+	text-align: justify;
+	width: 100%;
+}
+
+.news__text{
+	margin: 0 auto;
+}
+
+.link_more{
+	border: none;
+	background-color: transparent;
+	text-decoration: underline;
+	font-size: 16px;
+	color: #0C7CBB;
+	height: 20px;
+}
+
+/*@media(max-width: 1000px) {
+	.link_more{
+		margin-left: 72%;
+	}
+}*/
+
+/*images*/
+
+.news__img img{
+	width: 530px;
+	height: 328px;
+	border-radius: 10px;
+	-ms-align-self: center;
+	align-self: center;
+}
+
+.carousel-inner{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.carousel-control-prev{
+	left: 20%;	
+	opacity: 1;
+
+}
+
+.carousel-control-next{
+	left: 65%;
+	opacity: 1;
+}
+
+
+
+/*modal*/
+
+.modal-content{
+	border: none;	
+	width: 850px;
+	height: auto;
+	transform: translate(-50%);
+	left: 50%
+}
+
+@media(max-width: 1100px) {
+	.modal-content{
+		width: 600px;
+	}
+
+}
+
+.modal-header{
+	background: #8E8E8E;
+}
+
+#zoom{
+	border: none;
+	background-color: transparent;
+	transform: translateX(0px);
+	transition: .4s;
+}
+
+.form_input{
+	border: .5px solid #0C7CBB;
+	outline: none;
+	padding-left: 5px;
+	background-color: transparent;
+	border-radius: 5px;
+	display: none;
+	vertical-align: middle;
+	right: 20px;
+	top: 20px;
+	position: absolute;
+	height: 50px;
+}
+
+.modal_header__title{
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	margin: 0 auto;
+	transform: translateX(40%);
+}
+
+table{
+	margin: 0 auto;
+}
+
+
+
+
+tbody > tr{
+	width: 100%;
+}
+
+tr > td{
+	width: 20%;
+}
+
+tr > td + td{
+	width: 80%;
+}
+
+td textarea{
+	width: 100%;
+	border: none;
+	outline: none;
+	padding: 10px 20px 0 20px;
+	border-bottom:  0.5px solid #837E7E;
+}
+
+textarea::placeholder{
+	width: 80%;
+}
+
+#file_doc{
+	display: none;
+}
+
+.p_img{
+	position: relative;
+	bottom: 0;
+	left: 5px;
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
+
+label img{
+	margin-left: 25px;
+}
+
+td:first-child{
+	text-align: right;
+}
+
+.btn__send{
+	width: 50%;
+	height: 41px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	margin: 45px 25% 50px 25%;
+	background: #0C7CBB;
+	border: none;
+	color: #fff;
+	font-size: 18px;
+	line-height: 25px;
+	text-align: center;
+	font-weight: 600;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+
+	$('#zoom').click(function(){
+		$('#zoom').toggleClass('animation');
+		if ($('#input').css('display') == 'none') {
+			setTimeout(function() {
+				$('#input').toggle()},300);
+		} else {
+			setTimeout(function() {
+				$('#input').toggle()},0);
+		}
+		$('#input').focus();
+	});
+
+	$("#input").on("keyup", function() {
+		var value = $(this).val().toLowerCase();
+		$(".news").filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	});
+});
+</script>
+
+<style>
+.news{
+	margin-top: 0;
+	background-color: #f2f2f2;
+	padding: 0 0 15px;
+	box-sizing: border-box;
+}
+
+.news.news_first {
+	padding-top: 0px;
+	border-radius: 0 0 8px 8px;
+}
+
+.search{
+	margin-bottom: 15px;
+	background-color: #f2f2f2;
+	/*border-radius: 8px;*/
+	/*box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);*/
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.cont_search{
+	background-color: #fff;
+	height: auto;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+}
+
+.container_padding {
+	padding: 30px 0;
+	box-sizing: border-box;
+	border-radius: 10px;
+}
+
+button {
+	cursor: pointer;
+	outline: none !important;
+}
+
+.news__content {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+}
+
+.news__text_cont {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+	margin-left: 30px;
+	width: 100%;
+}
+
+
+/*отступ для ноутбука*/
+/*@media(max-width: 1380px) {
+	.news__text_cont {
+		padding-left: 20px;
+	}
+}*/
+
+.news__text_foot {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-grow: 1;
+	align-items: flex-end;
+}
+
+/*tablets*/
+
+@media(max-width: 1290px) {
+	.news__content {
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+	}
+
+	.news__content img {
+		margin: 0 auto;
+	}
+
+	.news__text_descr {
+		margin: 0;
+	}
+
+	.news__text_cont {
+		margin: 0 auto;
+	}
+
+	.news__cont_title{
+		text-align: center;
+	}
+
+/*	.news__text_foot {
+		justify-content: stretch;
+	}*/
+
+	/*.link_more {
+		margin-left: 50px;
+	}*/
+}
+
+/*.container_padding .col-md-12 {
+	padding: 0 30px;
+}*/
+
+/*animation*/
+
+
+.animation{
+	transform: translateX(-200px) !important;
+}
+
+/*news mobile*/
+
+
+@media(max-width: 520px) {
+	.link_more {
+		margin-right: 20px;
+		font-size: 14px;
+		white-space: nowrap;
+	}
+
+	.news__cont_title {
+		font-size: 24px;
+	}
+
+	.news__content img {
+		/*width: 290px;*/
+		height: auto;
+	}
+
+	.news__cont_title{
+		text-align: left;
+	}
+	
+	/*.news__text_cont {
+		padding-left: 25px;
+	}*/
+}
+
+
+@media(max-width: 450px) {
+	.animation{
+		transform: translateX(-200px) !important;
+	}
+
+	.form_input{
+		width: 200px;
+		height: 30px;
+		top: 15px;
+		right: 10px;
+	}
+
+	.header{
+		padding: 5px 0;
+	}
+
+	.news__text_descr {
+		text-align: left;
+		text-indent: 0;
+		width: 100%;
+	}
+}
+
+/*Разрешение для SE*/
+
+@media(max-width: 320px) {
+	.form_input{
+		width: 140px;
+		height: 30px;
+		top: 15px;
+	}
+
+	.animation{
+		transform: translateX(-150px) !important;
+	}
+
+	.news__text_cont {
+		padding: 0;
+	}
+
+	.news__text_foot {
+		justify-content: center;
+	}
+
+	.link_more {
+		margin-right: 0;
+		margin-left: 20px;
+	}
+}
+
+</style>
+		{% endblock %}
+
+		{% block content %}
+		<div class="container-fluid search">
+			<div class="container cont_search">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="header">
+							<div class="header__btn">
+								<img src="/img/news.png" alt="" class="img-fluid">
+								{% if is_granted("ROLE_DEPARTMENT_ADMINISTRATOR") %}
+								<button class="btn_news" type="button" data-toggle="modal" data-target="#exampleModal"
+								>
+								Предложить новость
+							</button>
+							{% endif %}
+						</div>
+
+						<div class="header__zoom">
+							<input type="text" id="input" class="form_input">
+							<button id="zoom" > 
+								<!-- <img src="/img/zoom.png" alt="" class="img-fluid"> -->
+								<i class="fas fa-search"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>	
+	</div>
+
+	{% if news %}
+	<div class="container-fluid news news_first">
+		<div class="container container_padding" style="background-color: #fff;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);">
+
+			<div class="col-md-12">
+				<div class="news__img">
+					<div class="news__content">
+						<img class="d-block img-fluid" src="/news/attachmentfull/{{ news[0].preview }}" alt="First slide">
+						<div class="news__text_cont">
+							<p class="news__cont_title">
+								{{ news[0].title }}
+							</p>
+							<p class="news__text_descr">
+								{{ news[0].description }}
+							</p>
+							<div class="news__text_foot">
+								<span style="font-size: 15px; color: silver; display: block; height: 18px;">Опубликовано: {{ news[0].date }}</span>
+								
+								<a href="/news/{{news[0].id}}" class="link_more">Подробнее >></a>
+								
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>	
+		</div>
+	</div>
+	{% if news|length >= 2 %}
+	{% set counter = 0 %}
+	{% for item in news %}
+	{% if counter == 0 %}
+	{% else %}
+	<div class="container-fluid news">
+		<div class="container container_padding" style="background-color: #fff;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);">
+			<div class="col-md-12">
+				<div class="news__img">
+					<div class="news__content">
+						<img class="d-block img-fluid" src="/news/attachmentfull/{{ item.preview }}" alt="First slide">
+						<div class="news__text_cont">
+							<p class="news__cont_title">
+								{{ item.title }}
+							</p>
+							<p class="news__text_descr">
+								{{ item.description }}
+							</p>
+							<div class="news__text_foot">
+								<span style="font-size: 15px; color: silver; display: block; height: 18px;">Опубликовано: {{ item.date }}</span>
+								
+								<a href="/news/{{item.id}}" class="link_more">Подробнее >></a> 
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>	
+		</div>
+	</div>
+	{% endif %}
+	{% set counter = counter + 1 %}
+	{% endfor %}
+	{% endif %}
+	{% else %}
+	<div class="container-fluid news news-first">
+		<div class="container container_padding" style="background-color: #fff;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);">
+			<b style="margin-left: 35px; margin-top: 10px;">Новостей нет</b>
+		</div>
+	</div>
+
+	{% endif %}
+
+	<!-- Modal -->
+	{% if is_granted("ROLE_DEPARTMENT_ADMINISTRATOR") %}
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<p class="modal_header__title">Заявка на запуск новости</p>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<img src="/img/close.png" alt="">
+					</button>
+				</div>
+				<div class="modal-body">
+					<table>
+						<tbody class="table_body">
+							<tr class="first_row">
+								<td>
+									Заголовок новости?*
+								</td>
+
+								<td>
+									<textarea name="" id="" cols="30" rows="2" placeholder="Кратко сформулируйте название, которое будет заголовком новости."></textarea>	
+								</td>
+							</tr>
+
+							<tr class="first_row">
+								<td>Дата события?*</td>
+								<td>
+									<textarea name="" id="" cols="30" rows="2"></textarea>	
+								</td>
+							</tr>
+
+							<tr class="first_row">
+								<td>Краткое описание?*</td>
+								<td>
+									<textarea name="" id="" cols="30" rows=5 placeholder='Напишите ключевую информацию о предстоящем событии, эти данные позволят привлечь внимание к основной части новости и дополнить идею заголовка. Краткое описание должно отвечать на вопросы: "Что? Где? Когда?". Не более трех предложений'></textarea>	
+								</td>
+							</tr>
+
+							<tr class="first_row">
+								<td>Основной текст?*</td>
+								<td>
+									<textarea name="" id="" cols="30" rows="3" placeholder="Напишите все подробности предстоящего события. Информация должна содержать повестку мероприятия."></textarea>	
+								</td>
+							</tr>
+
+
+							<tr>
+								<td style="padding-top: 50px;">Вложение</td>
+								<td style="padding-top: 50px;{# border-bottom:  0.5px solid #837E7E; #}">
+									<button class="btn btn-success ml-4" onclick="file_doc.click()">Загрузить изображение(-я)</button>
+									<input id="file_doc" type="file" multiple>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td>
+									<div class="container-fluid mt-4">
+										<div class="row img_load">
+											
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<button onclick="generateString()" class="btn__send">Отправить</button>		    
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	{% endblock %}

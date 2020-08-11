@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+	<link rel="stylesheet" href="/css/account.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/tabscroll.css" crossorigin="anonymous">
+	<script src="/js/tabscroll.js" crossorigin="anonymous"></script>
+	<script src="/js/account.js" crossorigin="anonymous"></script>
+	  <script src="/js/skills_modal.js" crossorigin="anonymous"></script>
+	  <link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/skills_modal.css" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="/css/shapranov.css">
+	<script type="text/javascript"> $(document).ready(function() { chosenInit(); }); 	</script>
+<!-- <link rel="stylesheet" href="/css/inquirer.css"> -->
+	<script src="/js/inquirer_departments.js"></script>
+<link rel="stylesheet" href="/css/account.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+  
+{% endblock %}
+
+{% block content %}
+	{% if user.user_type == "App\\Entity\\Student" %}
+		{% set student = user %}
+		{% include 'user/student.html.twig' with [student,data,data2,data3,data4] %}
+	{% elseif user.user_type == "App\\Entity\\Client" %}
+		{% set client = user %}
+		{% include 'user/client.html.twig' with client %}
+	{% elseif user.user_type == "App\\Entity\\Employee" %}
+		{% set employee = user %}
+		{% include 'user/employee.html.twig' with [employee,data,data2,data3] %}
+	{% elseif user.user_type == "App\\Entity\\Moderator" %}
+		{% set moderator = user %}
+		{% if subrights == "projects" %}
+			{% include 'user/moderator_project.html.twig' with [moderator,data,data2] %}
+		{% elseif subrights == "news_meeting" %}
+			{% include 'user/moderator_news_meeting.html.twig' with [moderator,data, data2] %}
+		{% elseif subrights == "account" %}
+			{% include 'user/moderator_accounts.html.twig' with [moderator,data,data2] %}
+		{% endif %}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,122 @@
+{% block dayncontainer %}
+
+	<style>
+	.text {
+		width: 100%;
+		background: rgba(23, 22, 22, 0.77);
+		height: auto;
+		position: absolute;
+		bottom: 0;
+	}
+
+	.project__dayn_title {
+		font-weight: 600;
+		font-size: 15px !important;
+		width: 70%;
+		margin: 0 15%;
+		line-height: 20px;
+		text-align: center;
+		color: #fff;
+		padding: 0 !important;
+	}
+
+	.navigation__day_descr {
+		font-size: 13px;
+		line-height: 18px;
+		color: #7C7C7C;
+		text-align: left !important;
+	}
+
+	.navigation__day_descr span {
+		font-weight: bold;
+	}
+
+	.ta {
+		text-align: justify !important;
+	}
+
+	.navigation__center_text {
+		font-weight: 600;
+		font-size: 13px;
+		line-height: 18px;
+		text-align: center;
+	}
+
+	.navigation__center_text span {
+		display: block;
+		font-size: 12px;
+		line-height: 16px;
+		text-align: center;
+		color: #0C7CBB;
+	}
+
+	.navigation__card_footer {
+		justify-content: space-around;
+		padding: 15px 0;
+		margin-bottom: 40px;
+	}
+
+	.navigation__card_footer * {
+		margin: 0;
+	}
+
+
+	/*media*/
+
+	@media(max-width: 1200px) {
+		.pnole {
+			padding: 0 !important;
+		}
+	}
+
+	</style>
+
+	{% for project in dayn_projects %}
+		<div class=" col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category filter">
+			<div class="crd project-card" style="margin: 0 !important;">
+
+				<input type="hidden" data-type="filter_projtype" name="type" value="engineer">
+				<input type="hidden" data-type="filter_industry" name="category" value="Фундаментальная информатика и информационные технологии">
+				<input type="hidden" data-type="filter_status" name="commerce" value="Некоммерческий">
+				<input type="hidden" data-type="filter_role" name="roles" value="[{&quot;role&quot;:6,&quot;person&quot;:&quot;&quot;},{&quot;role&quot;:7,&quot;person&quot;:&quot;&quot;}]">
+				<input type="hidden" data-type="filter_place" name="place" value=" пл. Гагарина 1, корп. 7, ауд. 201">
+				<input type="hidden" data-type="filter_client" name="client" value="2">
+				<input type="hidden" data-type="filter_employee" name="employee" value="">
+
+
+				<div style="background-image: url('/img/daynav.png'); background-size: cover; background-position: center;" class="project-card-header">
+					<div class="text">
+						<p class="project__dayn_title">{{ project.info['Название проекта?*'] }}</p>
+					</div>
+				</div>
+
+				<div class="crd__text">
+					<p class="project-description ta">{{ project.info['Подробное описание содержания проектной работы?*'][0:200] }}</p>
+					<p class="navigation__day_descr"><span>Заказчик проекта:</span> {{ project.owner }}</p>
+				</div>
+
+
+				<p class="project-card-status navigation__center_text" style="color: #0C7CBB; text-align: center;">
+					Дни Навигаций
+					<span>{{ project.cluster }}</span>
+				</p>
+				<div class="card__footer navigation__card_footer">
+					<div style="display: inline-block; float: left; font-size: 13px;" class="pnole">
+						<p style="color: gray; font-weight: bold; text-align: center;">Реализация 1 этапа:</p>
+						<p style="text-align: center; white-space: nowrap;font-size: 11px;">14.09.2020 - 19.09.2020</p>	
+					</div>
+
+					<div style="display: inline-block; float: right; font-size: 13px;">
+						<p style="color: gray; font-weight: bold;  text-align: center;">Реализация 2 этапа:</p>
+						<p style="text-align: center; white-space: nowrap;font-size: 11px;">14.09.2020 - 29.12.2020</p>	
+					</div>
+					<div class="clearfix"></div>
+				</div>
+
+				<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+					<button style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/dayn/show/{{ project.id }}/'" class="btn">Подробнее</button>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}

@@ -1,0 +1,512 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/event.css" crossorigin="anonymous">
+
+<style>
+/*header__cont*/
+.header-container{
+
+	background-size: 100% 100% !important;
+	background-repeat: no-repeat !important;
+	-webkit-background-size: 100% 100% !important;
+	background-position: center !important;
+	border-radius: 15px;
+	width: 100%;
+	height: 450px;
+	margin-bottom: 2rem;
+}
+
+.nav__list{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	-ms-align-items: center;
+	align-items: center;
+	justify-content: space-around;
+	padding-top: 30px;
+	text-transform: uppercase;
+}
+
+.list__item{
+	list-style-type: none;
+	text-align: center;
+	width: 100%;
+}
+
+.list__link{
+	color: #fff;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.list__link:hover{
+	color: #fff;
+	text-decoration: none;
+}
+
+.list__link[href=""]:hover{
+	cursor: default;
+}
+
+.header__cont{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+	justify-content: center;
+	-ms-align-items: center;
+	align-items: center;
+	padding-top: 70px;
+}
+
+.header__title{
+	font-size: 36px;
+	color: #fff;
+	font-weight: bold;
+	line-height: 49px;
+	text-align: center;
+}
+
+.header__desc{
+	color: white;
+	width: 50%;
+	text-align: center;
+}
+
+.header__text{
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 22px;
+	color: #FFFFFF;
+	margin-top: 10px;
+	margin-bottom: 72px;
+	text-align: center;
+}
+
+.header__btn{
+	width: 253px;
+	height: 45px;
+	background: #DFC7AF;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 8px;
+	border: none;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	color: #1D1D1D;
+}
+
+/*mobile*/
+
+@media(max-width: 769px) {
+	.nav__list{
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+		justify-content: center;
+		-ms-align-items: center;
+		align-items: center;
+		padding-left: 0;
+	}
+
+	.list__item{
+		margin-top: 10px;
+	}
+
+	.list__link{
+		font-size: 12px;
+	}
+
+	.header__cont{
+		padding-top: 20px;
+	}
+
+	.header__desc{
+		width: 100%;
+	}
+}
+</style>
+<style>
+.modal-content{
+	border-radius: 10px;
+}
+.reg_header{
+	background-color: #8E8E8E;
+	color: white;
+	border-radius: 10px 10px 0 0;
+	height: 65px;
+	display: flex;
+	align-items: center;
+}
+
+.reg_header p {
+	margin: 0; 
+}
+
+.reg_header img {
+	margin-left: 20px;
+	margin-right: 25px;
+}
+
+.reg_body{
+	padding: 23px 35px;
+	font-family: "Open Sans", sans-serif;
+	font-size: 12px;
+	text-align: justify;
+}
+
+.modal_link{
+	text-decoration: underline;
+}
+
+.video {
+	float: right; 
+	margin-left: 30px;
+}
+
+@media(max-width: 1250px) {
+	.video {
+		float: none;
+		margin-left: 0;
+	}
+
+	.video > *{
+		width: 70%;
+		height: 315px;
+		margin: 10px 15%;
+	}
+}
+
+@media(max-width: 700px) {
+	.video > *{			
+		margin: 20px 0 !important;
+		width: 100% !important;
+	}
+}
+
+.cards{
+	margin-top: 65px;
+	padding-bottom: 156px;
+}
+
+.cardstext__text{
+	padding-top: 62px;
+	font-weight: bold;
+	text-align: center;
+	font-size: 36px;
+	line-height: 146.18%;
+	color: #1D1D1D;
+}
+
+.card__close{
+	display: none;
+	position: absolute;
+	top: 22px;
+	right: 31px;
+	cursor: pointer;
+}
+
+.title_name{
+	font-weight: bold;
+	font-size: 36px;
+	line-height: 146.18%;
+	background-color: transparent;
+	outline: none;
+	border: none;
+	cursor: default;
+}
+
+.cardsitem{
+	margin: 15px auto;
+	padding: 15px 10px;
+	min-height: 236px;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	align-items: center;
+	-webkit-align-items: center;
+	-moz-align-items: center;
+	-ms-align-items: center;
+	-o-align-items: center;
+	justify-content: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	-ms-justify-content: center;
+	-o-justify-content: center;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+}
+
+.cardsitem__image img{
+	margin: 39px auto;
+}
+
+.cardsitem__text_descr{
+	font-size: 16px;
+	line-height: 146.18%;
+	text-align: center;
+	max-width: 250px;
+	margin: 0 auto;
+}
+
+.load_img{
+	width: 120px;
+	height: 120px;
+	cursor: pointer;
+}
+
+@media(max-width: 450px) {
+	.prof__class {
+		width: 100%;
+		position: static !important;
+		top: 0;
+		right: 0;
+		text-align: center;
+		margin-top: 30px;
+	}
+
+	.prof__class p {
+		max-width: 100%;
+		text-align: center;
+	}
+
+	.section-caption {
+		text-align: center;
+	}
+}
+</style>
+<script type="text/javascript">
+function claimToEvent(eventid, studid)
+{
+	$.ajax({
+		url: "/event/register/"+eventid+"/"+studid,
+		method: "GET",
+		success: function(data) {
+			if (data == "already")
+			{
+				alert("Вы уже зарегистрированы на мероприятии!");
+				window.location.href = "/events";
+			}
+			else
+			{
+            // alert("Вы зарегистрировались на мероприятие!");
+            $('#regsuc').modal('show')
+        }
+
+    },
+    error: function() {
+    	alert("Ошибка");
+    }
+});
+}
+</script>
+<script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+<script type="text/javascript">
+function getProjectCard(project, container)
+{
+	$.ajax({
+		url:"/event/getProjectCard/"+project,
+		type:'POST',
+		success: function(data){
+			$('#containerProject'+container).html(data);
+		}
+	});
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div id="regsuc" class="modal fade modal-reg-well-event" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header reg_header">
+				<img src="/img/reg_well_white.png">
+				<p>Поздравляем, вы зарегистрированы на мероприятии  “Проекториум RSM 2020”</p>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body reg_body">
+				<p>Теперь вам необходимо присоединиться к одной из карточек проекта, выбрав подходящую для вас роль в команде. Для этого перейдите на страницу мероприятия в область «Проекты». В разделе «Команда» выберите роль, которая вам наиболее подходит. Как только вы увидите уведомление о присоединении к проектной команде, значит ваше участие одобрено организатором.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade modal-reg-401-platform" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header reg_header">
+				<img src="/img/reg.png">
+				<p>Вы не зарегистрированы на платформе!</p>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body reg_body">
+				<p>Для того чтобы принять участие в мероприятии необходимо зарегистрироваться. После регистрации вернитесь в раздел «Календарь мероприятий» или на «Главную страницу» платформы, где будет опубликовано предстоящее мероприятие. Чтобы присоединиться, нажмите «принять участие».</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+{#} <div style="text-align: left;">
+	<div id="proj_header" style="background: linear-gradient(rgba(29, 51, 81, 0.76), rgba(29, 51, 81, 0.76)), url('/events/attachment/event/headerImage/{{event.attachments.headerImage}}');   background-size: 100%; background-repeat: no-repeat;">
+		<div style="text-align: center;" class="header_text">
+			<p class="header__title">{{event.info.title}}</p>
+			<p class="header__desc">Поучаствуй в решении инженерных задач крупнейшего производителя сельхозтехники</p>
+			<button  style="background-color:  #DFC7AF;" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Принять заявку на участие</button>
+			<p>{{event.info.date}}</p>
+
+		</div>
+	</div>
+</div> #}
+<header>
+	<div class="header-container" style="background: linear-gradient(rgba(29, 51, 81, 0.76), rgba(29, 51, 81, 0.76)), url('/events/attachment/event/headerImage/{{event.attachments.headerImage}}');">
+	<nav>
+		<ul class="nav__list">
+			<li class="list__item">
+				<a href="" class="list__link">{{ event.info.thesis_1 }}</a>
+			</li>
+			<li class="list__item">
+				<a href="" class="list__link">{{ event.info.thesis_2 }}</a>
+			</li>
+			<li class="list__item">
+				<a href="" class="list__link">{{ event.info.thesis_3 }}</a>
+			</li>
+		</ul>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="header__cont">
+					<p class="header__title">{{ event.info.title }}</p>
+					<p class="header__desc">{{ event.info.description[:140] }}...</p>
+					{% if is_granted("ROLE_STUDENT") %}
+					<button onclick="claimToEvent({{event.id}}, {{user.id}});" class="header__btn">Принять участие</button>
+					{% else %}
+					{% if event.info.date_1 != "" and event.info.date_2 != "" %}
+					<button type="button" class="header__btn" data-toggle="modal" data-target=".modal-reg-401-platform">Принять участие</button>
+					{% endif %}
+					{% endif %}
+					{% if event.info.date_1 != "" and event.info.date_2 != "" %}
+						<p class="header__text">{{ event.info.date_1|date("d.m.Y") }} - {{ event.info.date_2|date("d.m.Y") }}</p>
+					{% else %}
+					    <p class="header__text">Прием заявок временно приостановлен</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</header>
+{% if canEdit == true %}
+<div style="width: 97%; margin: 0 auto;">
+	<button onclick="window.location.href='/event/edit/{{ event.id }}'" class="btn btn-secondary">Управлять мероприятием</button>
+</div>
+{% endif %}
+<div class="section">
+	<p class="section-caption" style="margin-bottom: 60px;">О мероприятии</p>
+	{# <iframe style="float: right" width="560" height="315" src="https://www.youtube.com/embed/qtnQINRvKGk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> #}
+	<div  class="video">
+		{{ event.info.embeded|raw }}
+	</div>
+	<p style="text-align:justify">{{event.info.description}}</p>
+	<h2 style="font-weight: bold; text-align: left;">Местоположение</h2>
+	<p style="text-align: left;">{{event.info.place}}</p>
+	<p class="partner" style="text-align: left;">Партнеры: {{event.info.partners}}</p>
+</div>
+
+{% if event.reasons.reasons %}
+<div class="section" style=" text-align: center;">
+	<div class="container-fluid">
+		<div class="row">
+			<p class="title_name">{{ event.reasons.title }}</p>
+		</div>
+		<div class="cards">
+			<div class="row" id="card_advantage">
+				{% for item in event.reasons.reasons %}
+				<div class="col-md-12 col-lg-6 col-xl-4">
+					<div class="cardsitem">
+				<!-- <div class="card__close" onclick="delete_item(this)">
+					<img src="/img/close.png">
+				</div> -->
+				<div class="cardsitem__image">
+					<img src="{{ item.photo }}" alt="" class="load_img">
+				</div>
+				<div class="cardsitem__text">
+					<p class="cardsitem__text_descr">
+						{{ item.text }}
+					</p>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+<!-- <label class="btn_show" for="load_file">Смотреть программу мероприятия</label><input class="btn_save" id="load_file" type="file" name=""> -->
+</div>
+</div>
+{% endif %}
+{# {% if event.people %}
+	<div class="section" style="overflow: auto; text-align: center;">
+		<p>Действующие лица</p>
+		<img src="/img/acting_persons.png" style="margin-top: 80px;">
+	</div>
+	{% endif %} #}
+
+	<div class="container-fluid p-0">
+		<p style="font-weight: bold; text-align: left; font-size: 36px;">Проекты</p>
+		<div class="row pr-0 mr-0">
+		{% if canEdit == true %}
+		{% set eventID = event.id %}
+		{% include 'events/add_btn.html.twig' with [projects, eventID] %}
+		{% endif %}
+			{% if event.projects %}
+			{% for item in event.projects %}
+			<div id="containerProject{{item}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4 projtype-$category">
+				<script type="text/javascript">
+				$('#containerProject{{ item.id }}').on('show', getProjectCard({{ item }}, {{ item }} ));
+				</script>
+				<div  style="background-image: url('/img/af.jpg'); background-size: cover;" class="project-card-header">
+					<img style="width: 40%; height: auto;" src="/img/loading.gif">
+				</div>
+			</div>
+			{% endfor %}
+			{% else %}
+			<p style="margin-left: 15px;">В этом мероприятии не создано ни одного проекта.</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}

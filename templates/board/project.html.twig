@@ -1,0 +1,1051 @@
+{% extends 'base.html.twig' %}
+{% block includes %}
+<link rel="stylesheet" href="/css/brand_project.css" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/users.css" crossorigin="anonymous">
+<script src="/js/project_form.js"></script>
+<style type="text/css">
+/* Card hire*/
+
+
+.card_team_hire{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  background-color: #fff;
+}
+
+.card_team_hire .card_team_hire_head{
+  display: flex;
+  /*flex-direction: column;*/
+  align-items: center;
+  height: 103px;
+  background-color: #8E8E8E;
+  /*padding: 10px;*/
+  border-radius: 10px 10px 0 0;
+}
+
+.card_team_hire .card_team_hire_img{
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  width: 78px;
+  height: 78px;
+}
+
+.card_team_hire_head .card_team_hire_title{
+  margin: 0 0 0 100px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: #fff;
+  width: 100%;
+}
+
+@media (max-width: 1510px) {
+  .card_team_hire_head .card_team_hire_title {
+    width: 50%;
+  }
+}
+
+.card_team_hire_head .card_team_hire_name{
+  background-color: #545353;
+  height: 36px;
+  color: #fff;
+}
+
+.card_team_hire_body{
+  /*padding-bottom: 10px;*/
+  display: flex;
+  height: calc(100% - 104px);
+  flex-direction: column;
+}
+
+.card_team_hire_body .body_hire_title {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  color: #8E8E8E;
+  margin-top: 10px;
+}
+
+.list_hire_compet .item_hire_compet{
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  display: flex;
+}
+
+.item_hire_compet td:first-child{
+  text-align: right;
+  padding: 0px 10px;
+  width: 40%;
+  word-wrap: break-word;
+  white-space: nowrap;
+}
+
+@media(max-width: 320px) {
+  .item_hire_compet td:first-child {
+    white-space: normal;
+  }
+}
+
+.item_hire_compet td + td{
+  width: 60%;
+  text-align: left;
+  padding: 0px 10px 10px;
+}
+
+.item_hire_compet td + td img {
+  margin-bottom: 10px;
+}
+
+.text_hire_info{
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-end;
+  color: #8E8E8E;
+  margin-top: 10px;
+  /*text-decoration: underline;*/
+}
+
+.text_hire_info span{
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+.btn-give{
+  background-color: #1D3351;
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  width: 175px;
+}
+
+.btn-more{
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: right;
+  margin: 10px 20px 20px 0;
+  color: #8E8E8E;
+  text-decoration: underline;
+}
+
+.btn-more:hover {
+  color: blue;
+}
+
+@media(max-width: 450px) {
+  .btn-more {
+    color: blue;
+  }      
+}
+</style>
+<style type="text/css">
+.modal-header{
+  background: #1D3351;
+}
+
+.modal-header .close > span {
+  color: #fff;
+}
+
+.modal__header_title{
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  color: #FFFFFF;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.modal__body_title{
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  text-decoration-line: underline;
+  color: #0C7CBB;
+}
+
+.modal__body_list{
+  padding: 0;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: space-around;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+}
+
+.modal__body_item{
+  list-style-type: none;
+  font-size: 14px;
+  line-height: 16px;
+  margin-top: 10px;
+  padding: 0;
+}
+
+@media(max-width: 900px) {
+  .modal__body_list {
+    padding-left: 0 !important;
+    border: .5px solid transparent;
+  }
+
+  .modal__body_item {
+    font-size: 12px !important;
+  }
+  
+  .modal-dialog {
+    /*max-width: 730px;*/
+  }
+}
+
+
+/*modal2*/
+
+.modal__body_boldtext{
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 16px;
+  list-style-type: none;
+}
+
+.modal__body_text{
+  font-size: 14px;
+  line-height: 19px;
+  list-style-type: none;
+  margin-top: 10px;
+}
+
+.bold{
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.card_team_add{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  /*padding-bottom: 10px;*/
+}
+
+.card_team_add .card_team_add_head{
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  align-items: center;
+  height: 103px;
+  background-color: #8E8E8E;
+  /*padding: 10px;*/
+  border-radius: 10px 10px 0 0;
+}
+
+.card_team_add .card_team_add_img{
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  width: 78px;
+  height: 78px;
+}
+
+.card_team_add_head .card_team_add_title{
+  margin: 0 0 0 100px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: #fff;
+}
+
+
+.card_team_add_head .card_team_add_name{
+  background-color: #2C584F;
+  height: 36px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.card_team_add .card_team_add_body {
+  display: flex;
+  height: calc(100% - 100px);
+  flex-direction: column;
+}
+
+.card_team_add_body .body_add_title {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  color: #8E8E8E;
+  margin-top: 18px;
+}
+
+.list_add_compet .item_add_compet{
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+}
+
+.list_add_compet .item_add_compet > td {
+  border: none;
+}
+
+.item_add_compet td:first-child{
+  text-align: right;
+  vertical-align: initial;
+}
+
+.item_add_compet td + td {
+  width: 60%;
+  padding-left: 10px;
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+.item_add_compet td + td img {
+  margin-bottom: 10px;
+}
+
+.text_add_info{
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: #8E8E8E;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-end;
+  margin-top: 10px;
+  /*text-decoration: underline;*/
+  /*padding-bottom: 20px;*/
+}
+
+.text_add_info span{
+  margin-left: 20px;
+  text-decoration: none;
+}
+</style>
+<style type="text/css">
+.btn_close{
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.btn_close_name{
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  cursor: pointer;
+}
+</style>
+<style type="text/css">
+.modal-content{
+  border-color:  #8E8E8E;
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  border-color: transparent;
+}
+
+.header__text{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+  margin-left: 40px;
+}
+
+.header__text_name{
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 25px;
+  color: #fff;
+}
+
+
+.header__text_role{
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  color: #545353;
+}
+
+/*body*/
+
+.modal-body{
+  padding: 0;
+  margin-top: 10px;
+}
+
+.table{
+  width: 98%;
+  border: 0.5px solid #C4C4C4;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin: 5px 5px;
+  padding-bottom: 25px;
+}
+
+.body__title{
+  color: #8E8E8E;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;	
+  margin-top: 5px;	
+}
+
+.body__maintext{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.padnone{
+  padding-inline-start: 0;
+
+}
+
+.body__maintext_obj{
+  font-size: 12px;
+  min-height: 20px;
+  text-align: right;
+  white-space: nowrap;
+  list-style: none;
+  margin-top: 5px;
+}
+
+.body__maintext_key{
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 300;
+  /*white-space: nowrap;*/
+  list-style: none;
+  margin-left: 10px;
+  margin-top: 5px;
+}		
+
+.mt{
+  margin-top: 145px;
+}
+
+.img{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: space-between;
+  -ms-align-items: center;
+  align-items: center;
+  border-bottom: 0.5px solid #C4C4C4;
+  margin-left: 10px;
+  width: 144px;
+  margin-top: 15px;
+}
+
+.img__text{
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 300;	
+}
+
+.comp{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.competentions{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.body__list_item{
+  font-size: 12px;
+  line-height: 16px;
+  color: #1D3351;
+  list-style-type: none;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.body__list_num{
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #63C9A4;
+  list-style-type: none;
+  margin-top: 10px;
+}
+
+.mart{
+  margin-top: 30px;
+}
+
+.ta{
+  text-align: right;
+}
+
+.status__text{
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.sqr{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.el{
+  width: 40px;
+  height: 40px;
+  background: #C4C4C4;
+  margin-left: 25px;
+}
+
+.comp__text{
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+
+.cont{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -moz-flex-direction: row;
+  -ms-flex-direction: row;
+  -o-flex-direction: row;
+  flex-direction: row;
+  justify-content: space-around;
+  -ms-align-items: center;
+  align-items: center;
+}
+</style>
+<style>
+.bg-white{
+  background-color: #F5F8FF;
+  padding: 30px 15px;
+}
+
+.bg_title{
+  font-family: Nunito, sans-serif;
+  font-weight: bold;
+  font-size: 34px;
+  color: #1D1D1D;
+}
+
+.card_team{
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.card_team .card_team_head{
+  display: flex;
+  flex-direction: row;
+  height: 116px;
+  align-items: center;
+  background-color: #8E8E8E;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+
+.card_team_head img{
+  width: 78px;
+  height: 78px;
+}
+
+.card_team .card_team_title{
+  margin: 0 0 0 21px;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  color: #fff;
+}
+
+.card_team_body{
+  padding-bottom: 10px;
+  background-color: white;
+}
+
+.card_team_body .body_title {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  color: #8E8E8E;
+  padding-top: 18px;
+}
+
+table{
+  width: 100%;
+}
+
+.list_compet .item_compet{
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+}
+
+.item_compet td:first-child{
+  text-align: right;
+}
+
+.item_compet td + td {
+  width: 40%;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.item_compet td + td img {
+  margin-bottom: 10px;
+}
+
+.text_info{
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: #8E8E8E;
+  margin-top: 10px;
+  text-decoration: underline;
+}
+
+.text_info p span{
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+.btn-create{
+  background-color: #1B4F44;
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  border-radius: 10px;
+  margin: 10px auto;
+}
+
+.btn-download{
+  width: 30%;
+  color: #fff;
+  margin: 0 35%;
+  background-color: #1B4F44;
+  border-radius: 10px; 
+}
+
+.btn-download:hover{
+  color: #fff;
+}
+
+@media(max-width: 1000px){
+  .btn-download{
+    width: 50%;
+    margin: 0 25%;
+  }
+}
+
+@media(max-width: 500px){
+  .btn-download{
+    width: 80%;
+    margin: 0 10%;
+  }
+}
+</style>
+
+<script type="text/javascript">
+function getFullRole(roleid, containerid)
+{
+  $.ajax({
+    url:"/project/role/"+roleid+"/"+{{ project.id }},
+    type:'GET',
+    success: function(data){
+      $('#container'+containerid).html(data);
+    }
+  });
+}
+function sendClaim(roleidv, studidv)
+{
+  $.ajax({
+    url:"/project/claimStudent/"+{{ project.id }},
+    data: {studid: studidv, roleid: roleidv},
+    type:'POST',
+    success: function(data){
+      if (data == "already")
+        alert("Вы уже отправляли подобную заявку или вас приглашал модератор!")
+      else
+        alert("Ваша заявка отправлена! Ожидайте ответа от модератора!");
+      location.reload();
+    },
+    error: function(data){
+      alert("Ошибка при подаче заявки!")
+    }
+  });
+}
+function sendEmployeeClaim(roleidv, employeeidv)
+{
+  $.ajax({
+    url:"/project/claimEmployee/"+{{ project.id }},
+    data: {employeeid: employeeidv, roleid: roleidv},
+    type:'POST',
+    success: function(data){
+      if (data == "already")
+        alert("Вы уже отправляли подобную заявку или вас приглашал модератор!")
+      else{
+        alert("Ваша заявка отправлена! Ожидайте ответа от модератора!");
+        location.reload();
+      }
+
+    },
+    error: function(data){
+      alert("Ошибка при подаче заявки!")
+    }
+  });
+}
+function getBusyRole(role, project, key)
+{
+  $.ajax({
+    url:"/project/busyRole/"+project+"/"+role,
+    type:'GET',
+    success: function(data){
+      $('#container'+key).html(data);
+    },
+  });
+}
+function denyPersonFromRole(project, role, student)
+{
+  $.ajax({
+    url:"/project/roles/"+project+"/"+role+"/"+student+"/denyPerson",
+    type:'POST',
+    success: function(data){
+      alert("Человек успешно снят с данной роли!");
+    },
+    error: function(data){
+      alert("Не удалось снять человека с заявки!");
+    }
+  });
+}
+function denyPersonFromMentorCurator(project, role, userid)
+{
+  $.ajax({
+    url:"/project/roles/"+project+"/"+role+"/"+student+"/denyMentorCurator",
+    type:'POST',
+    success: function(data){
+      alert("Человек успешно снят с данной роли!");
+    },
+    error: function(data){
+      alert("Не удалось снять человека с заявки!");
+    }
+  });
+}
+function getMentor() {
+  $.ajax({
+    url:"/project/getMentor/"+{{ project.id }},
+    type:'GET',
+    success: function(data){
+      $("#mentorCard").html(data);
+    }
+  });
+}
+function getCurator(){
+  $.ajax({
+    url:"/project/getCurator/"+{{ project.id }},
+    type:'GET',
+    success: function(data){
+      $("#curatorCard").html(data);
+    }
+  });
+}
+</script>
+{% endblock %}
+{% block content %}
+  {% if project %}
+  <!-- Modal -->
+  <div class="modal fade" id="changeContactForm" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Контактное лицо</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div id="creds" class="tab-pane fade in active show">
+            <div class="form-group row">
+              <label for="livingplace" class="col-sm-3 col-form-label">ФИО</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="fio" value="$contact_name">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="livingplace" class="col-sm-3 col-form-label">Телефон</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="phone" value="$contact_phone">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="livingplace" class="col-sm-3 col-form-label">E-mail</label>
+              <div class="col-sm-9">
+                <input class="forminput" id="email" value="$contact_email">
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="sendForm()">Сохранить</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="proj_header" style="background-image: url('/project/header/{{ project.docs['headerImage'] }}'); background-repeat: no-repeat; background-size: 100%; background-position: center;">
+  </div>
+  </div>
+
+  <div class="block" style="background: #fff; border-radius: 20px;padding: 20px;">
+
+
+    <div style="overflow: auto;" class="section">
+      <div class="float__block_text">
+        <p class="univ__text">{{ project.info.title }}</p>
+      </div>  
+      <!-- 		<p class="project-types-container"><span>{{ project.info.state }}</span><span>{{ project.info.specialization|trans }}</span><span>{{ project.info.industry }}</span></p> -->
+      <p class="project-types-container project__subtitle">{{ project.info.state }}</p>
+      <p class="project-types-container project__subtitle">{{ project.info.specialization|trans }}</p>
+      <p class="project-types-container project__subtitle marl">{{ project.info.industry }}</p>
+      <h2 style="font-weight: bold;">Описание</h2>
+      <p>{{ project.info.description |raw |nl2br}}</p>
+      <h2 style="font-weight: bold;">Продуктовый результат</h2>
+      <p>{{ project.info.product|raw |nl2br }}</p>
+      <h2 style="font-weight: bold;">Срок реализации </h2>
+      <p>{{ project.info.date_start|date("d.m.Y") }} - {{ project.info.date_close|date("d.m.Y") }}</p>
+      <h2 style="font-weight: bold;">Местоположение</h2>
+      <p>{{ project.info.place }}</p>
+
+
+      <div class="proj__deal">
+        <p class="project__text">Заказчик: {{ project.info.creator }}</p>
+      </div>
+    </div>
+    {% if project.state < 3 %}
+    <div class="container-fluid p-0">
+      <p class="section-caption" style="font-weight: bold;">Команда</p>
+      <div class="row">
+        {% if project.freeRoles %}
+        {% for key,role in project.freeRoles %}
+        {% if is_granted("ROLE_STUDENT") and role.role == "curator"%}
+
+        {% elseif is_granted("ROLE_EMPLOYEE") and role.role == "mentor" %}
+
+        {% else %}
+        <div id="container{{ key }}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4" style="text-align: center;">
+          <script type="text/javascript">
+          $('#container{{ key }}').on('show', getFullRole("{{ role.role }}", {{ key }} ));
+          </script>
+          <img style="width: 20%; height: auto;" src="/img/loading.gif">
+        </div>
+        {% endif %} {# end if is_granted #}
+        {% endfor %}
+        {% endif %} {# end if free roles #}
+        {# Draw mentor and curator cards #}
+        {% for card in project.people %}
+        {% if card['role'] == 'mentor' and card['person'] != "" %}
+        <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+          <div id="mentorCard" style="text-align: center;">
+            <script type="text/javascript">
+            $('#mentorCard').on('show', getMentor());
+            </script>
+            <img style="width: 20%; height: auto;" src="/img/loading.gif">
+          </div>
+        </div>
+        {% endif %}
+        {% if card['role'] == 'curator' and card['person'] != "" %}
+        <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+          <div id="curatorCard" style="text-align: center;">
+            <script type="text/javascript">
+            $('#curatorCard').on('show', getCurator());
+            </script>
+            <img style="width: 20%; height: auto;" src="/img/loading.gif">
+          </div>
+        </div>
+        {% endif %}
+        {# Busy roles #}
+        {% if card.person != "" and (card.role != 'mentor' and card.role != 'curator') %}
+        {% set key = random(1000) %}
+        <script type="text/javascript">
+        $('#container{{ key }}').on('show', getBusyRole("{{ card.role }}", {{ project.id }},{{ key }} ));
+        </script>
+
+        <div id="container{{key}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4" >
+          <div class="teammates-caption" style="text-align: center;">
+            <img style="width: 20%; height: auto;" src="/img/loading.gif">
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div> 
+
+  {% else %}
+
+  <div class="section proj-section">
+    <p style="font-weight: bold;">Команда проекта:</p>
+    {% for card in project.people %}
+    {% if card['role'] == 'mentor' and card['person'] != "" %}
+    <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+      <div id="mentorCard" style="text-align: center;">
+        <script type="text/javascript">
+        $('#mentorCard').on('show', getMentor());
+        </script>
+        <img style="width: 20%; height: auto;" src="/img/loading.gif">
+      </div>
+    </div>
+    {% endif %}
+    {% if card['role'] == 'curator' and card['person'] != "" %}
+    <div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+      <div id="curatorCard" style="text-align: center;">
+        <script type="text/javascript">
+        $('#curatorCard').on('show', getCurator());
+        </script>
+        <img style="width: 20%; height: auto;" src="/img/loading.gif">
+      </div>
+    </div>
+    {% endif %}
+    {% if card.person != "" and (card.role != 'mentor' and card.role != 'curator') %}
+    {% set key = random(1000) %}
+    <script type="text/javascript">
+    $('#container{{ key }}').on('show', getBusyRole("{{ card.role }}", {{ project.id }},{{ key }} ));
+    </script>
+
+    <div id="container{{key}}" class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+      <div class="teammates-caption" style="text-align: center;">
+        <img style="width: 20%; height: auto;" src="/img/loading.gif">
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>  
+  {% endif %}
+  {% if is_granted("ROLE_USER") %}
+  {% for item in project.people %}
+  {% if (item.role == "curator" or item.role == "mentor") and (item.person == user.id) %}
+  <button class="btn btn-download" onclick="window.location.href='/project/getList/{{ project.id }}'">Скачать список участников в Excel </button>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  </div>
+  <!-- ДОСКА ПРОЕКТА -->
+
+  {# 		<div class="section proj-section">
+  <p>ПРИЛОЖЕНИЕ</p>
+  <div style="padding-bottom: 0; cursor: pointer; " class="crd files" onclick="this.firstChild.nextSibling.click()">
+  <input onchange="uploadFile(this)" type="file" style="display: none;">
+  <i style="line-height: 115px; font-size: 50px; color: #808080;" class="fas fa-plus"></i>
+  </div>
+  <div class="crd files">
+  <p>Техническое задание.pdf</p>
+  <button type="button" class="btn btn-success">СКАЧАТЬ</button>
+  </div>
+
+  <!-- <div class="crd files">
+  <p>Наш логотип.png</p>
+  <button type="button" class="btn btn-success">СКАЧАТЬ</button>
+  </div> -->
+  </div> #}
+  {% else %}
+  <div class="section">
+    <h2>Проекта с таким номером нет. Проврьте корректность ввода данных!</h2>
+  </div>
+  {% endif %}
+{% endblock %}

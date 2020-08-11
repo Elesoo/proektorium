@@ -1,0 +1,165 @@
+{% block content %}
+
+<script src="/js/cropper.js"></script>
+<script src="/js/upload_avatars.js"></script>
+
+<link rel="stylesheet" href="/css/cropper.css">
+<style>
+	
+	.img-container img {
+  max-width: 100%;
+}
+</style>
+<!-- Cropper modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Выберите размер</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="img-container">
+              <img id="image_load" src="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary" id="load_btn">Загрузить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- End Cropper modal -->
+
+<!-- Modal reset Password -->
+<div class="modal fade" id="resetPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Смена пароля</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label for="inputPassword5">Старый пароль*</label>
+		<input type="password" id="inputPasswordPast" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Новый пароль*</label>
+		<input type="password" id="inputPasswordNew" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+
+		<label for="inputPassword5">Повторно новый пароль*</label>
+		<input type="password" id="inputPasswordNewRep" class="form-control" aria-describedby="passwordHelpBlock">
+		<small id="passwordHelpBlock" class="form-text text-muted">
+			Ваш пароль должен содержать от 8 до 20 символов, содержащий слова и цыфры, и не должен содержат пробелы, специальные символы или emoji.
+		</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="resetPassword()">Сменить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+		<div class="section">
+			<p>ВАШ ЛИЧНЫЙ КАБИНЕТ</p>
+			<div id="leftbar">
+				<div class="crd profile-card">
+					<p>{{ student.full_name }}</p>
+					<img class="img_profile" width=200 height=200 src="/user/getAvatar">
+					<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+						<button type="button" class="btn btn-profile" onclick="load_input.click()">Изменить фото</button>
+						<input id="load_input" class="sr-only" type="file" accept="image/*">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#resetPassword">Изменить пароль</button>
+					</div>
+				</div>
+
+				<div class="crd statusicons-card">
+					<p class="crd-caption crd-caption-left">Мои статусы</p>
+					<img width=60 height=60 src="img/logo.png">
+					<img width=60 height=60 src="img/logo.png">
+					<img width=60 height=60 src="img/logo.png">
+				</div>
+
+				<div class="crd">
+					<p class="crd-caption">Опыт проектирования</p>
+					<p>Опыт разработки <span class="experience-count">5</span></p>
+					<p>Участие в мероприятиях <span class="experience-count">6</span></p>
+					<p>Опыт наставничества <span class="experience-count">7</span></p>
+				</div>
+
+
+				<div class="crd">
+					<p class="crd-caption">Роли</p>
+					{% if student.roles %}
+						<ul style="max-height: 100px; overflow: auto;">
+							{% for role in student.roles %}
+								<li>{{ role }}</li>
+							{% endfor %}
+						</ul>
+					{% else %}
+						<p> У вас нет ролей </p>
+					{% endif %}
+				</div>
+
+
+				<div class="crd">
+					<p class="crd-caption">Мои навыки</p>
+					{% if student.skills.skills %}
+						<ul>
+							{% for skill in student.skills.skills %}
+								<li>{{ skill }}</li>
+							{% endfor %}
+						</ul>
+					{% else %}
+						<p> У вас нет навыков </p>
+					{% endif %}
+					<p class="crd-caption crd-caption-left">Хочу освоить:</p>
+					{% if student.skills.new_skills %}
+						<ul>
+							{% for skill in student.skills.new_skills %}
+								<li>{{ skill }}</li>
+							{% endfor %}
+						</ul>
+					{% else %}
+						<p> У вас нет навыков </p>
+					{% endif %}
+					<div class="crd-buttons crd-buttons-inline crd-buttons-vertical">
+						<button type="button" class="btn btn-primary">Добавить</button>
+						<button class="btn btn-primary">Как это работает?</button>
+					</div>
+				</div>
+			</div>
+			<div id="rightbar">
+				<div class="profile">
+					<div class="container">
+						<div class="scroller scroller-left"><i class="fas fa-chevron-left"></i></div>
+						<div class="scroller scroller-right"><i class="fas fa-chevron-right"></i></div>
+						<div class="wrapper">
+							<ul class="nav nav-tabs list">
+								{% for key, value in user.items %}
+									<li class="nav-item">
+										<a class="nav-link active" data-toggle="tab" href="#{{ key }}">{{ value }}</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					<div class="tab-content">
+						{% for key, value in user.items %}
+							<div id="{{key}}" class="tab-pane fade">
+							</div>
+						{% endfor %}
+					</div>
+{% endblock %}

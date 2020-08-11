@@ -1,0 +1,184 @@
+{% block container %}
+<div class="crd project-card" style="margin: 0 !important;">
+	<div class="increq-card-header">
+		<img src="/img/foto.png">
+		<p>
+			{{student.personal_branch.surname}} {{student.personal_branch.name}}<br>{{student.personal_branch.patr}}
+		</p>
+		<p>Заявка на роль <b>{{role.name}}</b></p>
+	</div>
+
+	<p style="text-align: center; font-family: 'Open Sans', sans-serif;"><a style="color: #0C7CBB;" href="/project/show/{{ project.id }}">{{ project.info.title}}</a></p>
+
+	<div class="row">
+		<span class="col-sm-7">Факультет:</span>
+		<span class="col-sm-5">{{student.education.faculty}}</span>
+	</div>
+	<div class="row">
+		<span class="col-sm-7">Специальность:</span>
+		<span class="col-sm-5">{{student.education.speciality}}</span>
+	</div>
+	<div class="row">
+		<span class="col-sm-7">Группа:</span>
+		<span class="col-sm-5">{{student.education.group}}</span>
+	</div>
+	<div class="row" style="font-weight: bold;">
+		<span class="col-sm-7 graybox" >Компетенции:</span>
+		<span class="col-sm-5 graybox">Наличие:</span>
+	</div>
+	<div class="row">
+		<span class="col-sm-7">Базовые:</span>
+		{% if stskills.base %}
+			<span class="col-sm-5">{{ stskills.base|length }} из {{ role.base|length }}</span>
+		{% else %}
+		    <span class="col-sm-5">0 из {{ role.base|length }}</span>
+		{% endif %}
+	</div>
+	<div style="margin-bottom: 0;" class="row">
+		<span class="col-sm-7">Профессиональные:</span>
+		{% if stskills.tech %}
+			<span class="col-sm-5">{{ stskills.tech|length }} из {{ role.tech|length }}</span>
+		{% else %}
+		    <span class="col-sm-5">0 из {{ role.tech|length }}</span>
+		{% endif %}
+	</div>
+	<div class="row">
+		<span class="col-sm-7">Надпрофессиональные:</span>
+		{% if stskills.profi %}
+			<span class="col-sm-5">{{ stskills.profi|length }} из {{ role.profi|length }}</span>
+		{% else %}
+		    <span class="col-sm-5">0 из {{ role.profi|length }}</span>
+		{% endif %}
+	</div>
+
+	<!-- <div class="row">
+		<span class="col-sm-7">Опыт разработки:</span>
+		<span class="col-sm-5">3 проекта</span>
+	</div> -->
+
+	<div style="text-align: right; padding-right: 20px; color: #0C7CBB; font-weight: bold; font-size: 13px; margin-bottom: 50px;padding-top: 5px;padding-bottom: 5px;">
+		{% set modalNum = random(10000) %}
+		<a data-toggle="modal" data-target="#modal{{ modalNum }}">Подробнее >></a>
+	</div>
+
+	{% if is_granted("ROLE_STUDENT") %}
+	<div class="crd-buttons crd-buttons-bottom crd-buttons">
+		<button onclick="denyRoleByMentor({{project.id}}, {{role.id}}, {{student.id}});" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+		<button onclick="allowRoleByMentor({{project.id}}, {{role.id}}, {{student.id}});" type="button" class="btn" style="background: #015C65; color: white;margin-left: 10px;">Принять</button>
+	</div>
+	{% elseif is_granted("ROLE_EMPLOYEE") %}
+	    <div class="crd-buttons crd-buttons-bottom crd-buttons">
+		<button onclick="denyRoleByCurator({{project.id}}, {{role.id}}, {{student.id}});" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+		<button onclick="allowRoleByCurator({{project.id}}, {{role.id}}, {{student.id}});" type="button" class="btn" style="background: #015C65;margin-left: 10px; color: white;">Принять</button>
+	</div>
+	{% endif %}
+</div>
+<!-- Modal -->
+<style type="text/css">
+	.modal-header{
+  background: #8E8E8E;
+}
+
+.modal-header .close > span {
+  color: #fff;
+}
+
+.modal__header_title{
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  color: #FFFFFF;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+</style>
+<div id="modal{{ modalNum }}" class="modal fade role_info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class="modal-header">
+			<p class="modal__header_title">Роль "{{role.name}}"</p>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+      <div class="modal-body">
+        <div class="container-fluid">
+        	<div class="d-flex justify-content-between">
+        		<div class="border-modal">
+        			<p><b>Компетенции  студента</b></p>
+        			<p><b>Базовые:</b></p>
+        			<ul class="role_list">
+        				{% if not (stskills.base) and not (stskills.base_useless) %}
+        					<li class="role_item">У студента нет базовых компетенций</li>
+        				{% else %}
+        				    {% for base in stskills.base %}
+		        				<li class="role_item">{{base}}</li>
+	        				{% endfor %}
+	        				{% for base_useless in stskills.base_useless %}
+	        				    <li class="role_item role_disable">{{base_useless}}</li>
+	        				{% endfor %}
+        				{% endif %}
+        			</ul>
+
+        			<p><b>Профессиональные:</b></p>
+        			<ul class="role_list">
+        				{% if not (stskills.tech) and not (stskills.tech_useless) %}
+        					<li class="role_item">У студента нет профессиональных компетенций</li>
+        				{% else %}
+        				    {% for tech in stskills.tech %}
+		        				<li class="role_item">{{tech}}</li>
+	        				{% endfor %}
+	        				{% for tech_useless in stskills.tech_useless %}
+	        				    <li class="role_item role_disable">{{tech_useless}}</li>
+	        				{% endfor %}
+        				{% endif %}
+        			</ul>
+
+        			<p><b>Надпрофессиональные:</b></p>
+        			<ul class="role_list">
+        				{% if not (stskills.profi) and not (stskills.profi_useless) %}
+        					<li class="role_item">У студента нет надпрофессиональных компетенций</li>
+        				{% else %}
+        				    {% for profi in stskills.profi %}
+		        				<li class="role_item">{{profi}}</li>
+	        				{% endfor %}
+	        				{% for profi_useless in stskills.profi_useless %}
+	        				    <li class="role_item role_disable">{{profi_useless}}</li>
+	        				{% endfor %}
+        				{% endif %}
+        			</ul>
+        		</div>
+        		<div class="border-modal">
+        			<p><b>Компетенции, заявленные для роли</b></p>
+
+        			<p><b>Базовые:</b></p>
+        			<ul class="role_list">
+        				{% for base in role.base %}
+	        				<li class="role_item">{{base}}</li>
+        				{% endfor %}
+        			</ul>
+
+        			<p><b>Профессиональные:</b></p>
+        			<ul class="role_list">
+        				{% for tech in role.tech %}
+	        				<li class="role_item">{{tech}}</li>
+        				{% endfor %}
+        			</ul>
+
+        			<p><b>Надпрофессиональные:</b></p>
+        			<ul class="role_list">
+        				{% for profi in role.profi %}
+	        				<li class="role_item">{{profi}}</li>
+        				{% endfor %}
+        			</ul>
+        		</div>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--  -->
+{% endblock %}

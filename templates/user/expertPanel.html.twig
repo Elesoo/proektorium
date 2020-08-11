@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+{% block includes %}
+    <script src="/js/cardcaptions.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/userpanel.css" crossorigin="anonymous">
+	<script src="/js/chosen.jquery.min.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/chosen.min.css" crossorigin="anonymous">
+	<script type="text/javascript">
+		function filterProjects() {
+			projtype=$("input[name='proj_type_filter']:checked").val();
+			$(".project-card").hide();
+			$("."+projtype).show();
+			$(".proj-section").eq(0).find(".project-card").show();
+		}
+		//$(document).ready(function() {$("input[name='proj_type_filter']").change(filterProjects);});
+		$(document).ready(function() {
+			chosenInit();
+		});
+	</script>
+
+{% endblock %}
+{% block content %}
+    <div id="filter">
+
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Пользователи" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>	
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Статусы" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>
+
+			<select id="filter_projtype" onchange="filterProjects(this)" data-placeholder="Профессиональные интересы" class="chosen-select"multiple>
+				<option value="research">1</option>
+				<option value="engineer">2</option>
+				<option value="business">3</option>
+				<option value="social">4</option>
+			</select>
+
+			<input type="text" placeholder="Фамилия Имя Отчество" style="margin-top: -44px; font-size: 13px; padding: 3px;">
+		</div>
+		
+
+		<div class="section proj-section">
+
+
+			<div class="crd project-card">
+				<div class="increq-card-header">
+					<img src="/img/kittenz.jpg">
+					<p>
+						Фамилия Имя <br>Отчество
+					</p>
+					<p>Отраслевой эксперт </p>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Организация:</span>
+					<span class="col-sm-5">1</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Должность:</span>
+					<span class="col-sm-5">2</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Ученая степень:</span>
+					<span class="col-sm-5">3</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Профессиональные интересы:</span>
+					<span class="col-sm-5">4<br>5</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Заказчик проектов:</span>
+					<span class="col-sm-5">3 проекта</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Опыт экспертной поддержки:</span>
+					<span class="col-sm-5">3 проекта</span>
+				</div>
+
+
+				<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+					<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Запросить экспертную поддержку</button>
+				</div>
+
+
+			</div>
+
+
+
+			<div class="crd project-card">
+				<div class="increq-card-header">
+					<img src="/img/kittenz.jpg">
+					<p>
+						Фамилия Имя <br>Отчество
+					</p>
+					<p>Сотрудник</p>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Подразделение:</span>
+					<span class="col-sm-5">1</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Должность:</span>
+					<span class="col-sm-5">2</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Ученая степень:</span>
+					<span class="col-sm-5">3</span>
+				</div>
+				<div class="row">
+					<span class="col-sm-7">Профессиональные интересы:</span>
+					<span class="col-sm-5">4<br>5</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Преподаваемые дисциплины:</span>
+					<span class="col-sm-5">4<br>5<br>4<br>5</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Заказчик проектов:</span>
+					<span class="col-sm-5">3 проекта</span>
+				</div>
+
+				<div class="row">
+					<span class="col-sm-7">Опыт экспертной поддержки:</span>
+					<span class="col-sm-5">3 проекта</span>
+				</div>
+
+				<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+					<button  style="background-color:  #1B4F44; color: white" type="button" onclick="window.location.href='/project/show?id=$id'" class="btn">Запросить экспертную поддержку</button>
+				</div>
+
+
+			</div>
+
+
+
+		</div>
+{% endblock %}

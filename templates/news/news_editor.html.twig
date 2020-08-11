@@ -1,0 +1,290 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+<script src="/js/news_card.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/lang/summernote-ru-RU.min.js"></script>
+
+<script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+
+
+<style type="text/css">
+/*modal*/
+
+.modal-content{
+	border: none;	
+	width: 850px;
+	height: auto;
+	transform: translate(-50%);
+	left: 50%
+}
+
+@media(max-width: 1100px) {
+	.modal-content{
+		width: 600px;
+	}
+
+}
+
+.modal-header{
+	background: #8E8E8E;
+}
+
+#zoom{
+	border: none;
+	background-color: transparent;
+	transform: translateX(0px);
+	transition: .4s;
+}
+
+.form_input{
+	border: none;
+	padding-left: 5px;
+	background-color: transparent;
+	border-radius: 5px;
+	display: none;
+	vertical-align: middle;
+	right: 0;
+	top: 35px;
+	position: absolute;
+	height: 50px;
+}
+
+.modal_header__title{
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	margin: 0 auto;
+	transform: translateX(40%);
+}
+
+table{
+	margin: 0 auto;
+}
+
+tbody{
+	border-top: 30px solid transparent;
+}
+
+tbody > tr{
+	width: 100%;
+	vertical-align: top;
+	border-top: 30px solid transparent;
+}
+
+tr > td{
+	width: 30%;
+}
+
+tr > td + td{
+	width: 70%;
+}
+
+td textarea{
+	width: 90%;
+	margin: 0 5%;
+	border: none;
+	outline: none;
+	padding: 0 20px 0 10px;
+	border-bottom:  0.5px solid #837E7E;
+}
+
+textarea::placeholder{
+	width: 80%;
+}
+
+#file_doc{
+	display: none;
+}
+
+label img{
+	margin-left: 25px;
+}
+
+td:first-child{
+	text-align: right;
+}
+
+.btn__send{
+	width: 50%;
+	height: 41px;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	margin: 45px 25% 50px 25%;
+	background: #0C7CBB;
+	border: none;
+	color: #fff;
+	font-size: 18px;
+	line-height: 25px;
+	text-align: center;
+	font-weight: 600;
+}
+
+
+.chose__file {
+	height: 40px;
+	border-radius: 10px;
+	background-color: #1B4F44;
+	color: #fff;
+	font-size: 16px;
+	border: none;
+	display: none;
+	margin: 0 auto 10px;
+}
+
+.choose {
+	width: 175px;
+	height: 30px;
+	border-radius: 10px;
+	background-color: #1B4F44;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	padding: 5px 0;
+	margin: 0 auto 10px;
+}
+
+
+.edit {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+}
+
+.edit textarea {
+	height: 100px;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	padding: 10px;
+}
+
+
+.MsoNormal img {
+	width: 100% !important;
+}
+/*@media(max-width: 320px) {
+	.choose {
+		width: 175px;
+	}
+	}*/
+
+	</style>
+
+	{% endblock %}
+
+	{% block content %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xl-5 p-0">
+				<div class="crd" id="specification">
+					<table>
+						<tbody class="table_body">
+							<tr class="first_row">
+								<td>
+									<b>Заголовок новости?*</b>
+								</td>
+
+								<td>
+									<textarea name="" id="" cols="30" rows="2" placeholder="Кратко сформулируйте название, которое будет заголовком новости.">{{ claim.fields['Заголовок новости?*'] }}</textarea>	
+								</td>
+							</tr>
+
+							<tr class="first_row">
+								<td><b>Дата события?*</b></td>
+								<td>
+									<textarea name="" id="" cols="30" rows="2">{{ claim.fields['Дата события?*'] }}</textarea>	
+								</td>
+							</tr>
+
+							<tr class="first_row">
+								<td><b>Краткое описание?*</b></td>
+								<td>
+									<textarea name="" id="" cols="30" rows=5 placeholder='Напишите ключевую информацию о предстоящем событии, эти данные позволят привлечь внимание к основной части новости и дополнить идею заголовка. Краткое описание должно отвечать на вопросы: "Что? Где? Когда?". Не более трех предложений'>{{ claim.fields['Краткое описание?*'] }}</textarea>	
+								</td>
+							</tr>
+
+							<tr class="first_row">
+								<td><b>Основной текст?*</b></td>
+								<td>
+									<textarea name="" id="" cols="30" rows="3" placeholder="Напишите все подробности предстоящего события. Информация должна содержать повестку мероприятия.">{{ claim.fields['Основной текст?*'] }}</textarea>	
+								</td>
+							</tr>
+
+
+							<tr>
+								<td style="padding-top: 50px;"><b>Вложения</b></td>
+								<td style="padding-top: 50px;{# border-bottom:  0.5px solid #837E7E; #}">
+								{#<label onclick="window.location.href='/news/attachment/{{ claim.attachment }}'" for="file_doc">
+									<img src="/img/pdf.png" alt="">
+									<img src="/img/jpg 1.png" alt="">
+									<img src="/img/doc 1.png" alt="">
+									<img src="/img/ppt.png" alt="">
+								</label> #}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="carouselExampleControls" class="carousel slide mt-4" data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<img src="/news/attachment/{{ claim.attachment[0] }}" class="d-block w-100" alt="...">
+						</div>
+						{% if claim.attachment|length > 1 %}
+						{% set counter = 0 %}
+						{% for pic in claim.attachment %}
+						{% if counter == 0 %}
+						{% else %}
+						<div class="carousel-item">
+							<img src="/news/attachment/{{ pic }}" class="d-block w-100" alt="...">
+						</div>
+						{% endif %}
+						{% set counter = counter + 1 %}
+						{% endfor %}
+						{% endif %}
+					</div>
+					<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-7 p-0">
+			<div class="crd edit" id="editor">
+				<input style="font-size: 30px; width: 90%; margin: 15px 5% 15px; text-align: center; border-radius: 10px; border: 1px solid silver;" id="newsname" placeholder="Заголовок">
+
+				<!-- Загрузка превью фото -->
+
+				<input id="preview" type="file" name="photo" class="chose__file">
+				<label for="preview" class="choose">Выберите файл</label>
+
+				<!-- Краткое описание новости -> textarea с ограничением на символы 300 -->
+
+				<textarea id="description" placeholder="Кратое описание новости"></textarea>
+
+				<div id="summernote" class="projInfo"></div>
+
+				<div class="crd-buttons crd-buttons-single" style="margin-left: 10%; margin-top: 20px; margin-right: 10%;position:static;">
+					<button  style="background-color:  #1B4F44; color: white;" onclick="sendNewCard({{ claim.id }})" type="button" class="btn">Опубликовать</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

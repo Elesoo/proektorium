@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block includes %}
+<style>
+
+
+/*фон задней части стр*/
+/*body{
+	background-color: #EBEFFC; 
+}*/
+
+.fullinformation{
+	padding: 50px 35px 20px 35px;
+	border-radius: 10px;
+	background-color: #fff;
+}
+
+.fullinformation__title{
+	font-weight: bold;
+	font-size: 36px !important;
+	/*width: 925px;*/
+	margin: 0 auto;
+	color: #1D1D1D;
+	font-family: "Open Sans", sans-serif;
+	font-weight: bold;
+}
+
+.fullinformation__text{
+	text-align: justify;
+	font-size: 18px;
+	width: 100%;
+	margin: 50px auto;
+	font-family: "Open Sans", sans-serif; 
+}
+
+.fullinformation img {
+	width: 100% !important;
+	margin: 30px 0;
+}
+
+.fullinformation p {
+	/*line-height: 30px !important;*/
+	/*font-size: 20px !important;*/
+	text-indent: 35.4pt;
+}
+
+@media(max-width: 1000px){
+	.fullinformation{
+		padding: 50px 15px 20px 15px;
+	}
+
+	.fullinformation p {
+		/*line-height: 30px !important;*/
+		/*font-size: 20px !important;*/
+		text-indent: 20.4pt;
+	}
+}
+
+
+@media(max-width: 450px) {
+	.fullinformation p {
+		font-size: 20px !important;
+		text-indent: 0 !important;
+		text-align: left !important;	
+	}
+
+	.fullinformation img {
+		margin: 0;
+	}
+}
+ 
+.MsoNormal {
+	line-height: 30px !important;
+} 
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="fullinformation">
+				<p class="fullinformation__title" style="font-size: 36px;text-indent: 0;">
+					{{ news.title }}
+				</p>
+
+				<p class="fullinformation__text">
+					{{ news.text|raw }}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

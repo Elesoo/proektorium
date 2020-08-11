@@ -1,0 +1,687 @@
+{% extends 'base.html.twig' %}
+{% block includes %}
+	<link rel="stylesheet" href="/css/inquirer.css" crossorigin="anonymous">
+
+	<script type="text/javascript">
+
+	var listString;
+
+	$(document).ready(function(){
+		selectInquirerType("engineer");
+	});
+
+	function selectInquirerType(projtype) {
+		$(".inquirer_form").hide();
+		$("#"+projtype+"_project").show();
+	}
+
+	function generateString() {
+		var fd = new FormData();    
+		listString="<ul>\n";
+		emptyFieldsFlag=false;
+
+		$(".inquirer_form:visible > div").each(function () {
+			if ($(this).find("textarea").length==0) {
+					return true; //Skip iteration for attachment input
+				}
+
+				if ($(this).find("textarea").val()!="") {
+					listString+= "<li>" + $(this).find("label:first-of-type").html().trim() + ": " + $(this).find("textarea").val() + "</li>\n";
+				} else {
+					alert("Пустые поля");
+					emptyFieldsFlag=true;
+					return false;
+				}
+			});
+		listString+="</ul>";
+
+		if (emptyFieldsFlag) {
+			return false;
+		}
+
+			if ($(".inquirer_form:visible input")[0].files.length>0) { //Adds attachment only if presents
+				attachement=$(".inquirer_form:visible input")[0].files[0];
+				fd.append('attachment', attachement, attachement.name);
+			}
+
+			fd.append('listString', listString);
+			fd.append('project_type', $("#typeselector").val());
+
+			$.ajax({
+				url: "/project/create",
+				method: "POST",
+				data: fd,
+				processData: false,
+				contentType: false,
+
+				success: function() {
+					alert("Заявка отправлена");
+					// window.location.href = "/user";
+				},
+				error: function() {
+					alert("Ошибка");
+				}
+			});
+			console.log(listString);
+		}
+		</script>
+	{% endblock %}
+	{% block main %}
+		<main>
+			{% block header_buttons %}
+				{% if user %}
+					<div id="buttonheader">
+						{% block user_btn %}
+							{% include 'header_buttons/user_btn.html.twig' %}
+						{% endblock %}
+						{% block exit_btn %}
+							{% include 'header_buttons/exit_btn.html.twig' %}
+						{% endblock %}
+						{% block not_btn %}
+							{% include 'header_buttons/not_btn.html.twig' %}
+						{% endblock %}
+					</div>
+					{% block notifications %}
+						<ul id="notificationMenu" class="notifications">
+							<div class="notifbox">
+								<li class=" notif unread">
+									<a href="#">
+										<div class="imageblock"> 
+											<img src="" class="notifimage"  />
+										</div> 
+										<div class="messageblock">
+											<div class="message">12121
+											</div>
+											<div class="messageinfo">
+												<i class="icon-trophy"></i>2 hours ago
+											</div>
+										</div>
+									</a>
+								</li>
+								<li class="notif">
+									<a href="#">
+										<div class="imageblock"><img src="" class="notifimage" />
+										</div> 
+										<div class="messageblock">
+											<div class="message">1212121
+											</div>
+											<div class="messageinfo">
+												<i class="icon-comment"></i>4 hours ago
+											</div>
+										</div>
+									</a>
+								</li>
+							</div>
+						</ul>
+					{% endblock %}
+				{% else %}
+					<div id="buttonheader">
+						{% block reg_btn %}
+							{% include 'header_buttons/registration_btn.html.twig' %}
+						{% endblock %}
+						{% block login_btn %}
+							{% include 'header_buttons/login_btn.html.twig' %}
+						{% endblock %}
+					</div>
+				{% endif %}
+			{% endblock %}
+			{% block content %}
+				<div class="crd" style="width: 900px; margin: auto; padding: 10px;">
+					<select id="typeselector" onchange="selectInquirerType(this.value)">
+						<option value="engineer">Инженерный</option>
+						<option value="social">Социальный</option>
+						<option value="art">Арт-проект</option>
+						<option value="media">Медиа-проект</option>
+						<option value="business">Бизнес-проект</option>
+						<option value="it">IT-проект</option>
+						<option value="research">Исследовательский</option>
+
+
+
+					</select>
+					<div id="research_project" class="inquirer_form">
+
+						<div>
+							<label class="col-inquirere-label">Название исследования?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Актуальность исследования?*
+							</label>
+							<textarea placeholder="Опишите, какую проблему должно решить данное исследование в вашей отрасли, сфере деятельности."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Основная цель исследования?*
+							</label>
+							<textarea placeholder="Сформулируйте общее описание исследования, которое в дальнейшем будет отображаться в карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Объект исследования?
+							</label>
+							<textarea placeholder="Какой процесс или явление необходимо исследовать."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Предметная область?
+							</label>
+							<textarea placeholder="Укажите научную сферу, в которой находится объект исследования."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Какие гипотезы вы рассматривали? На основе какой гипотезы будет формироваться исследование?
+							</label>
+							<textarea placeholder="На какое научное предположение вы опираетесь, и что конкретно будет проверяться в ходе исследования."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 3 месяцев."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Методы исследования?
+							</label>
+							<textarea placeholder="Опишите способы, с помощью которых по вашему мнению возможно достичь поставленную цель.  Например: эксперимент, наблюдение, опрос и так далее."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат проекта?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы: презентация, научная статья, отчет и другое."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям вы будете оценивать конечный результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы на реализацию проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить исследование."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд?
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения исследования."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям проекта?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для исследовательской группы."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо?*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона."></textarea>
+						</div>
+
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+					</div>
+
+
+					<div id="engineer_project" class="inquirer_form">
+						<div>
+							<label class="col-inquirere-label">
+								Название технического задания?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Цель проекта?*
+							</label>
+							<textarea placeholder="Кратко опишите, на решение какой проблемы направленно данное техническое задание. Данное описание в дальнейшем будет отображаться в карточке проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label"> Отрасль?
+							</label>
+							<textarea placeholder="Укажите вашу отрасль и область применения результатов проекта. Например: сельскохозяйственное машиностроение."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Подробное описание технического задания?*
+							</label>
+							<textarea placeholder="Подробно опишите задачу, которую вы ставите перед разработчиками, опишите условия, в которых будет внедрятся конечная разработка."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Как вы уже пытались решить данную проблему ранее? 
+							</label>
+							<textarea placeholder="Данная информация позволит проектной команде избежать пройденные вами этапы в разработке и сфокусироваться на поиске новых решений."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 3 месяцев."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы: презентация, 3D-модель, прототип, промышленный образец или другое."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям будет оцениваться результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы на реализацию проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить разработку."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд?
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения технического задания."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям технического задания?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для проектной группы."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо?*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+
+					</div>
+
+					<div id="social_project" class="inquirer_form">
+						<div>
+							<label class="col-inquirere-label">
+								Название проекта?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В чем основная идея проекта?*
+							</label>
+							<textarea placeholder="Кратко опишите, на решение какой проблемы направлена задача.  Данное описание в дальнейшем будет отображаться в карточке проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Подробное описание задания?*
+							</label>
+							<textarea placeholder="Подробно опишите задачу, которую вы ставите перед разработчиками, опишите условия, в которых будут использоваться результаты проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Как вы уже пытались решить данную проблему ранее? 
+							</label>
+							<textarea placeholder="Данная информация позволит проектной команде избежать пройденные вами этапы в разработке и сфокусироваться на поиске новых решений."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сфера реализации проекта? 
+							</label>
+							<textarea placeholder="Укажите вашу область применения результатов проекта. Например: образование, спорт, экология."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Целевая аудитория проекта?
+							</label>
+							<textarea placeholder="Опишите портрет социальной группы, проблемы которой решает проект.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 2 месяца."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы - презентация, статья и другое."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям будут оценивать результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы на реализацию проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить разработку."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд? 
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения задания."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям проекта?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для проектной группы.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+
+					</div>
+
+					<div id="art_project" class="inquirer_form">
+						<div>
+							<label class="col-inquirere-label">Название технического задания?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Цель проекта?*
+							</label>
+							<textarea placeholder="Кратко опишите, на решение какой проблемы направленно данное техническое задание.  Данное описание в дальнейшем будет отображаться в карточке проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Подробное описание задачи проекта?*
+							</label>
+							<textarea placeholder="Подробно опишите задачу, которую вы ставите перед разработчиками. Опишите условия, при которых будет использоваться конечный результат работы."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сфера искусства?
+							</label>
+							<textarea placeholder="Укажите отрасль, область применения результатов проекта. Например: ландшафтный дизайн, скульптура.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Объект проектирования?
+							</label>
+							<textarea placeholder="Какой конечный продукт необходимо спроектировать.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Целевая аудитория проекта?
+							</label>
+							<textarea placeholder="Опишите портрет социальной группы, в интересах которой разрабатывается проект."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">География проекта?*
+							</label>
+							<textarea placeholder="Предоставьте описание локации, в которой будет размещаться арт-объект, сооружение или другое.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 3 месяца."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы: 3D-макет, прототип, промышленный образец и т.д."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям будут оценивать результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы для реализации проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить разработку."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд? 
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения технического задания."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям проекта?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для проектной группы.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+					</div>
+
+					<div id="media_project" class="inquirer_form">
+						<div>
+							<label class="col-inquirere-label">
+								Название технического задания?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Цель проекта?*
+							</label>
+							<textarea placeholder="Кратко опишите, на решение какой проблемы направленно данное техническое задание.  Данное описание в дальнейшем будет отображаться в карточке проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Подробное технического задания?*
+							</label>
+							<textarea placeholder="Подробно опишите задачу, которую вы ставите перед разработчиками, опишите условия, в которых будут использоваться результаты проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Как вы уже пытались решить данную проблему ранее? 
+							</label>
+							<textarea placeholder="Данная информация позволит проектной команде избежать пройденные вами этапы в разработке и сфокусироваться на поиске новых решений.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 2 месяца."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы - презентация, статья, PSD-макет или другое. "></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям будут оценивать результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы для реализации проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить разработку."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд?
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения технического задания."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям проекта?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для проектной группы.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо?*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона. 
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+
+					</div>
+
+
+					<div id="business_project" class="inquirer_form">
+						<div>
+							<label class="col-inquirere-label">
+								Название технического задания?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Цель проекта?*
+							</label>
+							<textarea placeholder="Кратко опишите, на решение какой проблемы направленно данное техническое задание.  Данное описание в дальнейшем будет отображаться в карточке проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Подробное описание задачи проекта?*
+							</label>
+							<textarea placeholder="Подробно опишите задачу, которую вы ставите перед разработчиками, опишите условия, в которых будут использоваться результаты проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Как вы уже пытались решить данную проблему ранее? 
+							</label>
+							<textarea placeholder="Данная информация позволит проектной команде избежать пройденные вами этапы в разработке и сфокусироваться на поиске новых решений."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 2 месяцев."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы: презентация, статья, аналитическая документация и другое. 
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям будут оценивать результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы для реализации проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить разработку."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд? 
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения технического задания.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям проекта?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для проектной группы."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо?*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона. 
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+					</div>
+
+
+					<div id="it_project" class="inquirer_form">
+						<div>
+							<label class="col-inquirere-label">Название технического задания?*
+							</label>
+							<textarea placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Цель проекта?*
+							</label>
+							<textarea placeholder="Кратко опишите, на решение какой проблемы направленно данное техническое задание.  Данное описание в дальнейшем будет отображаться в карточке проекта."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Подробное описание технического задания?*
+							</label>
+							<textarea placeholder="Подробно опишите задачу, которую вы ставите перед разработчиками, опишите условия, в которых будет внедрятся конечный продукт.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Область разработки?
+							</label>
+							<textarea placeholder="Укажите отрасль, область применения результатов проекта. Например: работа с большими данными, машинное обучение. 
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Как вы уже пытались решить данную проблему ранее? 
+							</label>
+							<textarea placeholder="Данная информация позволит проектной команде избежать пройденные вами этапы в разработке и сфокусироваться на поиске новых решений."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Сроки реализации проекта?*
+							</label>
+							<textarea placeholder="Укажите временной промежуток не менее 3 месяца."></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">В каком формате необходимо предоставить результат?*
+							</label>
+							<textarea placeholder="В каком виде хотели бы получить конечный результат работы: web-сайт, чат-бот, мобильное приложение.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">По каким критериям будут оценивать результат?*
+							</label>
+							<textarea placeholder="Опишите ключевые параметры, по которым будет оцениваться проделанная работа.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Ресурсы на реализацию проекта?*
+							</label>
+							<textarea placeholder="Какими ресурсами ваша организация может обеспечить разработку.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Призовой фонд? 
+							</label>
+							<textarea placeholder="Какие средства вы готовы выделить для поощрения проектной команды, в случае успешного выполнения технического задания.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Требования к исполнителям проекта?
+							</label>
+							<textarea placeholder="Набором каких компетенций должны обладать участники проектной группы.
+							Данная информация послужит фильтром при наборе участников для проектной группы.
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Контактное лицо?*
+							</label>
+							<textarea placeholder="Укажите ФИО, должность, электронный адрес и номер телефона. 
+							"></textarea>
+						</div>
+						<div>
+							<label class="col-inquirere-label">Вложение
+							</label>
+							<input type="file">
+						</div>
+					</div>
+
+
+					<button style="margin-left: 10px;" type="button" class="btn btn-success" onclick="generateString()">Отправить заявку</button>
+
+				</div>
+			{% endblock %}
+		</main>
+	{% endblock %}

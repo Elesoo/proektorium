@@ -1,0 +1,157 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Проекториум</title>
+
+	<link rel="shortcut icon" href="/logo-64.ico" type="image/x-icon">
+	
+	{% block origin_includes %}
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+		
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+		<link rel="stylesheet" href="/css/style.css" crossorigin="anonymous">
+
+		<script src="https://kit.fontawesome.com/5b0095a98d.js" crossorigin="anonymous"></script>
+		
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+		<link rel="stylesheet" href="/css/notifications.css" crossorigin="anonymous">
+	{% endblock %}
+
+	{% block includes %}
+
+	{% endblock %}
+
+	<style>
+		* {
+			font-family: 'Open Sans', sans-serif;
+		}
+	</style>
+
+</head>
+<body>
+	{% block sidebar_menu %}
+		<div class="sidebar">
+			<a href="/"><img src="/img/Proektorium_Logotip.png"></a>
+			<a href="/news">Новости</a>
+			<a href="/">Доска проектов</a>
+			<a href="/events">Календарь мероприятий</a>
+			<a href="/org">Предприятия</a>
+			<a href="/university">Университет</a>
+			<a href="/users/1">Панель пользователей</a>
+			{# <a href="experts">Панель экспертов</a> #}
+			{# <a href="partners">Карта партнеров</a> #}
+			<div id=downsidebar>
+				<hr>
+				<a href="/about">О платформе</a>
+				<a href="/support">Поддержка</a>
+			</div>
+		</div>
+	{% endblock %}
+	{% block modals %}
+
+	{% endblock %}
+	{% block main %}
+	<main>
+		{% block header_buttons %}
+			{% if is_granted('ROLE_USER') %}
+				<div id="buttonheader">
+					{% include 'header_buttons/burger_btn.html.twig' %}
+					{% block user_btn %}
+						{% include 'header_buttons/user_btn.html.twig' %}
+					{% endblock %}
+					{% block exit_btn %}
+						{% include 'header_buttons/exit_btn.html.twig' %}
+					{% endblock %}
+					{% block not_btn %}
+						{% include 'header_buttons/not_btn.html.twig' %}
+					{% endblock %}
+					{% include 'header_buttons/dstu_btn.html.twig' %}
+				</div>
+				{% block notifications %}
+					<ul id="notificationMenu" class="notifications">
+						<div class="notifbox">
+							{# <li class=" notif unread">
+								<a href="#">
+									<div class="imageblock"> 
+										<img src="" class="notifimage"  />
+									</div> 
+									<div class="messageblock">
+										<div class="message">12121
+										</div>
+										<div class="messageinfo">
+											<i class="icon-trophy"></i>2 hours ago
+										</div>
+									</div>
+								</a>
+							</li> #}
+							<li class="notif">
+								<a href="#">
+									<div class="imageblock"><img src="/img/notif.svg" class="notifimage" />
+									</div> 
+									<div class="messageblock">
+										<div class="message">Нет оповещений
+										</div>
+										<div class="messageinfo">
+											<i class="icon-comment"></i>{# 4 hours ago #}
+										</div>
+									</div>
+								</a>
+							</li>
+						</div>
+					</ul>
+				{% endblock %}
+			{% else %}
+				<div id="buttonheader">
+					{% include 'header_buttons/burger_btn.html.twig' %}
+					{% block reg_btn %}
+						{% include 'header_buttons/registration_btn.html.twig' %}
+					{% endblock %}
+					{% block login_btn %}
+						{% include 'header_buttons/login_btn.html.twig' %}
+					{% endblock %}
+					{% include 'header_buttons/dstu_btn.html.twig' %}
+				</div>
+			{% endif %}
+		{% endblock %}
+		{% block content %}
+
+		{% endblock %}
+	</main>
+		
+	{% endblock %}
+
+	<script>
+		function burgerMenu(icon) {
+    		icon.classList.toggle("change");
+		}
+
+		// sidebar open for mobile
+
+		$(document).ready(function(){
+			$('.burger__btn').click(function(){
+				if($('.sidebar').hasClass('block')){
+					$('.sidebar').removeClass('slideInLeft');
+					$('.sidebar').addClass('slideOutLeft');
+					setTimeout(function(){
+						$('.sidebar').removeClass('block');
+						$('.sidebar').removeClass('slideOutLeft');
+					},500);
+					$('.burger__btn').removeClass('pos');
+				} else {
+					$('.sidebar').addClass('block');
+					$('.sidebar').addClass('slideInLeft');
+					$('.burger__btn').addClass('pos');
+				}
+			});
+		});
+	</script>
+</body>
+</html>

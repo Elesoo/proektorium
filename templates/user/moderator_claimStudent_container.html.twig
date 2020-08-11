@@ -1,0 +1,413 @@
+{% block container_claim %}
+<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 pr-0 mb-4">
+  <div class="crd project-card" style="margin: 0 !important;">
+    <div class="increq-card-header">
+      <img src="/img/foto.png">
+      <p>
+        {% if student %}
+        {{student.personal_branch.surname}} {{ student.personal_branch.name }} <br>{{ student.personal_branch.patr }}
+        {% elseif employee %}
+            {{employee.personal.surname}} {{employee.personal.name}} <br> {{employee.personal.patr}}
+        {% endif %}
+      </p>
+      <p>
+        {% if student %}
+        Заявка на роль <b>Наставника</b>
+        {% elseif employee %}
+            Заявка на роль <b>Куратор</b>
+        {% endif %}
+      </p>
+    </div>
+    {% if student %}
+    <div class="row">
+      <span class="col-sm-7">Факультет:</span>
+      <span class="col-sm-5">{{ student.education.faculty }}</span>
+    </div>
+    {% elseif employee %}
+    <div class="row">
+        <span class="col-sm-7">Подразделение:</span>
+      <span class="col-sm-5">{{ employee.activity.structure}}</span>
+      </div>
+    {% endif %}
+    {% if student %}
+    <div class="row">
+      <span class="col-sm-7">Специальность:</span>
+      <span class="col-sm-5">{{ student.education.speciality }}</span>
+    </div>
+    {% elseif employee %}
+        <div class="row">
+      <span class="col-sm-7">Должность:</span>
+      <span class="col-sm-5">{{ employee.activity.position }}</span>
+    </div>
+    {% endif %}
+    {% if student %}
+    <div class="row">
+      <span class="col-sm-7">Группа:</span>
+      <span class="col-sm-5">{{ student.education.group }}</span>
+    </div>
+    {% elseif employee %}
+        <div class="row">
+      <span class="col-sm-7">Ученая степень:</span>
+      <span class="col-sm-5">{{ employee.education.academic_degree }}</span>
+    </div>
+    {% endif %}
+    {# <div class="row">
+      <span class="col-sm-7">Профессиональные интересы:</span>
+      <span class="col-sm-5">{{ student.professional }}</span>
+    </div> #}
+
+{#     <div class="row">
+      <span class="col-sm-7">Опыт разработки:</span>
+      <span class="col-sm-5">3 проекта</span>
+    </div>
+
+    <div class="row">
+      <span class="col-sm-7">Опыт наставничества:</span>
+      <span class="col-sm-5">3 проекта</span>
+    </div> #}
+
+    {# <div style="text-align: right; padding-right: 20px; color: #0C7CBB; font-weight: bold; font-size: 13px; margin-bottom: 50px;">
+      <a data-toggle="modal" data-target="#student{{ student.id }}">Подробнее >>></a>
+    </div> #}
+
+    {% if student %}
+    <div class="crd-buttons crd-buttons-bottom crd-buttons">
+      <button onclick="denyMentor({{ projid }}, '{{ student.id }}');" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+      <button onclick="allowMentor({{ projid }}, '{{ student.id }}');" type="button" class="btn" style="background: #015C65; color: white;">Подтвердить</button>
+    </div>
+    {% elseif employee %}
+        <div class="crd-buttons crd-buttons-bottom crd-buttons">
+      <button onclick="denyCurator({{ projid }}, '{{ employee.id }}');" type="button" class="btn" style="background: #DFC7AF;">Отклонить</button>
+      <button onclick="allowCurator({{ projid }}, '{{ employee.id }}');" type="button" class="btn" style="background: #015C65; color: white;">Подтвердить</button>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+  {# Shapranov model window #}
+    <div class="modal fade" id="student{{ student.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" id="modal_2">
+      <div class="modal-content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="modal-header" style="background-color: #8E8E8E; width: 102%;">
+            <div class="modal-header__image">
+              <img src="/img/foto.png" alt="">
+            </div>
+            <div class="modal-header__name">
+              <p class="modal-header__name_fullname">
+                  {{ student.personal_branch.surname }} {{ student.personal_branch.name }} {{ student.personal_branch.patr }}
+              </p>
+              <p class="modal-header__name_position">
+                Студент
+              </p>
+            </div>    
+            <div class="modal-header__close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row modal-body modal-window-body">
+          <div class="col-md modal_item">
+            <div class="modal__title">
+              <p class="modal__title_tit">
+                Образование:
+              </p>
+            </div>
+
+            <div class="modal__item_text">
+              <div class="modal__object" >
+                
+                <ul>
+
+                
+                <li style="width: 80%; margin: 0 0" class="modal__object_text">
+                  <b>Учебное заведение: </b><p> {{ student.education.university }} </p>
+                </li>
+                
+                {# <li class="modal__object_text">
+                  Факультет: {{ student.education.faculty }}
+                </li>
+                <li class="modal__object_text">
+                  Кафедра: {{ student.education.cathedra }}
+                </li>
+
+                <li class="modal__object_text">
+                  Специальность: {{ student.education.speciality }} 
+                </li>
+
+                <li  class="modal__object_text">
+                  Группа: {{ student.education.group }}
+                </li>
+
+                <li class="modal__object_text">
+                  Уровень образования: {{ student.education.edu_lvl }}
+                </li> #}
+                </ul>
+              </div>
+              {# <div class="modal__key">
+                <ul>
+
+                <li class="modal__key_text" style="width: 100%;height: auto;">
+                  Донской государственный технический университет
+                </li>
+                
+                <li class="modal__key_text" >
+                  Медипродюссирование
+                </li>
+
+
+                <li class="modal__key_text" >
+                  МКТ-32 
+                </li>
+
+
+                <li class="modal__key_text" >
+                  Медипродюссирование
+                </li>
+
+
+                <li class="modal__key_text" >
+                  МКТ-32 
+                </li>
+
+
+                <li class="modal__key_text" >
+                  Среднее профессиональное 
+                </li>
+
+
+                <li class="modal__key_text" >
+                  Техникум экономики и управления 
+                </li>
+
+
+                <li class="modal__key_text" >
+                  Товароведение
+                </li>
+                </ul>
+              </div> #}
+            </div>
+          </div>
+
+          <div class="col-md modal_item">
+            <div class="modal__title">
+              <p class="modal__title_tit">
+                Профессиональные интересы:
+              </p>
+            </div>
+
+            <div class="modal__item_text">
+              <div class="modal__object" style="display: flex;flex-direction: column;">
+                <div class="modal__object_blocktext" style="align-self: flex-start;margin-top: 20px;">
+                  <ul>
+                  <li class="modal__object_text">
+                    Сфера деятельности:
+                  </li>
+                  </ul>
+                </div>
+                
+                <div class="modal__object_blocktext" style="align-self: flex-end;margin-top: 125px;">
+                  <ul>
+                  <li class="modal__object_text" style="">
+                    Сертификаты:
+                  </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="modal__key">
+                <ul>
+                <li class="modal__key_text">
+                  Название 1 ваваолрлфыа фывроаорывпылыфпв
+                </li>
+                
+                <li class="modal__key_text">
+                  Название 3 ваваолрлфыа фывроаорывпылыфпв
+                </li>
+                <li class="modal__key_text">
+                  Название 3 ваваолрлфыа фывроаорывпылыфпв
+                </li>
+                
+                <li class="modal__key_text">
+                  Название 3 ваваолрлфыа фывроаорывпылыфпв
+                </li>
+                </ul>
+                <div class="icons">
+                  <div class="icons__text">
+                    <p class="modal__key_text">
+                      Название 1 
+                    </p>
+                    
+                    <img src="/img/pdf.png" alt="" class="img-fluid" style="margin-bottom: 16px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="characters">
+              <div class="characters__descr">
+                <p class="characters__descr_text">
+                  Опыт разработки:
+                </p>
+
+                <p class="characters__descr_text">
+                  Опыт наставничества:
+                </p>
+
+                <p class="characters__descr_text">
+                  Участие в мероприятиях:
+                </p>
+              </div>
+
+              <div class="characters__num">
+                <p class="characters__num_text" style= "margin-bottom: 50px;">
+                  5
+                </p>
+
+
+                <p class="characters__num_text">
+                  7
+                </p>
+              </div>
+            </div>
+
+            <div class="sqrs">
+              <p class="modal__title_tit" style="font-weight: normal;font-size: 14px;color: #000;margin-right: 10px;">
+                Статусы:
+              </p>
+
+              <div class="el1" style="margin: 0;">
+                
+              </div>
+
+              <div class="el1">
+                
+              </div>
+
+            </div>
+          </div>
+          <div style="border: 0.5px solid #C4C4C4;box-sizing: border-box; border-radius: 5px;margin: 5px;width: 100%;">
+            <div class="row modal-body modal-window-body">
+              <div class="col-md-12 modal-window-body__title">
+                <p class="modal__title_tit">
+                  Компетенции
+                </p>
+              </div>
+            </div>
+
+            <div class="row modal-window-body">
+              <div class="col-md-4">
+                <div class="modal__cards">
+                  <div class="modal__cards_text">
+                    <p class="modal__cards_text_descr">
+                      Базовые:
+                    </p>
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+                  </div>
+
+                  <div class="modal__cards_num" style="margin-top: 0;">
+                    <p class="modal__cards_num_nm">
+                      3
+                    </p>
+
+                    <p class="modal__cards_num_nm">
+                      5
+                    </p>
+
+                    <p class="modal__cards_num_nm">
+                      2
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="modal__cards">
+                  <div class="modal__cards_text">
+                    <p class="modal__cards_text_descr">
+                      Профессиональные:
+                    </p>
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+
+                  </div>
+
+                  <div class="modal__cards_num">
+                    <p class="modal__cards_num_nm">
+                      3
+                    </p>
+
+                    <p class="modal__cards_num_nm">
+                      5
+                    </p>
+
+                    <p class="modal__cards_num_nm">
+                      2
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="modal__cards">
+                  <div class="modal__cards_text">
+                    <p class="modal__cards_text_descr">
+                      Надпрофессиональные:
+                    </p>
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+
+
+                    <p class="modal__cards_text_descr">
+                      компетенции
+                    </p>
+                  </div>
+
+                  <div class="modal__cards_num">
+                    <p class="modal__cards_num_nm">
+                      3
+                    </p>
+
+                    <p class="modal__cards_num_nm">
+                      5
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+{% endblock %}

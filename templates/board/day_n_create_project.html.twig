@@ -1,0 +1,618 @@
+{% block day_n_modal %}
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<script type="text/javascript" src="/js/day_n_inquirer.js"></script>
+	{# <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" /> #}
+	{# // <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script> #}
+
+<style>
+	
+	.nav__day_modal * {
+		font-family: 'Open Sans', sans-serif;
+	}
+	
+
+	.modal-content {
+		border-radius: 10px;
+		/*position: absolute;*/
+		/*left: 50%;*/
+		/*transform: translate(-50%);*/
+	}
+
+	.modal-header {
+		border-bottom: none;
+		height: 0;
+	}
+
+	.modal-header .close {
+		margin-left: auto;
+		margin-right: 0;
+		
+	}
+
+	.navigation__table {
+		border-spacing: 30px;
+		border-collapse: separate !important;
+		width: 100%;
+	}
+
+	.navigation__table tr {
+		width: 100%;
+	}
+
+	.navigation__table tr td {
+		padding: 0;
+	}
+	
+
+	.modal__subtitle {
+		font-size: 14px;
+		line-height: 19px;
+		text-align: right;
+		color: #000;
+	}	
+
+	.modal-body textarea {
+		border: none;
+		border-bottom: 0.5px solid #837E7E;
+		outline: none !important;
+		font-weight: 300;
+		font-size: 14px;
+		line-height: 19px;
+		color: #7C7C7C; 
+		padding-left: 15px;
+		width: 100%;
+	}
+	
+	.navigation__table td:first-child {
+		width: 30%;
+	}
+
+
+	.navigation__table td + td {
+		width: 100%;
+	}
+
+	.navigation__table td:last-child select {
+		width: 360px;
+	}
+
+	.modal-footer {
+		border: none;
+	}
+
+	.modal-footer_send {
+		background: #0C7CBB;
+		box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		border-radius: 10px;
+		width: 415px;
+		height: 40px;
+		font-weight: 600;
+		font-size: 18px;
+		line-height: 25px;
+		color: #fff;
+		border: none;
+		margin: 0 auto 50px;
+		outline: none !important;
+	}
+
+	.claster__select {
+		width: 200px;
+		height: 23px;
+		border: 0.2px solid #000;
+		font-weight: 300;
+		font-size: 12px;
+		-ms-text-align-last: center;
+		text-align-last: center;
+		outline: none !important;
+		line-height: 16px;
+		border-radius: 5px;
+		background-color: transparent;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-ms-appearance: none;
+		appearance: none;
+		background: url('/img/ar.png') no-repeat 95% center;
+	}
+
+	.claster__select option {
+		text-align: center;
+
+	}
+
+	.modal__text {
+		font-weight: 300;
+		font-size: 14px;
+		line-height: 19px;
+		color: #000;
+		margin: 0;
+	}
+
+	.inp__file {
+		display: none;
+	}
+
+	.file__label {
+		border: 1px solid #8E8E8E;
+		box-sizing: border-box;
+		border-radius: 10px;
+		width: 250px;
+		height: 25px;
+		font-size: 12px;
+		line-height: 20px;
+		text-align: center;
+		color: #8E8E8E;
+		cursor: pointer;
+		margin-left: 55px;
+	}
+
+	@media(max-width: 1000px) {
+		.modal-content {
+			width: 100%;
+		}
+	}
+
+	@media(max-width: 500px) {
+		.navigation__table {
+			border-spacing: 15px;
+		}
+
+		.modal-body textarea {
+			width: 170px;
+			padding-left: 0;
+		}
+
+		.navigation__table td:last-child select {
+			width: 160px;
+		}
+
+		.file__label {
+			width: 160px;
+			margin: 0;
+		}
+	}
+
+</style>
+	
+<style>
+	
+	.navigation__card {
+		width: 100%;
+		opacity: .5;
+		background: #fff;
+		border-radius: 10px;
+		box-shadow: 2px 2px 10px #8080808c;
+		/*height: 100%;*/
+		padding-bottom: 14px;
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+	}
+
+	.navigation__card_head {
+		background: #1D3351;
+		border-radius: 10px 10px 0 0;
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-ms-align-items: center;
+		align-items: center;
+		justify-content: center;
+		-webkit-flex-direction: column;
+		-moz-flex-direction: column;
+		-ms-flex-direction: column;
+		-o-flex-direction: column;
+		flex-direction: column;
+		width: 100%;
+		height: 200px;
+		position: relative;
+	}
+
+
+	.navigation__card_body {
+		padding: 10px 0 20px;
+	}		
+
+	.navigation__card_head img {
+		margin-bottom: 7px;
+		margin-top: 12px;
+	}
+
+	.navigation__card_subtitle {
+		font-weight: 600;
+		font-size: 15px;
+		line-height: 20px;
+		text-align: center;
+		color: #fff;
+		height: 24px;
+    	background: rgba(23, 22, 22, 0.77);
+		width: 100%;
+		margin: 0;
+		position: absolute;
+		bottom: 0;
+	}
+
+
+	.navigation__body_description {
+		font-size: 14px;
+		line-height: 19px;
+		text-align: justify;
+		color: #8E8E8E;
+		margin: 0 15px;
+	}
+
+	.navigation__list {
+		margin: 0;
+		padding: 0;
+	}
+
+	.navigation__item {
+		font-weight: 300;
+		font-size: 13px;
+		line-height: 16px;
+		color: #737373;
+		list-style: none;
+		margin: 10px 15px;
+	}
+
+	.navigation__body_subtitle {
+		font-weight: 600;
+		font-size: 15px;
+		line-height: 20px;
+		text-align: center;
+		margin-top: 15px;
+		color: #8E8E8E;
+		padding: 10px 0;
+		border-top: 1px solid #E3E3E3;
+		border-bottom: 1px solid #E3E3E3;
+		box-sizing: border-box;
+	}
+
+	.navigation__body_section {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		-webkit-flex-direction: row;
+		-moz-flex-direction: row;
+		-ms-flex-direction: row;
+		-o-flex-direction: row;
+		flex-direction: row;
+		-ms-align-items: center;
+		align-items: center;
+		padding: 0 20px;
+	}
+
+	.navigation__body_section .section__item {
+		width: 100%;
+	}
+
+	.navigation__body_section .section__item:first-child {
+		margin-right: 20px;
+	}
+	
+	.navigation__body_section .section__subtitle {
+		font-weight: bold;
+		font-size: 13px !important;
+		line-height: 18px;
+		color: #7C7C7C;
+		margin: 0;
+		text-align: center;		
+	}
+
+	.navigation__body_section .section__text {
+		font-size: 13px;
+		line-height: 18px;
+		color: #7C7C7C;
+		text-align: center;
+		margin: 0;	
+	}
+
+	.navigation__btn {
+		width: 49%;
+		height: 33px;
+		background-color: #6c757d;
+		font-size: 15px;
+		line-height: 20px;
+		color: #fff;
+		text-align: center;
+		border: none;
+		border-radius: 10px;
+		margin: 20px 20% 0;
+	}
+	
+	.navigation__card_footer {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		flex-grow: 1;
+		-ms-align-items: flex-end;
+		align-items: flex-end;
+	}
+
+</style>
+
+<script>
+	'use strict';
+
+	window.onload = () => {
+		
+		// $('#cathedra').select2(); 
+		// $('.js-example-basic-multiple').select2();
+
+		const limitVal = document.getElementById('constLen');
+
+		limitVal.addEventListener('keyup', function() {
+			if (limitVal.value > 40) {
+				limitVal.value = null;
+				alert('Введена число больше 40')
+			}
+
+			this.value = this.value.replace(/[^\d]/g, '');
+			
+		});
+
+		$('#select2-cathedra-container').css("width", "400px");
+	};
+
+	// $(document).ready(function() {
+    	
+ //    	// 
+	// });
+</script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" {# tabindex="-1" #} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content nav__day_modal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<table class="navigation__table">
+			<tbody class="navigation__table__body">
+				<tr>
+					<td class="modal__subtitle">
+						Название проекта?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="2" placeholder="Кратко сформулируйте название, которое будет заголовком к карточке проекта."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Подразделение-инициатор?*
+					</td>
+					<td>
+						<select id="cathedra" class="js-example-basic-single">
+							{% for cathedra in data_cathedra %}
+								<option value="{{ cathedra.info.title }}">{{ cathedra.info.title }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Руководитель проекта?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="1" placeholder="ФИО"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Номер телефона
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="2" placeholder="Введите номер телефона руководителя проекта в формате +7 ххх ххх хх хх"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Электронная почта
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="1" placeholder="Введите адрес электронной почты руководителя проекта"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Проблематика?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="3" placeholder="Кратко опишите, на решение какой проблемы направленно данное техническое задание."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Подробное описание содержания проектной работы?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="4" placeholder="Подробно опишите задачу, которую вы ставите перед студентами, опишите назначение разрабатываемого объекта, его особенности и характеристики."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Цель и задачи проекта?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="3" placeholder="Чётко сформулируйте цель и задачи проекта."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">						
+						Проектное задание ?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="2" placeholder="Опишите виды деятельности, выполняемые студентами в проекте. Перечислите основные стадии проектирования."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Сроки реализации проекта?*
+					</td>
+					<td>
+						<p class="modal__text">Первый этап: 14.09.2020 – 19.09.2020</p>
+						<p class="modal__text">Второй этап: 21.09.2020 – 29.12.2020</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Количество зачетных единиц?*
+					</td>
+					<td>
+						<p class="modal__text">3</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Формируемые компетенции
+					</td>
+					<td>
+						<select id="ok-select" name="select" class="claster__select">
+							  <option value="ok-6"  selected="">ОК-6, ОК-7 (для ФГОС 3+</option> 
+							  <option value="uk-1">УК-1, УК-2, УК-3, УК-6 (для ФГОС 3++)</option>
+							</select>
+						</td>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Форма итогового контроля?*
+					</td>
+					<td>
+						<p class="modal__text">Зачёт с оценкой</p>	
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Требования к студентам, участникам проекта?
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="3" placeholder="Опишите какими компетенциями должны обладать участники проекта"></textarea>	
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Планируемые результаты проекта к 19.09.2020?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="3" placeholder="В каком виде должен быть представлен результат работы по окончанию Дней навигаций? Например, презентация в формате MS PowerPoint."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Планируемые результаты проекта к концу семестра?*
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="3" placeholder="В каком виде должен быть представлен результат работы по окончанию семестра? Например, веб-сайт / приложение."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Количество вакантных мест на проект
+					</td>
+					<td>
+						<textarea name="" id="constLen" cols="30" rows="3" placeholder="Укажите количество студентов, которое сможет присоединиться к проекту (от 10 до 40 человек). В последствии участники будут распределены по командам от 7 до  10 человек"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Рекомендуемые направления подготовки?*
+					</td>
+					<td>
+						<select id="directions_of_training" class="js-example-basic-single" name="states[]" multiple="multiple">
+							{% for d in directions_of_training %}
+								<option value="{{ d.code }}">{{ d.code }} {{ d.title }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Предполагаемая аудитория для командной работы
+					</td>
+					<td>
+						<textarea name="" id="constLen" cols="30" rows="3" placeholder="Укажите адрес, корпус и номер аудиторий, в которых будет проходить проектная неделя."></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="modal__subtitle">
+						Требуемые ресурсы?*
+
+					</td>
+					<td>
+						<textarea name="" id="" cols="30" rows="4" placeholder="Опишите оборудование, которым должны быть оснащены аудитории проведения для проектной недели"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<div class="container-fluid p-0 m-0 mt-4">
+							<div class="row block_load">
+								
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>       	
+      </div>
+      <div class="modal-footer">
+			<button onclick="generateStringNDay();" class="modal-footer_send">Отправить заявку</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-0 mb-4">
+	<div class="navigation__card">
+		<div class="navigation__card_head">
+			<img src="/img/strelochki.png" alt="" class="img-fluid">
+			<h5 class="navigation__card_subtitle">Дни Навигаций</h5>
+		</div>
+		<div class="navigation__card_body">
+			<p class="navigation__body_description">
+				Кратко опишите, на решение какой проблемы направленно данное техническое задание: задачу, которую вы ставите перед разработчиками и  условия, в которых будет внедрятся конечная разработка.
+			</p>
+
+			<ul class="navigation__list">
+				<li class="navigation__item">•студентам каих направлений подготовки рекомендуется принять участие в проекте</li>
+			</ul>
+
+			<p class="navigation__body_subtitle">Дни Навигаций</p>
+
+			<div class="navigation__body_section">
+				<div class="section__item">
+					<p class="section__subtitle">Реализация 1 этапа:</p>
+					<p class="section__text">14.09.2020 - 19.09.2020</p>
+				</div>
+				<div class="section__item">
+					<p class="section__subtitle">Реализация 2 этапа:</p>
+					<p class="section__text">14.09.2020 - 29.12.2020</p>
+				</div>
+			</div>
+		</div>
+		<div class="navigation__card_footer mb-0">
+			<button data-toggle="modal" data-target="#exampleModal" class="navigation__btn">Предложить проект</button>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

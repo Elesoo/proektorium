@@ -1,0 +1,36 @@
+{% block containerEvent %}
+<div class="card" style="margin: 0 !important;">
+	<div class="card-header">
+		<p class="card__header_title">{{ event.info.title }}</p>
+		<div class="card__header_subtitle">
+			<p class="card__subtitle">Участие в качестве Организатора </p>
+		</div>
+	</div>
+	<div class="card-body">
+		<p class="card-text">
+			{% if event.info.description|length > 139 %}
+				{{ event.info.description[:140] }}...
+			{% else %}
+			    {{ event.info.description }}
+			{% endif %}
+		</p>
+		<p class="card__text">Партнёры мероприятия:</p>
+		<p class="card__text">{{ event.info.partners }}</p>
+		<p class="card__body_descr">Мероприятие</p>
+		<div class="card__block">
+			<div class="card__block_item">
+				<p class="card__block_text">Дата:</p>
+				<p class="card__block_text">{{event.info.date_1|date("d.m.Y")}} - {{event.info.date_2|date("d.m.Y")}}</p>
+			</div>
+			<div class="card__block_item">
+				<p class="card__block_text">Организатор:</p>
+				<p class="card__block_text">{{depName}}</p>
+			</div>
+		</div>
+	</div>
+	<div class="card__footer">
+		<button class="card__footer_more" onclick="window.location.href='/event/show/{{ event.id }}'">Подробнее</button>
+		<button class="card__footer_list" onclick="window.location.href='/user/employee/getEventList/{{ event.id }}'"> Список участников</button>
+	</div>
+</div>
+{% endblock %}

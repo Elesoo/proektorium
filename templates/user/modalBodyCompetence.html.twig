@@ -1,0 +1,92 @@
+{% block modal_body %}
+<div class="modal-body" style="margin-bottom: 60px;">
+
+	<div class="skills-modalsection skills-base row">
+
+		<div class="col-sm-6" style="border-right: 1px solid;">
+			<p class="skills-type-title">Базовые:</p>
+			<ul class="currSkills" style="padding-left: 0; list-style-type: none;">
+				{% if skills %}
+				{% for skill in skills %}
+				{% if skill.category == "base" %}
+				<li tag="{{ skill.id }}">{{ skill.name }}<div class="modifySkillBtn" onclick="removeSkill(this)"><i class="fas fa-times"></i></div></li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+			{% else %}
+			<p>Нет навыков!</p>
+			{% endif %}
+		</div>
+
+		<div class="col-sm-6">
+			<input type="text" class="skills_search" style="width: 100%; margin-bottom: 8px;">
+			<ul class="allSkills" style="padding-left: 0; list-style-type: none;">
+				{% for skill in allSkills %}
+				{% if skill.category == "base" %}
+				<li tag="{{ skill.id }}">{{ skill.name }}<div class="modifySkillBtn" onclick="addSkill(this)"><i class="fas fa-plus"></i></div></li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="skills-modalsection skills-tech row">
+
+		<div class="col-sm-6" style="border-right: 1px solid;">
+			<p class="skills-type-title">Профессиональные:</p>
+			<ul class="currSkills" style="padding-left: 0; list-style-type: none;">
+				{% if skills %}
+				{% for skill in skills %}
+				{% if skill.category == "tech" %}
+				<li tag="{{ skill.id }}">{{ skill.name }}<div class="modifySkillBtn" onclick="removeSkill(this)"><i class="fas fa-times"></i></div></li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+			{% else %}
+			<p>Нет навыков!</p>
+			{% endif %}
+		</div>
+
+		<div class="col-sm-6">
+			<input type="text" class="skills_search" style="width: 100%; margin-bottom: 8px;">
+			<ul class="allSkills" style="padding-left: 0; list-style-type: none;">
+				{% for skill in allSkills %}
+				{% if skill.category == "tech" %}
+				<li tag="{{ skill.id }}">{{ skill.name }}<div class="modifySkillBtn" onclick="addSkill(this)"><i class="fas fa-plus"></i></div></li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="skills-modalsection skills-overprof row">
+
+		<div class="col-sm-6" style="border-right: 1px solid;">
+			<p class="skills-type-title">Надпрофессиональные:</p>
+			<ul class="currSkills" style="padding-left: 0; list-style-type: none;">
+				{% if skills %}
+				{% for skill in skills %}
+				{% if skill.category == "profi" %}
+				<li tag="{{ skill.id }}">{{ skill.name }}<div class="modifySkillBtn" onclick="removeSkill(this)"><i class="fas fa-times"></i></div></li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+			{% else %}
+			<p>Нет навыков!</p>
+			{% endif %}
+		</div>
+
+		<div class="col-sm-6">
+			<input type="text" class="skills_search" style="width: 100%; margin-bottom: 8px;">
+			<ul class="allSkills" style="padding-left: 0; list-style-type: none;">
+				{% for skill in allSkills %}
+				{% if skill.category == "profi" %}
+				<li tag="{{ skill.id }}">{{ skill.name }}<div class="modifySkillBtn" onclick="addSkill(this)"><i class="fas fa-plus"></i></div></li>
+				{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% block role_container %}
+	{% for role in roles %}
+	<div class="crd project-card" style="margin-right: -1px">
+		<div class="increq-card-header" style="display: flex;
+    align-items: center;">
+			<img src="/img/foto.png" style="position: static; margin-left: 15px;">
+			<p style="margin-left: 10px;">
+				{{ role.name }}
+			</p>
+		</div>
+
+		<p class="graybox" style="font-weight: bold;">Требуемые компетенции:</p>
+		{% if role.base %}
+			{% for key,competence in role.base %}
+			{% if key < 3 %}
+				<div class="row" style="margin-bottom: 50px;">
+					<span class="col-sm-7">{{ competence|raw }}</span>
+					{# <span class="col-sm-5">1</span> #}
+				</div>
+			{% endif %}
+			{% endfor %}
+		{% endif %}
+		{% if role.tech %}
+			{% for key,competence in role.tech %}
+			{% if key < 3 %}
+				<div class="row" >
+					<span class="col-sm-7">{{ competence|raw }}</span>
+					{# <span class="col-sm-5">1</span> #}
+				</div>
+			{% endif %}
+			{% endfor %}
+		{% endif %}
+		{% if role.profi %}
+			{% for key, competence in role.profi %}
+			{% if key < 3 %}
+				<div class="row">
+					<span class="col-sm-7">{{ competence|raw }}</span>
+					{# <span class="col-sm-5">1</span> #}
+				</div>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+		{# <div style="text-align: right; padding-right: 40px; color: #0C7CBB; font-weight: bold; font-size: 13px;">
+			<a onclick="window.location.href='#'">Показать всё >>></a>
+		</div> #}
+
+
+		<div class="crd-buttons crd-buttons-bottom crd-buttons-single">
+			<button  style="background-color:  #1B4F44; color: white" type="button" onclick="$('#role_id').attr('value', '{{ role.id }}'); sendClaimForm();" class="btn">Пригласить</button>
+
+		</div>
+	</div>
+	{% endfor %}
+{% endblock %}
